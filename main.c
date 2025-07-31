@@ -13,4 +13,6 @@ int main(int argc, char **argv, char **env)
 	}
     shell = safe_malloc(sizeof(t_shell));
 
+    
+    return (0);
 }
