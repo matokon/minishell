@@ -56,6 +56,7 @@ typedef struct s_shell // stan calego shella
 {
     char *path; // sciezka
     t_env *env; // lista zmiennych srodowiskowych
+    int count_cmds; // ilosc komend bedzie potrzebna do zwalniania pamieci
     t_cmd *cmds; // lista komend (po parserze)
     char *line; // linia wejsciowa
     int exit_status;
