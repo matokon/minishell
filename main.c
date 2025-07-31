@@ -6,8 +6,8 @@ int main(int argc, char **argv, char **env)
     (void)argv;
 
     if(argc != 1)
-        return 1;
-    if (envp == NULL)
+        return (1);
+    if (envp == NULL)//???
 	{
 		error_exit("Error: wrong env value!\n");
 	}
