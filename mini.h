@@ -14,6 +14,7 @@
 # include <stdbool.h>
 # include <limits.h>
 # include <signal.h>
+# include "libft/libft.h"
 
 typedef enum e_token_type //typ tokena
 {
@@ -56,3 +57,5 @@ typedef struct s_shell // stan calego shella
     char *line; // linia wejsciowa
     int exit_status;
 } t_shell;
+
+void	*safe_malloc(size_t bytes);
