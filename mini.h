@@ -40,6 +40,8 @@ typedef struct s_cmd // reprezentacja pojedynczej komendy
     char *outfile; // > output.txt
     int append; // 1 jezeli >>, 0 jezeli >
     int heredoc; // 1 jezeli <<
+    int in_fd; // fd do odczytu
+    int out_fd; // fd do zapisu
     struct s_cmd *next; // jezeli pipe: ls | grep txt
 } t_cmd;
 
@@ -52,6 +54,7 @@ typedef struct s_env // zmienne srodowiskowe
 
 typedef struct s_shell // stan calego shella
 {
+    char *path; // sciezka
     t_env *env; // lista zmiennych srodowiskowych
     t_cmd *cmds; // lista komend (po parserze)
     char *line; // linia wejsciowa
