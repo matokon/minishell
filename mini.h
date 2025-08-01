@@ -1,3 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/08/01 19:06:31 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINI_H
+#define MINI_H
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -63,12 +78,21 @@ typedef struct s_shell // stan calego shella
 
 //****MAIN****
 int main(int argc, char **argv, char **env);
+
 //****Environment_things****
+void	create_list_env(t_env **stack, char **env);
+void	split_env(t_env **stack, char **str);
+t_env	*find_last(t_env *stack);
 
 //****Input****
 int read_input(t_shell *shell);
 
 //****Errors****
 void	error_exit(const char *error);
+
 //****Don't know how to name it yet****
 void	*safe_malloc(size_t bytes);
+
+//****Tests****
+void print_stack_all(const t_env *stack);
+#endif
