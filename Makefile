@@ -6,7 +6,7 @@
 #    By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/04 17:23:16 by ochmurzy          #+#    #+#              #
-#    Updated: 2025/07/31 18:18:29 by ochmurzy         ###   ########.fr        #
+#    Updated: 2025/08/01 17:03:15 by ochmurzy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ NAME := minishell
 # Compiler and flags
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g
+LDFLAGS := -lreadline -lncurses
 
 # Directories
 LIBFT_DIR = libft
@@ -26,7 +27,7 @@ INCLUDES := -I$(LIBFT_DIR)
 LIBFT_LIB := $(LIBFT_DIR)/libft.a
 
 # Source and object files
-SRC := 
+SRC := env_things.c
 
 OBJ := $(SRC:.c=.o)
 
@@ -36,7 +37,7 @@ $(LIBFT_LIB):
 	@make -C $(LIBFT_DIR)
 
 $(NAME): $(LIBFT_LIB) $(OBJ)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBFT_LIB) $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
