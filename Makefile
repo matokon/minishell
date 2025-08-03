@@ -1,0 +1,55 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/07/04 17:23:16 by ochmurzy          #+#    #+#              #
+#    Updated: 2025/08/01 17:03:15 by ochmurzy         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Project name
+NAME := minishell
+
+# Compiler and flags
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -g
+LDFLAGS := -lreadline -lncurses
+
+# Directories
+LIBFT_DIR = libft
+
+INCLUDES := -I$(LIBFT_DIR)
+
+# Libraries
+LIBFT_LIB := $(LIBFT_DIR)/libft.a
+
+# Source and object files
+SRC := env_things.c
+
+OBJ := $(SRC:.c=.o)
+
+all: $(NAME)
+
+$(LIBFT_LIB):
+	@make -C $(LIBFT_DIR)
+
+$(NAME): $(LIBFT_LIB) $(OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBFT_LIB) $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	@rm -f $(OBJ)
+	@make -C $(LIBFT_DIR) clean
+
+fclean: clean
+	@rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
+
+re: fclean all
+
+.PHONY: all clean fclean re
