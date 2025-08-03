@@ -28,3 +28,15 @@ void set_path(t_shell *shell)
     // trzeba dodac do envow sciezke nie wiem o co chodzi ale chat tak mowi
 	shell->exit_status = 0;
 }
+void value_init(t_shell *shell)
+{
+    if (!shell)
+        return;
+        
+    shell->path = NULL;
+    shell->env = NULL;
+    shell->count_cmds = 0;
+    shell->cmds = NULL;
+    shell->line = NULL;
+    shell->exit_status = 0;
+}

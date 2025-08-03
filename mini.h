@@ -91,8 +91,12 @@ int read_input(t_shell *shell);
 //****Errors****
 void	error_exit(const char *error);
 
-//****Don't know how to name it yet****
+//****Utils functions****
 void	*safe_malloc(size_t bytes);
+
+//****Init****
+void set_path(t_shell *shell);
+void value_init(t_shell *shell);
 
 //****Tests****
 void print_stack_all(const t_env *stack);
