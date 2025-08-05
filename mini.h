@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/01 19:06:31 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:47:27 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ int main(int argc, char **argv, char **env);
 void	create_list_env(t_env **stack, char **env);
 void	split_env(t_env **stack, char **str);
 t_env	*find_last(t_env *stack);
-
+t_env	*find_env(t_env *env, const char *key);
+void	update_env_val(t_env **env, const char *key, const char *new_val);
+t_env	*add_new_env(t_env **env, const char *key, const char *val);
 //****Input****
 int read_input(t_shell *shell);
 
