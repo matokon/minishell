@@ -18,15 +18,15 @@ int read_input(t_shell *shell)
     {
         input = readline("\033[1;32mminishell$ \033[0m");
         if (!input)
-		{
-            fprintf(stderr, "Error: readline error!\n");
-            //zwolnienie wartosci zrobie kiedys moze :)
-		}
-		if (*input)
-		{
-            add_history(input); // obsluga zapamietywania wpisanych komend(wbudowana funckja)
-            parse_and_execute(input, shell);
-		}
+        {
+        	fprintf(stderr, "Error: readline error!\n");
+          //zwolnienie wartosci zrobie kiedys moze :)
+        }
+        if (*input)
+        {
+          add_history(input); // obsluga zapamietywania wpisanych komend(wbudowana funckja)
+          parse_and_execute(input, shell);
+        }
     }
     return (0);
 }
