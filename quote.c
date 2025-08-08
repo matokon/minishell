@@ -32,13 +32,20 @@ char *deal_with_quotes(char *input, t_shell shell)
         i = find_first_quote(input, i);
         if(i == -1)
             break ;
-        type_of_quote = input[d];
+        type_of_quote = input[i];
         j = find_second_quote(input, i + 1, type_of_quote);
         if(j == -1)
             break ;
-        while (i <= j && str[i])
+        while (i <= j && input[i])
 		{
-			//tu bedzie obsluga zmieniania np "$USER" → "imie" dokoncze to ;)
+			if (type_of_quote != '\'' && input[i] == '$')
+			{
+				// TODO: 1. Obsłuż specjalną zmienną $? i rozwiń inne zmienne środowiskowe
+
+                // TODO: 2. Przelicz pozycję zamykającego cudzysłowu po ewentualnych modyfikacjach stringa
+
+			}
+            //swap spacji itp.
 		}
     }
     return input;

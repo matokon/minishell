@@ -96,6 +96,9 @@ void	error_exit(const char *error);
 //****Utils functions****
 void	*safe_malloc(size_t bytes);
 
+//****Input tokenization****
+char **split_input_to_tokens(char *input);
+
 //****Init****
 void set_path(t_shell *shell);
 void value_init(t_shell *shell);

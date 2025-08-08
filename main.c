@@ -12,7 +12,7 @@ int main(int argc, char **argv, char **env)
 		error_exit("Error: wrong env value!\n");
 	}
     shell = safe_malloc(sizeof(t_shell));
-    //value_init(shell);
+    value_init(shell);
     //TODO inicjalizacja envow
     read_input(shell);
 
