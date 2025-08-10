@@ -74,3 +74,53 @@ char **split_input_to_tokens(char *input)
 	free(input);
 	return (table_of_tokens);
 }
+
+t_token	*token_list(char **tab_of_tokens)
+{
+	//Tworzy liste tokenow za pomoca splita z funkcji powyzej^^
+	t_token *head;
+	t_token *cur = NULL;
+	t_token *last_node;
+	int	i;
+
+	i = -1;
+	while (tab_of_tokens[++i])
+	{
+		cur = (t_token *)ft_calloc(1, sizeof(t_token));
+		if (!cur)
+			return (NULL);
+		cur->type = type_def(tab_of_tokens[i]);
+		cur->value = ft_strdup(tab_of_tokens[i]);
+		cur->next = NULL;
+		if (!head)
+			head = cur;
+		else
+		{
+			last_node = find_last(head, offsetof(t_env, next));
+			last_node->next = cur;
+		}
+	}
+	return (head);
+}
+
+t_token_type	type_def(char *token)
+{
+	int	i;
+
+	i = 0;
+	if (!token)
+		return (NULL);
+	if (token[i] == '|')
+		return (TOKEN_PIPE);
+	else if (token[i] == '>')
+		return (TOKEN_REDIRECT_OUT);
+	else if (token[i] == '<')
+		return (TOKEN_REDIRECT_IN);
+	else if (token[i] == '>' && token[i + 1] == '>')
+		return (TOKEN_REDIRECT_APPEND);
+	else if (token[i] == '<')
+		return (TOKEN_HEREDOC);
+	else
+		return (TOKEN_WORD);
+	
+}
