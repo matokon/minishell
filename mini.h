@@ -53,7 +53,7 @@ typedef struct s_cmd // reprezentacja pojedynczej komendy
 {
 	char **argv;        // np. ["ls", "-la", "NULL"]
 	char *infile;       // < input.txt
-	char *outfile;      // > output.txt
+	char **outfiles;    // > output.txt
 	int append;         // 1 jezeli >>, 0 jezeli >
 	int heredoc;        // 1 jezeli <<
 	int in_fd;          // fd do odczytu
@@ -115,6 +115,9 @@ void			sig_handler(int signal);
 
 //****Utils****
 void			*safe_malloc(size_t bytes);
+
+//****Cleaning functions****
+void cmds_free(t_shell *shell)
 
 //****Tests****
 void			print_stack_all(const t_env *stack);
