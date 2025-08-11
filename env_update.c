@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/05 18:51:04 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:30:59 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_env	*add_new_env(t_env **env, const char *key, const char *val)
 	if (!env)
 		return (NULL);
 	new = (t_env *)ft_calloc(1, sizeof(t_env));
-	last = find_last(*env);
+	last = find_last(*env, offsetof(t_env, next));
 	new->key = ft_strdup(key);
 	if (val)
 		new->value = ft_strdup(val);
@@ -57,17 +57,3 @@ t_env	*add_new_env(t_env **env, const char *key, const char *val)
 	new->next = NULL;
 	return (new);
 }
-
-//int main(int argc, char **argv, char **env)
-//{
-//	t_env	*stack;
-	
-//	stack = NULL;
-//	(void)argc;
-//	(void)argv;
-//	create_list_env(&stack, env);
-//	print_stack_all(stack);
-//	update_env_val((&stack), "USER", "chmura");
-//	print_stack_all(stack);
-//	return (0);
-//}
