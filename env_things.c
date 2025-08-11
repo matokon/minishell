@@ -6,18 +6,21 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/05 17:16:10 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:29:53 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-t_env	*find_last(t_env *stack)
+void	*find_last(void *stack, size_t offset)
 {
 	if (!stack)
 		return (NULL);
-	while (stack->next != NULL)
-		stack = stack->next;
+	while (*(void **)(stack + offset) != NULL)
+	{
+		stack = *(void **)(stack + offset);
+		return (void *)stack;
+	}
 	return (stack);
 }
 
@@ -42,7 +45,7 @@ void	split_env(t_env **stack, char **str)
 		*stack = new_node;
 	else
 	{
-		last_node = find_last(*stack);
+		last_node = find_last(*stack, offsetof(t_env, next));
 		last_node->next = new_node;
 	}
 	free(str[0]);
