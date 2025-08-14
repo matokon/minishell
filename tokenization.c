@@ -70,7 +70,6 @@ char **split_input_to_tokens(char *input)
     parsed_input[i + j] = 0;
     table_of_tokens = ft_split(parsed_input, ' ');
 	free (parsed_input);
-	//
 	free(input);
 	return (table_of_tokens);
 }
