@@ -32,15 +32,16 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef enum e_token_type // typ tokena
+typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIRECT_IN,
-	TOKEN_REDIRECT_OUT,
-	TOKEN_REDIRECT_APPEND,
-	TOKEN_HEREDOC,
-}				t_token_type;
+    TOKEN_WORD,            // słowo (nazwa programu lub argument)
+    TOKEN_PIPE,            // '|'
+    TOKEN_REDIRECT_IN,     // '<'
+    TOKEN_REDIRECT_OUT,    // '>'
+    TOKEN_REDIRECT_APPEND, // '>>'
+    TOKEN_HEREDOC          // '<<'
+}   t_token_type;
+
 
 typedef struct s_token // reprezentacja jednego tokena
 {
@@ -49,17 +50,38 @@ typedef struct s_token // reprezentacja jednego tokena
 	struct s_token *next;
 }				t_token;
 
-typedef struct s_cmd // reprezentacja pojedynczej komendy
+typedef struct s_outredir
 {
-	char **argv;        // np. ["ls", "-la", "NULL"]
-	char *infile;       // < input.txt
-	char **outfiles;    // > output.txt
-	int append;         // 1 jezeli >>, 0 jezeli >
-	int heredoc;        // 1 jezeli <<
-	int in_fd;          // fd do odczytu
-	int out_fd;         // fd do zapisu
-	struct s_cmd *next; // jezeli pipe: ls | grep txt
-}				t_cmd;
+    char *path;   // ścieżka pliku docelowego
+    int   append; // 0 => '>' (truncate), 1 => '>>' (append)
+}   t_outredir;
+
+typedef struct s_heredoc
+{
+    char *delim;     // delimiter (np. "EOF")
+    int   expand;    // 1: wykonywać ekspansje zmiennych, 0: bez ekspansji
+    char *tmp_path;  // ścieżka tymczasowego pliku z treścią heredoca (jeśli tak realizujesz)
+}   t_heredoc;
+
+typedef struct s_cmd
+{
+    char  **argv;       // argv[0] = program (np. "ls"), argv[argc] = NULL
+    int     argc;       // liczba argumentów (bez NULL)
+
+    char   *infile;     // ścieżka pliku po '<' (ostatnie < wygrywa)
+    int     in_fd;      // FD do odczytu (dup2(in_fd, STDIN_FILENO)); -1 gdy brak
+
+    t_outredir *outs;   // dynamiczna tablica wyjść (> i >>) w kolejności parsowania
+    int         outs_len; // ile elementów w 'outs'
+    int         out_fd;   // FD do zapisu (dup2(out_fd, STDOUT_FILENO)); -1 gdy brak
+                         // UWAGA: przy wykonaniu zwykle liczy się OSTATNI element outs
+
+    t_heredoc *heredocs;   // dynamiczna tablica heredoców
+    int        heredoc_cnt; // liczba heredoców
+    struct s_cmd *next; // kolejna komenda w pipeline (A | B | C) -> lista jednokierunkowa
+
+
+}   t_cmd;
 
 typedef struct s_env // zmienne srodowiskowe
 {
@@ -71,6 +93,7 @@ typedef struct s_env // zmienne srodowiskowe
 typedef struct s_shell // stan calego shella
 {
 	char *path;     // sciezka
+	int last_status; // kod wyjścia poprzedniego polecenia
 	t_env *env;     // lista zmiennych srodowiskowych
 	int count_cmds; // ilosc komend bedzie potrzebna do zwalniania pamieci
 	t_cmd *cmds;    // lista komend (po parserze)
@@ -115,6 +138,7 @@ void			sig_handler(int signal);
 
 //****Utils****
 void			*safe_malloc(size_t bytes);
+void swapping(input, &i, type_of_quote);
 
 //****Cleaning functions****
 void cmds_free(t_shell *shell)
