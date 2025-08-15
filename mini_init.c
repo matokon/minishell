@@ -23,8 +23,6 @@ void set_path(t_shell *shell)
 		shell->exit_status = 1;
 		return ;
 	}
-    // trzeba dodac do envow sciezke nie wiem o co chodzi ale chat tak mowi
-    //chyba o to, nw tylko czy dobrze  zmienne przypisalam~Oliwia
     update_env_val(shell->env, "PWD", shell->path);
 	shell->exit_status = 0;
 }
@@ -34,6 +32,7 @@ void value_init(t_shell *shell)
     if (!shell)
         return;   
     shell->path = NULL;
+    shell->last_status = 0; 
     shell->env = NULL;
     shell->count_cmds = 0;
     shell->cmds = NULL;
