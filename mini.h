@@ -144,4 +144,8 @@ void cmds_free(t_shell *shell);
 //****Tests****
 void			print_stack_all(const t_env *stack);
 
+//***Execution***
+int run_single_builtin(t_shell *shell);
+int	exec_builtin(t_shell *sh, char **argv);
+
 #endif
