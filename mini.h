@@ -118,12 +118,9 @@ int				read_input(t_shell *shell);
 //****Errors****
 void			error_exit(const char *error);
 
-//****Utils functions****
-void			*safe_malloc(size_t bytes);
 
 //****Input tokenization****
 char			**split_input_to_tokens(char *input);
-static int		len_of_input(char *input);
 static void		add_spaces(char *input, char *parsed_input, int *i, int *j);
 t_token			*token_list(char **tab_of_tokens);
 t_token_type	type_def(char *token);
@@ -138,12 +135,17 @@ void			sig_handler(int signal);
 
 //****Utils****
 void			*safe_malloc(size_t bytes);
-void swapping(input, &i, type_of_quote);
+void swapping(char *input, int *i, char type_of_quote);
+int is_builtin(const char *name);
 
 //****Cleaning functions****
-void cmds_free(t_shell *shell)
+void cmds_free(t_shell *shell);
 
 //****Tests****
 void			print_stack_all(const t_env *stack);
+
+//***Execution***
+int run_single_builtin(t_shell *shell);
+int	exec_builtin(t_shell *sh, char **argv);
 
 #endif
