@@ -121,7 +121,6 @@ void			error_exit(const char *error);
 
 //****Input tokenization****
 char			**split_input_to_tokens(char *input);
-static void		add_spaces(char *input, char *parsed_input, int *i, int *j);
 t_token			*token_list(char **tab_of_tokens);
 t_token_type	type_def(char *token);
 
@@ -146,6 +145,8 @@ void			print_stack_all(const t_env *stack);
 
 //***Execution***
 int run_single_builtin(t_shell *shell);
-int	exec_builtin(t_shell *sh, char **argv);
+int	call_builtin(t_shell *sh, char **argv);
+int apply_in_redir(t_cmd *cmd);
+int apply_out_redir(t_cmd *cmd);
 
 #endif

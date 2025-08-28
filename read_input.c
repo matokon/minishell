@@ -13,11 +13,13 @@ static int parse_and_execute(char *input, t_shell *shell)
         shell->cmds->argv &&
         is_builtin(shell->cmds->argv[0]))
     {
-      // SINGLE BUILTIN — bez fork(), w rodzicu
+      int st = run_single_builtin(shell);//uruchamiane bez forka na rodzicu
+      shell->last_status = st;
+      return st;
     }
     else
     {
-      // Pipeline lub program zewnętrzny — fork/pipe/exec
+      // return run_pipeline_or_external(shell);
     }
 }
 
