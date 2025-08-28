@@ -9,7 +9,7 @@ void	*safe_malloc(size_t bytes)
 		error_exit("Memory allocation problem!");
 	return (value);
 }
-void swap_characters(char *input, int *i, char type_of_quote)
+void swapping(char *input, int *i, char type_of_quote)
 {
 	if (input[*i] == ' ')
 		input[*i] = TEMP_SPACE_REPLACEMENT;
@@ -22,4 +22,15 @@ void swap_characters(char *input, int *i, char type_of_quote)
 	if (input[*i] == '<')
 		input[*i] = '\x02';
 	(*i)++;
+}
+int is_builtin(const char *name)
+{
+    if (!name) return 0;
+    return (!ft_strcmp(name, "cd")
+         || !ft_strcmp(name, "echo")
+         || !ft_strcmp(name, "pwd")
+         || !ft_strcmp(name, "env")
+         || !ft_strcmp(name, "export")
+         || !ft_strcmp(name, "unset")
+         || !ft_strcmp(name, "exit"));
 }
