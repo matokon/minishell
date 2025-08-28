@@ -32,6 +32,10 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# ifndef MINI_PATH_MAX
+#  define MINI_PATH_MAX 4096
+# endif
+
 typedef enum e_token_type
 {
     TOKEN_WORD,            // słowo (nazwa programu lub argument)
@@ -121,7 +125,6 @@ void			error_exit(const char *error);
 
 //****Input tokenization****
 char			**split_input_to_tokens(char *input);
-static void		add_spaces(char *input, char *parsed_input, int *i, int *j);
 t_token			*token_list(char **tab_of_tokens);
 t_token_type	type_def(char *token);
 
@@ -146,6 +149,22 @@ void			print_stack_all(const t_env *stack);
 
 //***Execution***
 int run_single_builtin(t_shell *shell);
-int	exec_builtin(t_shell *sh, char **argv);
+int	call_builtin(t_shell *sh, char **argv);
+int apply_in_redir(t_cmd *cmd);
+int apply_out_redir(t_cmd *cmd);
+
+//***Quotes***
+char *deal_with_quotes(char *input, t_shell shell);
+char	*handle_replacement(char *s, char *val, int pos, int var_len);
+
+
+/* Builtins */
+int	ft_cd(t_shell *sh, char **argv);
+int	ft_pwd(t_shell *sh, char **argv);
+int	ft_echo(t_shell *sh, char **argv);
+int	ft_env(t_shell *sh, char **argv);
+int	ft_unset(t_shell *sh, char **argv);
+int	ft_export(t_shell *sh, char **argv);
+int	ft_exit(t_shell *sh, char **argv);
 
 #endif
