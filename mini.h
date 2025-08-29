@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/28 16:06:40 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/08/29 15:48:01 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+
+# ifndef MINI_PATH_MAX
+#  define MINI_PATH_MAX 4096
+# endif
 
 typedef enum e_token_type
 {
@@ -123,6 +127,12 @@ t_env			*find_env(t_env *env, const char *key);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
 t_env			*add_new_env(t_env **env, const char *key, const char *val);
+//****Input****
+int				read_input(t_shell *shell);
+
+//****Errors****
+void			error_exit(const char *error);
+
 
 //****Input tokenization****
 char			**split_input_to_tokens(char *input);
@@ -164,4 +174,33 @@ void			print_all_env(const t_env *stack);
 void			print_env(t_env *stack, const char *key);
 void			print_all_tokens(const t_token *stack);
 void			print_one_env(t_env *stack);
+void swapping(char *input, int *i, char type_of_quote);
+int is_builtin(const char *name);
+
+//****Cleaning functions****
+void cmds_free(t_shell *shell);
+
+//****Tests****
+void			print_stack_all(const t_env *stack);
+
+//***Execution***
+int run_single_builtin(t_shell *shell);
+int	call_builtin(t_shell *sh, char **argv);
+int apply_in_redir(t_cmd *cmd);
+int apply_out_redir(t_cmd *cmd);
+
+//***Quotes***
+char *deal_with_quotes(char *input, t_shell shell);
+char	*handle_replacement(char *s, char *val, int pos, int var_len);
+
+
+/* Builtins */
+int	ft_cd(t_shell *sh, char **argv);
+int	ft_pwd(t_shell *sh, char **argv);
+int	ft_echo(t_shell *sh, char **argv);
+int	ft_env(t_shell *sh, char **argv);
+int	ft_unset(t_shell *sh, char **argv);
+int	ft_export(t_shell *sh, char **argv);
+int	ft_exit(t_shell *sh, char **argv);
+
 #endif

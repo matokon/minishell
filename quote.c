@@ -13,8 +13,7 @@ static char	*ft_replace(char *s, char *var, char *val, int pos)
 		return (ft_strdup(s));
 	if (ft_strncmp(s + pos, var, var_len) != 0)
 		return (ft_strdup(s));
-	return (0);
-	//return (handle_normal_replacement(s, val, pos, var_len));
+	return (handle_replacement(s, val, pos, var_len));// dodaj
 }
 static int find_first_quote(char *input, int i)
 {

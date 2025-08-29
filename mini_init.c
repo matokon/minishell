@@ -23,7 +23,7 @@ void set_path(t_shell *shell)
 		shell->exit_status = 1;
 		return ;
 	}
-    update_env_val(&shell->env, "PWD", shell->path);
+    update_env_val(shell->env, "PWD", shell->path);
 	shell->exit_status = 0;
 }
 
@@ -32,6 +32,7 @@ void value_init(t_shell *shell)
     if (!shell)
         return;   
     shell->path = NULL;
+    shell->last_status = 0; 
     shell->env = NULL;
     shell->count_cmds = 0;
     shell->cmds = NULL;
