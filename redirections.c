@@ -8,12 +8,6 @@ t_cmd	*command_init(t_cmd **head)
 	command = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!command)
 		return (NULL);
-	// nw o co chodzi z tym fd i jak ja mam pozniej dopisac jakas wartosc
-	// do tego. Narazie jest na -1, by oznaczyc ze jest nie otwarte
-	// wiec jak nie powiesz o co chodzi to ty to robisz...
-	// w ogole ty moglbys to zrobic xd
-	// new_node->in_fd = -1; <-------THISS
-	// new_node->out_fd = -1; <------THISS
 	command->next = NULL;
 	if (*head == NULL)
 		*head = command;
@@ -48,8 +42,25 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 		while (command->argv[i])
 			free(command->argv[i++]);
 		free(command->argv);
-    }
+	}
 	command->argv = upd_arg;
+}
+
+static void	add_redir(t_cmd *command, const char *path, int append)
+{
+	t_outredir	*new_out;
+
+	new_out = (t_outredir *)malloc(sizeof(t_outredir) * (command->outs_len + 1));
+	if (!new_out)
+		return ;
+	if (command->outs_len > 0)
+		ft_memcpy(new_out, command->outs, sizeof(t_outredir)
+			* command->outs_len);
+	new_out[command->outs_len].path = ft_strdup(path);
+	new_out[command->outs_len].append = append;
+	free(command->outs);
+	command->outs = new_out;
+	command->outs_len++;
 }
 
 void	handle_redirects(t_cmd *command, t_token *tokens)
@@ -59,42 +70,39 @@ void	handle_redirects(t_cmd *command, t_token *tokens)
 	if (tokens->type == TOKEN_REDIRECT_IN)
 		command->infile = ft_strdup(tokens->next->value);
 	if (tokens->type == TOKEN_REDIRECT_OUT)
-	{
-		command->outfile = ft_strdup(tokens->next->value);
-		command->append = 0;
-	}
+		add_redir(command, tokens->value, 0);
 	if (tokens->type == TOKEN_REDIRECT_APPEND)
-	{
-		command->outfile = ft_strdup(tokens->next->value);
-		command->append = 1;
-	}
+		add_redir(command, tokens->value, 0);
 }
 
-t_cmd	*adding_command(t_token *tokens)
+t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 {
-	t_cmd *commands;
-	t_cmd *node;
+	t_cmd	*node;
 
 	if (!tokens)
 		return (NULL);
+	node = NULL;
 	while (tokens)
 	{
 		if (node == NULL)
-			node = command_init(commands);
+			node = command_init(&shell->cmds);
 		else if (tokens->type == TOKEN_WORD)
 			add_cmd_argv(node, tokens->value);
 		else if (tokens->type == TOKEN_REDIRECT_IN
-		|| tokens->type == TOKEN_REDIRECT_OUT || tokens->type == TOKEN_REDIRECT_APPEND)
+			|| tokens->type == TOKEN_REDIRECT_OUT
+			|| tokens->type == TOKEN_REDIRECT_APPEND)
 			handle_redirects(node, tokens);
 		else if (tokens->type == TOKEN_HEREDOC)
-
+			add_heredoc(shell->cmds, tokens);
 		else if (tokens->type == TOKEN_PIPE)
 		{
-			if (node->argv == NULL || tokens->next->type != TOKEN_WORD || !tokens->next)
+			if (node->argv == NULL || tokens->next->type != TOKEN_WORD
+				|| !tokens->next)
 				error_exit("Error: Wrong use of pipes :(\n");
-            node = NULL;
+			node = NULL;
+			shell->count_cmds++;
 		}
-			tokens = tokens->next;
+		tokens = tokens->next;
 	}
-	return (commands);
+	return (shell->cmds);
 }

@@ -6,7 +6,7 @@
 #    By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/04 17:23:16 by ochmurzy          #+#    #+#              #
-#    Updated: 2025/08/01 17:03:15 by ochmurzy         ###   ########.fr        #
+#    Updated: 2025/08/28 16:09:00 by ochmurzy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ INCLUDES := -I$(LIBFT_DIR)
 LIBFT_LIB := $(LIBFT_DIR)/libft.a
 
 # Source and object files
-SRC := env_things.c
+SRC := env_things.c env_update.c tests.c\
+
 
 OBJ := $(SRC:.c=.o)
 

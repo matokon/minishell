@@ -6,11 +6,11 @@ void	error_exit(const char *error)
 	exit(EXIT_FAILURE);
 }
 
-void	input_error_check(const char *input)
-{
-	if (!logical_operators_check(input))
-		error_exit("Error: Not supported command\n");
-}
+//void	input_error_check(const char *input)
+//{
+//	if (!logical_operators_check(input))
+//		error_exit("Error: Not supported command\n");
+//}
 
 bool	logical_operators_check(const char *input)
 {

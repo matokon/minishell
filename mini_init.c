@@ -6,7 +6,7 @@ void set_path(t_shell *shell)
 
     if (!shell)
 		return ;
-    current_path = getcwd(NULL, 0);
+    current_path = getcwd(NULL, 0);// get_env_val("PWD", env);zamiencie getcwd na wlasna funkcje I NIE UZYWAJVIE GETENV ZEB DOSTAC PATH
     if (!current_path)
 	{
 		printf("Error: path problem!");
@@ -23,9 +23,7 @@ void set_path(t_shell *shell)
 		shell->exit_status = 1;
 		return ;
 	}
-    // trzeba dodac do envow sciezke nie wiem o co chodzi ale chat tak mowi
-    //chyba o to, nw tylko czy dobrze  zmienne przypisalam~Oliwia
-    update_env_val(shell->env, "PWD", shell->path);
+    update_env_val(&shell->env, "PWD", shell->path);
 	shell->exit_status = 0;
 }
 
@@ -39,4 +37,5 @@ void value_init(t_shell *shell)
     shell->cmds = NULL;
     shell->line = NULL;
     shell->exit_status = 0;
+    signals_things();
 }

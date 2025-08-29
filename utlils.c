@@ -9,10 +9,10 @@ void	*safe_malloc(size_t bytes)
 		error_exit("Memory allocation problem!");
 	return (value);
 }
-void swapping(input, &i, type_of_quote)
+void swapping(char *input, int *i, char type_of_quote)
 {
-	if (input[*i] == ' ')
-		input[*i] = TEMP_SPACE_REPLACEMENT;
+	//if (input[*i] == ' ')
+	//	input[*i] = TEMP_SPACE_REPLACEMENT;
 	if (input[*i] == type_of_quote)
 		input[*i] = '\x1E';
 	if (input[*i] == '|')
