@@ -78,7 +78,8 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	if (!upd_arg)
 		error_exit("Error: malloc error");
 	while (++j < i)
-		upd_arg[j] = command->argv[j];
+		upd_arg[j] = ft_strdup(command->argv[j]);
+
 	upd_arg[i] = ft_strdup(arg);
 	upd_arg[i + 1] = NULL;
 	if (command->argv)
