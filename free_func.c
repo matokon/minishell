@@ -1,49 +1,76 @@
 #include "mini.h"
 
-static void one_cmd_free(t_cmd *cmd) // nie jest gotowe jezeli bedziemy dodawali cos do struktury t_cmd to tu tez trzeba
+static void free_strv(char **v)
 {
-    int i;
-    if(!cmd)
-        return ;
-    if(cmd->argv)
-    {
-        i = 0;
-		while (cmd->argv[i])
-			free(cmd->argv[i++]);
-		free(cmd->argv);
-    }
-    if(cmd->infile)
-        free(cmd->infile)
-    if (cmd->outfile)
+	int i;
+
+	if (!v)
+		return;
+	i = 0;
+	while (v[i])
+		free(v[i++]);
+	free(v);
+}
+
+static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
+{
+	int i;
+
+	if (!cmd)
+		return;
+
+	free_strv(cmd->argv);
+	cmd->argv = NULL;
+	cmd->argc = 0;
+
+	if (cmd->infile)
+	{
+		free(cmd->infile);
+		cmd->infile = NULL;
+	}
+
+	if (cmd->outs)
 	{
 		i = 0;
-	    while (i < cmd->outfile)
-		    free(cmd->outfile[i++]);
-		free(cmd->outfile);
+		while (i < cmd->outs_len)
+		{
+			free(cmd->outs[i].path);
+			i++;
+		}
+		free(cmd->outs);
+		cmd->outs = NULL;
+		cmd->outs_len = 0;
+	}
+
+	if (cmd->heredocs)
+	{
+		i = 0;
+		while (i < cmd->heredoc_cnt)
+		{
+			free(cmd->heredocs[i].delim);
+			free(cmd->heredocs[i].tmp_path);
+			i++;
+		}
+		free(cmd->heredocs);
+		cmd->heredocs = NULL;
+		cmd->heredoc_cnt = 0;
 	}
 }
 
-void cmds_free(t_shell *shell)
+void	cmds_free(t_shell *shell)
 {
-    if(!shell || !shell->cmds)
-        return ;
-    int i;
-    i =-1;
-    while(++i < shell->count_cmds)
-    {
-        if (shell->cmds[i])
-		{
-			one_cmd_free(shell->cmds[i]);
-			free(shell->cmds[i]);
-		}
-    }
-    free(shell->cmds);
+	int i;
+
+	if (!shell || !shell->cmds)
+		return;
+	i = 0;
+	while (i < shell->count_cmds)
+	{
+		/* shell->cmds to tablica **struktur**, więc przekazujemy adres */
+		one_cmd_free(&shell->cmds[i]);
+		i++;
+	}
+	free(shell->cmds);          /* zwalniamy samą tablicę */
 	shell->cmds = NULL;
 	shell->count_cmds = 0;
 }
-// tu jakbys miala watpliwosci to nie jest double free, ogarnalem to
-// one_cmd_free(shell->cmds[i]) – sprząta pola wewnątrz struktury t_cmd (nie zwalnia samej struktury).
-
-// free(shell->cmds[i]) – zwalnia samą strukturę t_cmd (pojedynczy obiekt).
-
-// free(shell->cmds) – zwalnia tablicę wskaźników (t_cmd **) trzymaną w shell.
