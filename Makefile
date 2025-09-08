@@ -7,6 +7,7 @@
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/04 17:23:16 by ochmurzy          #+#    #+#              #
 #    Updated: 2025/08/28 16:09:00 by ochmurzy         ###   ########.fr        #
+#    Updated: 2025/08/28 16:09:00 by ochmurzy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +28,22 @@ INCLUDES := -I$(LIBFT_DIR)
 LIBFT_LIB := $(LIBFT_DIR)/libft.a
 
 # Source and object files
-SRC := env_things.c env_update.c tests.c\
+SRC := \
+	main.c \
+	builtins1.c builtins2.c builtins3.c builtins4.c \
+	env_things.c env_update.c \
+	error.c \
+	exec_single_utils.c exec_single.c \
+	free_func.c \
+	mini_init.c \
+	parsing.c \
+	quote.c quote2.c \
+	read_input.c \
+	signals.c \
+	tokenization.c \
+	utils.c \
+	get_next_line/get_next_line.c \
+	get_next_line/get_next_line_utils.c
 
 
 OBJ := $(SRC:.c=.o)

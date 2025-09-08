@@ -2,6 +2,19 @@
 
 static void	one_cmd_free(t_cmd *cmd)
 // nie jest gotowe jezeli bedziemy dodawali cos do struktury t_cmd to tu tez trzeba
+static void free_strv(char **v)
+{
+	int i;
+
+	if (!v)
+		return;
+	i = 0;
+	while (v[i])
+		free(v[i++]);
+	free(v);
+}
+
+static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 {
 	int i;
 
@@ -42,15 +55,22 @@ void	cmds_free(t_shell *shell)
 		one_cmd_free(&shell->cmds[i]);
 	}
 	free(shell->cmds);
+	int i;
+
+	if (!shell || !shell->cmds)
+		return;
+	i = 0;
+	while (i < shell->count_cmds)
+	{
+		/* shell->cmds to tablica **struktur**, więc przekazujemy adres */
+		one_cmd_free(&shell->cmds[i]);
+		i++;
+	}
+	free(shell->cmds);          /* zwalniamy samą tablicę */
 	shell->cmds = NULL;
 	shell->count_cmds = 0;
 }
-// tu jakbys miala watpliwosci to nie jest double free, ogarnalem to
-// one_cmd_free(shell->cmds[i]) – sprząta pola wewnątrz struktury t_cmd (nie zwalnia samej struktury).
 
-// free(shell->cmds[i]) – zwalnia samą strukturę t_cmd (pojedynczy obiekt).
-
-// free(shell->cmds) – zwalnia tablicę wskaźników (t_cmd **) trzymaną w shell.
 
 void	free_hrdc(t_cmd *command)
 {
