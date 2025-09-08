@@ -1,18 +1,16 @@
 #include "mini.h"
 
-static void	one_cmd_free(t_cmd *cmd)
-// nie jest gotowe jezeli bedziemy dodawali cos do struktury t_cmd to tu tez trzeba
-static void free_strv(char **v)
-{
-	int i;
+//static void free_strv(char **v)
+//{
+//	int i;
 
-	if (!v)
-		return;
-	i = 0;
-	while (v[i])
-		free(v[i++]);
-	free(v);
-}
+//	if (!v)
+//		return;
+//	i = 0;
+//	while (v[i])
+//		free(v[i++]);
+//	free(v);
+//}
 
 static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 {
@@ -20,11 +18,14 @@ static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 
 	if (!cmd)
 		return ;
-	if (cmd->argv)
+	if (cmd->argv != NULL)
 	{
-		i = -1;
-		while (cmd->argv[++i])
+		i = 0;
+		while (cmd->argv[i])
+		{
 			free(cmd->argv[i]);
+			i++;
+		}
 		free(cmd->argv);
 	}
 	if (cmd->infile)
@@ -48,24 +49,10 @@ void	cmds_free(t_shell *shell)
 	int	i;
 
 	if (!shell || !shell->cmds)
-		return ;
+		return;
 	i = -1;
 	while (++i < shell->count_cmds)
-	{
 		one_cmd_free(&shell->cmds[i]);
-	}
-	free(shell->cmds);
-	int i;
-
-	if (!shell || !shell->cmds)
-		return;
-	i = 0;
-	while (i < shell->count_cmds)
-	{
-		/* shell->cmds to tablica **struktur**, więc przekazujemy adres */
-		one_cmd_free(&shell->cmds[i]);
-		i++;
-	}
 	free(shell->cmds);          /* zwalniamy samą tablicę */
 	shell->cmds = NULL;
 	shell->count_cmds = 0;
@@ -83,4 +70,6 @@ void	free_hrdc(t_cmd *command)
 		free(command->heredocs[i].tmp_path);
 	}
 	free(command->heredocs);
+	command->heredocs = NULL;
+	command->heredoc_cnt = 0;
 }

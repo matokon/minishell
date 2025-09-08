@@ -14,6 +14,6 @@ int main(int argc, char **argv, char **env)
 	shell = safe_malloc(sizeof(t_shell));
 	value_init(shell);
 	create_list_env(&shell->env, env);
-	//read_input(shell);
+	read_input(shell);
 	return (0);
 }

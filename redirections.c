@@ -7,7 +7,7 @@ t_cmd	*command_init(t_shell **shell, t_cmd **head)
 
 	command = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!command)
-		error_exit("Error: malloc error");
+		printf("Error: malloc error");
 	command->next = NULL;
 	(*shell)->count_cmds++;
 	if (*head == NULL)

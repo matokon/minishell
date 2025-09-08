@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 14:22:41 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:10:37 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ t_token			*token_list(char **tab_of_tokens);
 t_token_type	type_def(char *token);
 
 //****Command_Struct****
-t_cmd			*command_init(t_cmd **head);
+t_cmd			*command_init(t_shell **shell, t_cmd **head);
 void			add_cmd_argv(t_cmd *command, const char *arg);
 t_cmd			*adding_command(t_token *tokens, t_shell *shell);
 void			handle_redirects(t_cmd *command, t_token *tokens);
@@ -167,7 +167,7 @@ void			error_exit(const char *error);
 
 //****Cleaning functions****
 void			cmds_free(t_shell *shell);
-void			free_hrdc(t_cmd **command);
+void			free_hrdc(t_cmd *command);
 
 //****Tests****
 void			print_all_env(const t_env *stack);
@@ -175,7 +175,7 @@ void			print_env(t_env *stack, const char *key);
 void			print_all_tokens(const t_token *stack);
 void			print_one_env(t_env *stack);
 void swapping(char *input, int *i, char type_of_quote);
-int is_builtin(const char *name);
+//int is_builtin(const char *name);
 
 //****Cleaning functions****
 void cmds_free(t_shell *shell);

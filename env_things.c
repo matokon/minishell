@@ -6,30 +6,11 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 14:16:20 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:16:38 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-static size_t	ft_toklen(const char *s, char c)
-{
-	size_t	ret;
-
-	ret = 0;
-	while (*s)
-	{
-		if (*s != c)
-		{
-			++ret;
-			while (*s && *s != c)
-				++s;
-		}
-		else
-			++s;
-	}
-	return (ret);
-}
 
 static char **special_env_split(const char *str, char c)
 {
@@ -42,7 +23,7 @@ static char **special_env_split(const char *str, char c)
 		return (0);
 	i = -1;
 	len = 0;
-	arr = malloc(sizeof(char *) * (ft_toklen(str, c) + 1));
+	arr = malloc(sizeof(char *) * 3);
 	if (!arr)
 		return (0);
 	while (str[++i] != c)
