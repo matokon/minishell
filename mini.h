@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 16:10:37 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 19:29:43 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void swapping(char *input, int *i, char type_of_quote);
 
 //****Cleaning functions****
 void cmds_free(t_shell *shell);
-
+void	free_arr(char **arr);
 //****Tests****
 void			print_stack_all(const t_env *stack);
 
