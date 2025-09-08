@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/10 21:30:59 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:16:53 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 t_env	*find_env(t_env *env, const char *key)
 {
 
-	while (env->next != NULL)
+	while (env)
 	{
-		if (env->key && (ft_strncmp(env->key, key, ft_strlen(env->key)) == 0))
+		if (env->key && (ft_strcmp(env->key, key) == 0))
 			return (env);
 		env = env->next;
 	}

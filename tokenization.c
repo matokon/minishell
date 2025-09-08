@@ -77,7 +77,7 @@ char **split_input_to_tokens(char *input)
 t_token	*token_list(char **tab_of_tokens)
 {
 	//Tworzy liste tokenow za pomoca splita z funkcji powyzej^^
-	t_token *head;
+	t_token *head = NULL;
 	t_token *cur = NULL;
 	t_token *last_node;
 	int	i;
@@ -95,7 +95,7 @@ t_token	*token_list(char **tab_of_tokens)
 			head = cur;
 		else
 		{
-			last_node = find_last(head, offsetof(t_env, next));
+			last_node = find_last(head, offsetof(t_token, next));
 			last_node->next = cur;
 		}
 	}
@@ -108,7 +108,7 @@ t_token_type	type_def(char *token)
 
 	i = 0;
 	if (!token)
-		return (NULL);
+		return (-1);
 	if (token[i] == '|')
 		return (TOKEN_PIPE);
 	else if (token[i] == '>')

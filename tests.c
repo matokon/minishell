@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:04:30 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/10 17:55:37 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:28:21 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void print_all_env(const t_env *stack)
 		if (stack->next)
 			printf("  next     = %s\n", stack->next->key);
 		else
-			printf(" ( )");
+			printf(" next = ( )\n");
 		stack = stack->next;
 	}
 	printf("---------------------\n");
@@ -46,4 +46,34 @@ void print_env(t_env *stack, const char *key)
 	else
 		printf(" ( )");
 	printf("----------------\n");
+}
+void	print_one_env(t_env *stack)
+{
+	printf("---- Env ----\n");
+	printf("  key      = %s\n", stack->key);
+	printf("  value    = %s\n", stack->value);
+	if (stack->next)
+		printf("  next     = %s\n", stack->next->key);
+	else
+		printf(" next = ( )\n");
+	printf("---------------------\n");
+}
+
+void print_all_tokens(const t_token *stack)
+{
+	int i = 0;
+
+	printf("---- Tokens ----\n");
+	while (stack)
+	{
+		printf("Node %d:\n", i++);
+		printf("  type      = %u\n", stack->type);
+		printf("  value    = %s\n", stack->value);
+		if (stack->next)
+			printf("  next     = %u\n", stack->next->type);
+		else
+			printf("(_)");
+		stack = stack->next;
+	}
+	printf("---------------------\n");
 }

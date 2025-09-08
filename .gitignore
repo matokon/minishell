@@ -1,0 +1,4 @@
+*.o
+.vscode
+libft/
+get_next_line/

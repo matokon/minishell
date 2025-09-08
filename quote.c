@@ -43,7 +43,7 @@ static void	if_question_mark(char **input, int i, t_shell shell)
 	if ((*input)[i + 1] == '?')
 		*input = ft_replace(*input, "$?", itoa, i);
 	free(itoa);
-	find_env(input, shell.env, i);
+	find_env(shell.env, shell.env->key);
 }
 
 char *deal_with_quotes(char *input, t_shell shell)

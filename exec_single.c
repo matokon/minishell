@@ -7,7 +7,7 @@ int call_builtin(t_shell *sh, char **argv)
     if (ft_strcmp(argv[0], "cd") == 0)    return (ft_cd(sh, argv));
     if (ft_strcmp(argv[0], "pwd") == 0)   return (ft_pwd(sh, argv));
     if (ft_strcmp(argv[0], "echo") == 0)  return (ft_echo(sh, argv));
-    if (ft_strcmp(argv[0], "export") == 0)return (ft_export(sh, argv));
+    //if (ft_strcmp(argv[0], "export") == 0)return (ft_export(sh, argv));
     if (ft_strcmp(argv[0], "unset") == 0) return (ft_unset(sh, argv));
     if (ft_strcmp(argv[0], "env") == 0)   return (ft_env(sh, argv));
     if (ft_strcmp(argv[0], "exit") == 0)  return (ft_exit(sh, argv));

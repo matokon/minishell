@@ -6,17 +6,18 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 14:16:41 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/07 18:29:09 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:28:10 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
+
 void	sig_handler(int signal)
 {
 	(void)signal;
 	rl_replace_line("", 0);
-	printf("\n");
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
 }

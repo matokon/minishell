@@ -1,76 +1,75 @@
 #include "mini.h"
 
-static void free_strv(char **v)
-{
-	int i;
+//static void free_strv(char **v)
+//{
+//	int i;
 
-	if (!v)
-		return;
-	i = 0;
-	while (v[i])
-		free(v[i++]);
-	free(v);
-}
+//	if (!v)
+//		return;
+//	i = 0;
+//	while (v[i])
+//		free(v[i++]);
+//	free(v);
+//}
 
 static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 {
 	int i;
 
 	if (!cmd)
-		return;
-
-	free_strv(cmd->argv);
-	cmd->argv = NULL;
-	cmd->argc = 0;
-
-	if (cmd->infile)
+		return ;
+	if (cmd->argv != NULL)
 	{
-		free(cmd->infile);
-		cmd->infile = NULL;
+		i = 0;
+		while (cmd->argv[i])
+		{
+			free(cmd->argv[i]);
+			i++;
+		}
+		free(cmd->argv);
 	}
-
+	if (cmd->infile)
+		free(cmd->infile);
 	if (cmd->outs)
 	{
-		i = 0;
-		while (i < cmd->outs_len)
+		i = -1;
+		while (++i < cmd->outs_len)
 		{
-			free(cmd->outs[i].path);
-			i++;
+			if (cmd->outs[i].path)
+				free(cmd->outs[i].path);
 		}
 		free(cmd->outs);
-		cmd->outs = NULL;
-		cmd->outs_len = 0;
 	}
-
 	if (cmd->heredocs)
-	{
-		i = 0;
-		while (i < cmd->heredoc_cnt)
-		{
-			free(cmd->heredocs[i].delim);
-			free(cmd->heredocs[i].tmp_path);
-			i++;
-		}
-		free(cmd->heredocs);
-		cmd->heredocs = NULL;
-		cmd->heredoc_cnt = 0;
-	}
+		free_hrdc(cmd);
 }
 
 void	cmds_free(t_shell *shell)
 {
-	int i;
+	int	i;
 
 	if (!shell || !shell->cmds)
 		return;
-	i = 0;
-	while (i < shell->count_cmds)
-	{
-		/* shell->cmds to tablica **struktur**, więc przekazujemy adres */
+	i = -1;
+	while (++i < shell->count_cmds)
 		one_cmd_free(&shell->cmds[i]);
-		i++;
-	}
 	free(shell->cmds);          /* zwalniamy samą tablicę */
 	shell->cmds = NULL;
 	shell->count_cmds = 0;
+}
+
+
+void	free_hrdc(t_cmd *command)
+{
+	int	i;
+
+	i = command->heredoc_cnt;
+	while (i--)
+	{
+		free(command->heredocs[i].delim);
+		free(command->heredocs[i].tmp_path);
+	}
+	free(command->heredocs);
+	command->heredocs = NULL;
+	command->heredoc_cnt = 0;
 }
