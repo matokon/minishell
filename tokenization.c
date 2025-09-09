@@ -69,8 +69,14 @@ char **split_input_to_tokens(char *input)
     }
     parsed_input[i + j] = 0;
     table_of_tokens = ft_split(parsed_input, ' ');
-	if
-	free (parsed_input);
+	//MAYBE A GOOD IDEA
+	//if(!table_of_tokens)
+	//{
+	//	free(parsed_input);
+	//	free(input);
+	//	return (NULL);
+	//}
+	free(parsed_input);
 	free(input);
 	return (table_of_tokens);
 }
@@ -100,6 +106,7 @@ t_token	*token_list(char **tab_of_tokens)
 			last_node->next = cur;
 		}
 	}
+	free_arr(tab_of_tokens);
 	return (head);
 }
 

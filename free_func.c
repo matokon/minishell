@@ -1,17 +1,5 @@
 #include "mini.h"
 
-//static void free_strv(char **v)
-//{
-//	int i;
-
-//	if (!v)
-//		return;
-//	i = 0;
-//	while (v[i])
-//		free(v[i++]);
-//	free(v);
-//}
-
 static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 {
 	int i;
@@ -92,4 +80,35 @@ void	free_arr(char **arr)
 		i++;
 	}
 	free(arr);
+}
+void	free_token_list(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		if (head->value)
+			free(head->value);
+		free(head);
+		head = tmp;
+	}
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env *tmp;
+
+	if (!env)
+		return ;
+	while (env)
+	{
+		tmp = env->next;
+		if (env->key)
+			free(env->key);
+		if (env->value)
+			free(env->value);
+		free(env);
+		env = tmp;
+	}
 }
