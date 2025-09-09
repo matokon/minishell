@@ -1,23 +1,25 @@
 #include "mini.h"
 
-t_cmd	*command_init(t_shell **shell, t_cmd **head)
+t_cmd	*command_init(t_shell **sh, t_cmd **head)
 {
-	t_cmd	*command;
+	t_cmd	*cmd;
 	t_cmd	*last;
 
-	command = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
-	if (!command)
-		printf("Error: malloc error");
-	command->next = NULL;
-	(*shell)->count_cmds++;
-	if (*head == NULL)
-		*head = command;
+	cmd = (t_cmd *)ft_calloc(1, sizeof(*cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->in_fd = -1;
+	cmd->out_fd = -1;
+	cmd->next = NULL;
+	(*sh)->count_cmds++;
+	if (!*head)
+		*head = cmd;
 	else
 	{
 		last = find_last(*head, offsetof(t_cmd, next));
-		last->next = command;
+		((t_cmd *)last)->next = cmd;
 	}
-	return (command);
+	return (cmd);
 }
 
 static void	add_redir(t_cmd *command, const char *path, int append)

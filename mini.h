@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/09 20:34:30 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/09 21:24:15 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,6 @@ t_env			*find_env(t_env *env, const char *key);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
 t_env			*add_new_env(t_env **env, const char *key, const char *val);
-//****Input****
-int				read_input(t_shell *shell);
 
 //****Errors****
 void			error_exit(const char *error);
@@ -144,15 +142,12 @@ t_cmd			*command_init(t_shell **shell, t_cmd **head);
 void			add_cmd_argv(t_cmd *command, const char *arg);
 t_cmd			*adding_command(t_token *tokens, t_shell *shell);
 void			handle_redirects(t_cmd *command, t_token *tokens);
-void			add_cmd_argv(t_cmd *command, const char *arg);
+
 //*Heredock*
 void			add_heredoc(t_cmd *command, t_token *delim);
 void			add_to_file(t_heredoc *new_hrdc, int fd);
 int				read_to_file(t_heredoc *new_hrdc);
 int				read_stdin(const t_heredoc *hd);
-
-//****Quotes****
-char			*deal_with_quotes(char *input, t_shell shell);
 
 //****Signals****
 void			signals_things(void);
@@ -174,11 +169,7 @@ void			print_all_env(const t_env *stack);
 void			print_env(t_env *stack, const char *key);
 void			print_all_tokens(const t_token *stack);
 void			print_one_env(t_env *stack);
-void swapping(char *input, int *i, char type_of_quote);
-//int is_builtin(const char *name);
-
-//****Cleaning functions****
-void cmds_free(t_shell *shell);
+int is_builtin(const char *name);
 void	free_arr(char **arr);
 void	free_token_list(t_token *head);
 void	free_env_list(t_env *env);
@@ -204,5 +195,7 @@ int	ft_env(t_shell *sh, char **argv);
 int	ft_unset(t_shell *sh, char **argv);
 int	ft_export(t_shell *sh, char **argv);
 int	ft_exit(t_shell *sh, char **argv);
+int	handle_arg(t_shell *sh, const char *arg);
+int	print_sorted_export(t_env *env);
 
 #endif
