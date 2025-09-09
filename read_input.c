@@ -13,7 +13,7 @@ static int parse_and_execute(char *input, t_shell *shell)
 	shell->cmds = adding_command(list, shell);
 	if (!shell->cmds || shell->count_cmds == 0 || !(&shell->cmds[0]))
 		return (cmds_free(shell), 0); //zwalnianie pamieci w przypadku bledu
-	if (shell->count_cmds == 1 && shell->cmds->argv /* && is_builtin(shell->cmds->argv[0])*/)
+	if (shell->count_cmds == 1 && shell->cmds->argv && is_builtin(shell->cmds->argv[0]))
 		{
 			int st = run_single_builtin(shell);//uruchamiane bez forka na rodzicu
 			shell->last_status = st;
