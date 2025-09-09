@@ -6,21 +6,47 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/08/10 21:29:53 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:16:38 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+static char **special_env_split(const char *str, char c)
+{
+	char	**arr;
+	size_t	i;
+	size_t	len;
+	char	*k;
+	
+	if (!str)
+		return (0);
+	i = -1;
+	len = 0;
+	arr = malloc(sizeof(char *) * 3);
+	if (!arr)
+		return (0);
+	while (str[++i] != c)
+		len++;
+	i = 0;
+	k = ft_strchr(str, c);
+	i = ft_strlen(str);
+	if (len > 0)
+		arr[0] = ft_substr(str, 0, len);
+	if (k)
+		arr[1] = ft_substr(str, len, (i - len));
+	else
+		arr[1] = 0;
+	arr[2] = 0;
+	return (arr);
+}
 
 void	*find_last(void *stack, size_t offset)
 {
 	if (!stack)
 		return (NULL);
 	while (*(void **)(stack + offset) != NULL)
-	{
 		stack = *(void **)(stack + offset);
-		return (void *)stack;
-	}
 	return (stack);
 }
 
@@ -54,14 +80,13 @@ void	split_env(t_env **stack, char **str)
 
 void	create_list_env(t_env **stack, char **env)
 {
-	//zeby to dzialalo trzeba zainicjalizowac liste tzn: t_env lista = NULL;~Oliwia
 	char	**str;
 	int	i;
 	
 	i = -1;
 	while (env[++i])
 	{
-		str = ft_split(env[i], '=');
+		str = special_env_split(env[i], '=');
 		if (!str)
 			return ;
 		split_env(stack, str);
