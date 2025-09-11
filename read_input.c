@@ -7,6 +7,9 @@ static int parse_and_execute(char *input, t_shell *shell)
 
 	if (!input || !*input)
 		return (0);
+	cmds_free(shell);
+    shell->cmds = NULL;
+    shell->count_cmds = 0;
 	input = deal_with_quotes(input, *shell);
 	arr = split_input_to_tokens(input);
 	list = token_list(arr);
