@@ -1,16 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredock.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/09 21:30:40 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/09/09 21:31:00 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "mini.h"
-//TO DO
-
-//static void	expand_hrdc()
-//{
-//	t_heredoc *new_hrdc;
-
-//	if (/*jesli jest w pojedynczysz cudzyslowach*/)
-//		new_hrdc[command->heredoc_cnt].expand = 0;
-//	else if (/*jesli jest w "" cudzyslowach*/)
-//		new_hrdc[command->heredoc_cnt].expand = 1;
-//}
 
 static int	handle_status(int status, char *path)
 {
@@ -82,7 +82,6 @@ int	read_to_file(t_heredoc *new_hrdc)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
-//		expand_hrdc();
 		add_to_file(new_hrdc, fd);
 	}
 	close(fd);
