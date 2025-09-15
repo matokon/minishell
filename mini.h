@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/09 21:24:15 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/15 18:32:41 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,11 @@ void			create_list_env(t_env **stack, char **env);
 void			split_env(t_env **stack, char **str);
 void			*find_last(void *stack, size_t offset);
 t_env			*find_env(t_env *env, const char *key);
+int				env_len(t_env *list);
+void			sort_env(t_env **list, int n);
+t_env			*add_new_env(t_env **env, const char *key, const char *val);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
-t_env			*add_new_env(t_env **env, const char *key, const char *val);
-
-//****Errors****
-void			error_exit(const char *error);
-
 
 //****Input tokenization****
 char			**split_input_to_tokens(char *input);
@@ -163,20 +161,18 @@ void			error_exit(const char *error);
 //****Cleaning functions****
 void			cmds_free(t_shell *shell);
 void			free_hrdc(t_cmd *command);
+void	free_arr(char **arr);
+void	free_token_list(t_token *head);
+void	free_env_list(t_env *env);
 
 //****Tests****
 void			print_all_env(const t_env *stack);
 void			print_env(t_env *stack, const char *key);
 void			print_all_tokens(const t_token *stack);
 void			print_one_env(t_env *stack);
-int is_builtin(const char *name);
-void	free_arr(char **arr);
-void	free_token_list(t_token *head);
-void	free_env_list(t_env *env);
-//****Tests****
-void			print_stack_all(const t_env *stack);
 
 //***Execution***
+int is_builtin(const char *name);
 int run_single_builtin(t_shell *shell);
 int	call_builtin(t_shell *sh, char **argv);
 int apply_in_redir(t_cmd *cmd);
@@ -185,7 +181,6 @@ int apply_out_redir(t_cmd *cmd);
 //***Quotes***
 char *deal_with_quotes(char *input, t_shell shell);
 char	*handle_replacement(char *s, char *val, int pos, int var_len);
-
 
 /* Builtins */
 int	ft_cd(t_shell *sh, char **argv);
