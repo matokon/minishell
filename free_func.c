@@ -46,18 +46,22 @@ static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 
 void	cmds_free(t_shell *shell)
 {
-	int	i;
+    t_cmd *curr;
+    t_cmd *next;
 
-	if (!shell || !shell->cmds)
-		return;
-	i = -1;
-	while (++i < shell->count_cmds)
-		one_cmd_free(&shell->cmds[i]);
-	free(shell->cmds);          /* zwalniamy samą tablicę */
-	shell->cmds = NULL;
-	shell->count_cmds = 0;
+    if (!shell || !shell->cmds)
+        return;
+    curr = shell->cmds;
+    while (curr)
+    {
+        next = curr->next;
+        one_cmd_free(curr);
+        free(curr);
+        curr = next;
+    }
+    shell->cmds = NULL;
+    shell->count_cmds = 0;
 }
-
 
 void	free_hrdc(t_cmd *command)
 {

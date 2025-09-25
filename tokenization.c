@@ -127,7 +127,7 @@ t_token_type	type_def(char *token)
 	
 }
 
-t_token	lexer(char *input)
+t_token	lexer(char *input, t_env *env)
 {
 	t_token *list;
 	t_token *curr;
@@ -143,10 +143,8 @@ t_token	lexer(char *input)
 			curr = append_operator(input, i);
 		else if (input[i] == '\'' || input[i] == '\"')
 		//	curr = expand_quotes();
-		else if (input[i] = '$')
-		//	curr = expand_var();
 		else
-		//	curr = ;
+		//	curr = append_word(input, i, expand);
 		if (!list)
 		//	free token
 		append_to_list(&list, curr);

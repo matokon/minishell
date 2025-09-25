@@ -14,6 +14,7 @@ static int parse_and_execute(char *input, t_shell *shell)
 	arr = split_input_to_tokens(input);
 	list = token_list(arr);
 	shell->cmds = adding_command(list, shell);
+	
 	if (!shell->cmds || shell->count_cmds == 0 || !(&shell->cmds[0]))
 		return (cmds_free(shell), 0); //zwalnianie pamieci w przypadku bledu
 	if (shell->count_cmds == 1 && shell->cmds->argv && is_builtin(shell->cmds->argv[0]))
@@ -36,18 +37,19 @@ int read_input(t_shell *shell)
 	set_path(shell);
 	while(true)
 	{
-		input = readline("\033[1;32mminishell$ \033[0m");
+		input = readline("\033[38;5;198mminishell$ \033[0m");
 		if (!input)
 		{
-			fprintf(stderr, "Error: readline error!\n");
+			fprintf(stderr, "Error: Goodbye! :*\n");
 			cmds_free(shell);
-		exit(1);
+			exit(1);
 		}
 		if (*input)
 		{
-		add_history(input);
-		parse_and_execute(input, shell);
+			add_history(input);
+			parse_and_execute(input, shell);
 		}
+		//print_cmd_struct(shell->cmds);
 	}
 	return (0);
 }

@@ -44,7 +44,8 @@ SRC := \
 	signals.c \
 	utils.c \
 	get_next_line/get_next_line.c \
-	get_next_line/get_next_line_utils.c
+	get_next_line/get_next_line_utils.c \
+	tests.c
 
 OBJ := $(SRC:.c=.o)
 
