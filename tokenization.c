@@ -164,3 +164,42 @@ void	append_to_list(t_token **head, t_token *new_token)
 		last->next = new_token;
 	}
 }
+
+t_token	lexer(char *input, t_env *env)
+{
+	t_token *list;
+	t_token *curr;
+	int	i;
+
+	list = NULL;
+	i = -1;
+	while (input[++i])
+	{
+		if (input[i] == ' ' || input[i] == '\t')
+			i++;
+		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+			curr = append_operator(input, i);
+		else if (input[i] == '\'' || input[i] == '\"')
+		//	curr = expand_quotes();
+		else
+		//	curr = append_word(input, i, expand);
+		if (!list)
+		//	free token
+		append_to_list(&list, curr);
+		else
+	}
+	return (list);
+}
+
+void	append_to_list(t_token **head, t_token *new_token)
+{
+	t_token *last;
+
+	if (!*head)
+		*head = new_token;
+	else
+	{
+		last = find_last(*head, offsetof(t_token, next));
+		last->next = new_token;
+	}
+}

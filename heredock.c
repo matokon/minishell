@@ -32,22 +32,20 @@ static int	hrdc_path(char **new_path)
 	int		fd;
 
 	num = ft_itoa(i++);
+	if (!num)
+		return (-1);
 	path =ft_strjoin("/tmp/.hrdc_", num);
 	if (!path)
 		return (-1);
 	free(num);
 	fd = open(path, O_CREAT | O_EXCL | O_WRONLY, 0600);
-	if (fd >= 0)
+	if (fd < 0)
 	{
-		*new_path = path;
-		free(path);
-		return (fd); 
-	}
-	else
-	{	
 		free(path);
 		return (-1);
 	}
+	*new_path = path;
+	return (fd); 
 }
 
 int	read_stdin(const t_heredoc *hd)
@@ -94,10 +92,11 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 {
 	char	*line;
 	size_t	len;
+	
 	while (1)
 	{
 		line = readline(">");
-		if (!line || ft_strncmp(line, new_hrdc->delim, ft_strlen(line)) == 0)
+		if (!line || ft_strcmp(line, new_hrdc->delim) == 0)
 		{
 			free(line);
 			break ;

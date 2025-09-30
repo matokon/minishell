@@ -51,7 +51,6 @@ void	cmds_free(t_shell *shell)
 	shell->count_cmds = 0;
 }
 
-
 void	free_hrdc(t_cmd *command)
 {
 	int	i;

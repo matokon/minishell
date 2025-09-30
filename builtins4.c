@@ -78,9 +78,11 @@ static int	set_var(t_env **env, const char *key, const char *val, int app)
 	t_env	*node;
 	char	*joined;
 
+	joined = NULL;
 	node = find_env(*env, key);
 	if (!app)
 	{
+		update_env_val(env, key, val);
 		update_env_val(env, key, val);
 		return (0);
 	}
@@ -94,6 +96,7 @@ static int	set_var(t_env **env, const char *key, const char *val, int app)
 		joined = ft_strjoin(node->value, "");
 	if (!joined)
 		return (1);
+	update_env_val(env, key, joined);// po co na koncu jest wywolanie tej funkcji
 	update_env_val(env, key, joined);// po co na koncu jest wywolanie tej funkcji
 	free(joined);
 	return (0);
@@ -160,6 +163,10 @@ int	print_sorted_export(t_env *env)
 		return (1);
 	i = -1;
 	while (++i < n)
+	{
+		arr[i] = env;
+		env = env->next;
+	}
 	{
 		arr[i] = env;
 		env = env->next;

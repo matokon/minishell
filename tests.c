@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:04:30 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/25 19:11:14 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/30 14:53:20 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void print_env(t_env *stack, const char *key)
 		printf("  next     = %s\n", stack->next->key);
 	else
 		printf(" next = ( )\n");
+	printf("----------------\n");
 	printf("----------------\n");
 }
 

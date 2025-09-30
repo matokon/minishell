@@ -12,7 +12,7 @@ static int parse_and_execute(char *input, t_shell *shell)
 	list = lexer(input, shell);
 	//list = token_list(arr);
 	shell->cmds = adding_command(list, shell);
-	//print_cmd_struct(shell->cmds);
+	
 	if (!shell->cmds || shell->count_cmds == 0 || !(&shell->cmds[0]))
 		return (cmds_free(shell), 0); //zwalnianie pamieci w przypadku bledu
 	if (shell->count_cmds == 1 && shell->cmds->argv && is_builtin(shell->cmds->argv[0]))
@@ -46,9 +46,10 @@ int read_input(t_shell *shell)
 		}
 		if (*input)
 		{
-		add_history(input);
-		parse_and_execute(input, shell);
+			add_history(input);
+			parse_and_execute(input, shell);
 		}
+		//print_cmd_struct(shell->cmds);
 	}
 	return (0);
 }
