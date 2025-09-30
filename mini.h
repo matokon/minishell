@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/09 21:24:15 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:45:12 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,33 @@ void			create_list_env(t_env **stack, char **env);
 void			split_env(t_env **stack, char **str);
 void			*find_last(void *stack, size_t offset);
 t_env			*find_env(t_env *env, const char *key);
+int	env_len(t_env *list);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
 t_env			*add_new_env(t_env **env, const char *key, const char *val);
+void	sort_env(t_env **list, int n);
+
 
 //****Errors****
 void			error_exit(const char *error);
 
 
 //****Input tokenization****
-char			**split_input_to_tokens(char *input);
-t_token			*token_list(char **tab_of_tokens);
-t_token_type	type_def(char *token);
+//char			**split_input_to_tokens(char *input);
+//t_token			*token_list(char **tab_of_tokens);
+//t_token_type	type_def(char *token);
+t_token			*lexer(char *input, t_shell *shell);
+t_token *append_operator(char *input, int *i);
+void	helper_redir(char *input, int i, t_token *new_token);
+char *expand_var(char *input, int *i, t_shell *shell);
+t_token	*append_word(char *input, int *i, t_shell *shell);
+void	append_to_list(t_token **head, t_token *new_token);
+char	*get_var_value(char *name, t_shell *shell);
+
+//****Tokens_utils****
+char	*join_char(char **str1, char c);
+char	*join_free(char **str1, char *str2);
+
 
 //****Command_Struct****
 t_cmd			*command_init(t_shell **shell, t_cmd **head);
@@ -169,12 +184,13 @@ void			print_all_env(const t_env *stack);
 void			print_env(t_env *stack, const char *key);
 void			print_all_tokens(const t_token *stack);
 void			print_one_env(t_env *stack);
+void print_cmd_struct(const t_cmd *cmd);
+void			print_stack_all(const t_env *stack);
+
 int is_builtin(const char *name);
 void	free_arr(char **arr);
 void	free_token_list(t_token *head);
 void	free_env_list(t_env *env);
-//****Tests****
-void			print_stack_all(const t_env *stack);
 
 //***Execution***
 int run_single_builtin(t_shell *shell);

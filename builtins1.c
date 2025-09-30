@@ -5,7 +5,10 @@ static char	*env_val(t_env *env, const char *k)
 	t_env *n;
 
 	n = find_env(env, k);
-	return (n ? n->value : NULL);
+	if (n)
+		return (n->value);
+	else
+		return (NULL);
 }
 
 static int	select_target(t_shell *sh, char **argv, char **target, int *print)

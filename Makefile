@@ -36,15 +36,13 @@ SRC := \
 	exec_single_utils.c exec_single.c \
 	free_func.c \
 	mini_init.c \
-	tokenization.c \
+	tokenization.c tokens_utils.c \
 	redirections.c \
 	heredock.c \
 	quote.c quote2.c \
 	read_input.c \
 	signals.c \
-	utils.c \
-	get_next_line/get_next_line.c \
-	get_next_line/get_next_line_utils.c
+	utils.c tests.c \
 
 OBJ := $(SRC:.c=.o)
 

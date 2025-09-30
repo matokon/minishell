@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:40 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/09 21:31:00 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/26 16:30:23 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 		}
 		free(line);
 	}
+	close(fd);
 	exit(0);
 }
 
@@ -118,13 +119,23 @@ void	add_heredoc(t_cmd *command, t_token *delim)
 {
 	t_heredoc *new_hrdc;
 
+	if (!delim || !delim->next || !delim->next->value)
+	return ;
 	new_hrdc = (t_heredoc *)malloc(sizeof(t_heredoc) * (command->heredoc_cnt + 1));
 	if (!new_hrdc)
 		return ;
 	if (command->heredoc_cnt > 0)
+	{
 		ft_memcpy(new_hrdc, command->heredocs, sizeof(t_heredoc) * command->heredoc_cnt);
+		free(command->heredocs);
+	}
 	new_hrdc[command->heredoc_cnt].delim = ft_strdup(delim->next->value);
-	read_to_file(new_hrdc);
+	if (read_to_file(&new_hrdc[command->heredoc_cnt]) < 0)
+	{
+		free(new_hrdc[command->heredoc_cnt].delim);
+		free(new_hrdc);
+		return ;
+	}
 	command->heredocs = new_hrdc;
 	command->heredoc_cnt++;
 }

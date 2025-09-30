@@ -47,7 +47,10 @@ static void	add_redir(t_cmd *command, const char *path, int append)
 void	handle_redirects(t_cmd *command, t_token *tokens)
 {
 	if (!command->argv || !tokens->next || tokens->next->type != TOKEN_WORD)
+	{
 		printf("Error: Wrong use of redirections :(\n");
+		return ;
+	}
 	if (tokens->type == TOKEN_REDIRECT_IN)
 		command->infile = ft_strdup(tokens->next->value);
 	if (tokens->type == TOKEN_REDIRECT_OUT)
@@ -59,7 +62,7 @@ static t_cmd	*handle_pipe(t_cmd *node, t_token *tokens)
 {
 	if (node->argv == NULL || tokens->next == NULL
 		|| tokens->next->type != TOKEN_WORD)
-		error_exit("Error: Wrong use of pipes :(\n");
+		printf("Error: Wrong use of pipes :(\n");
 	return (NULL);
 }
 
@@ -74,7 +77,7 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	if (command->argv)
 	{
 		while (command->argv[i])
-		i++;
+			i++;
 	}
 	upd_arg = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!upd_arg)
@@ -87,14 +90,12 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	if (command->argv)
 	{
 		i = 0;
-		//printf("Added arg in if: %s\n", upd_arg[i]);
 		while (command->argv[i])
 			free(command->argv[i++]);
 		free(command->argv);
 	}
-	//else
-	//	printf("Added arg in else: %s\n", upd_arg[0]);
 	command->argv = upd_arg;
+	command->argc++;
 }
 
 t_cmd *adding_command(t_token *tokens, t_shell *shell)
@@ -110,9 +111,7 @@ t_cmd *adding_command(t_token *tokens, t_shell *shell)
 			node = command_init(&shell, &shell->cmds);
 		if (!node)
 			return NULL;
-		shell->cmds->argc++;
-		//printf("node->argv: %d\n", shell->cmds->argv ? 1 : 0);
-		if (tokens->type == TOKEN_WORD)//DOESNT WORK
+		if (tokens->type == TOKEN_WORD)
 			add_cmd_argv(node, tokens->value);
 		else if (tokens->type == TOKEN_REDIRECT_IN
 				|| tokens->type == TOKEN_REDIRECT_OUT
@@ -122,10 +121,6 @@ t_cmd *adding_command(t_token *tokens, t_shell *shell)
 			add_heredoc(shell->cmds, tokens);
 		else if (tokens->type == TOKEN_PIPE)
 			node = handle_pipe(node, tokens);
-		//printf("Token type: %d,\nvalue: %s,\nnext: %p\n",
-		//	tokens->type,
-		//	tokens->value ? tokens->value : "(null)",
-		//	(void*)tokens->next);
 		tokens = tokens->next;
 	}
 	return (shell->cmds);

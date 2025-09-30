@@ -90,7 +90,7 @@ static int	set_var(t_env **env, const char *key, const char *val, int app)
 		return (update_env_val(env, key, val), 0);
 	if (val)
 		joined = ft_strjoin(node->value, val);
-	else if (!val)
+	else
 		joined = ft_strjoin(node->value, "");
 	if (!joined)
 		return (1);

@@ -6,21 +6,11 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/15 19:03:28 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/25 18:59:49 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-int	env_len(t_env *list)
-{
-	int	i;
-
-	i = -1;
-	while (list && ++i)
-		list = list->next;
-	return (i);
-}
 
 t_env	*find_env(t_env *env, const char *key)
 {
@@ -88,4 +78,16 @@ void	sort_env(t_env **list, int n)
 			j++;
 		}
 	}
+}
+
+int	env_len(t_env *list)
+{
+	int	i;
+
+	i = -1;
+	if (!list)
+		return (0);
+	while (list && ++i)
+		list = list->next;
+	return (i);
 }

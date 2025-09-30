@@ -13,7 +13,7 @@ static char	*ft_replace(char *s, char *var, char *val, int pos)
 		return (ft_strdup(s));
 	if (ft_strncmp(s + pos, var, var_len) != 0)
 		return (ft_strdup(s));
-	return (handle_replacement(s, val, pos, var_len));// dodaj
+	return (handle_replacement(s, val, pos, var_len));
 }
 static int find_first_quote(char *input, int i)
 {
@@ -43,7 +43,8 @@ static void	if_question_mark(char **input, int i, t_shell shell)
 	if ((*input)[i + 1] == '?')
 		*input = ft_replace(*input, "$?", itoa, i);
 	free(itoa);
-	find_env(shell.env, shell.env->key);
+	find_env(shell.env, shell.env->key);//ZNAJDUJE env
+	//zrobic tutaj zamiane $ na env
 }
 
 char *deal_with_quotes(char *input, t_shell shell)
@@ -61,7 +62,10 @@ char *deal_with_quotes(char *input, t_shell shell)
         type_of_quote = input[i];
         j = find_second_quote(input, i + 1, type_of_quote);
         if(j == -1)
-            break ;
+        {
+			printf("Error: unmatched quote\n");//TO DO- aby dobrze sie zachowywalo przy wyjsciu
+			break ;
+		}
         while (i <= j && input[i])
 		{
 			if (type_of_quote != '\'' && input[i] == '$')
@@ -73,5 +77,5 @@ char *deal_with_quotes(char *input, t_shell shell)
             swapping(input, &i, type_of_quote);
 		}
     }
-    return input;
+    return (input);
 }
