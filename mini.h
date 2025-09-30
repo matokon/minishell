@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/30 14:51:29 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/30 14:55:28 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,9 @@ void			error_exit(const char *error);
 //****Cleaning functions****
 void			cmds_free(t_shell *shell);
 void			free_hrdc(t_cmd *command);
+void	free_arr(char **arr);
+void	free_token_list(t_token *head);
+void	free_env_list(t_env *env);
 
 //****Tests****
 void			print_all_env(const t_env *stack);
@@ -190,6 +193,7 @@ void	free_token_list(t_token *head);
 void	free_env_list(t_env *env);
 
 //***Execution***
+int is_builtin(const char *name);
 int is_builtin(const char *name);
 int run_single_builtin(t_shell *shell);
 int	call_builtin(t_shell *sh, char **argv);
