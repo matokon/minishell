@@ -11,7 +11,7 @@ static char	*join_path(const char *dir, const char *bin)
 	return (res);
 }
 
-static t_cmd	*get_cmd(t_cmd *head, int i)
+static t_cmd	*child_cmd(t_cmd *head, int i)
 {
 	while (head && i-- > 0)
 		head = head->next;
@@ -83,7 +83,7 @@ static char	**env_list_to_envp(t_env *env)
 	return (envp);
 }
 
-static void	exec_external_or_builtin(t_shell *sh, t_cmd *cmd)
+static void	exec_child_command(t_shell *sh, t_cmd *cmd)
 {
 	char	**envp;
 	char	*path;
@@ -120,13 +120,12 @@ void	child(t_shell *sh, t_execctx *x, int i)
 	t_cmd	*cmd;
 
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	cmd = get_cmd(sh->cmds, i);
+	cmd = child_cmd(sh->cmds, i);
 	if (!cmd)
 		exit(0);
-	wire_child_pipes(x, i);
+	wire_child_pipes(x, i); //podpina pipe
 	close_all_pipes(x);
-	if ((cmd->infile && *cmd->infile)
+	if ((cmd->infile && *cmd->infile) //obsuga >> > < <<
 		|| cmd->heredoc_cnt > 0
 		|| cmd->in_fd != -1)
 	{
@@ -138,5 +137,5 @@ void	child(t_shell *sh, t_execctx *x, int i)
 		if (apply_out_redir(cmd) != 0)
 			exit(1);
 	}
-	exec_external_or_builtin(sh, cmd);
+	exec_child_command(sh, cmd);
 }

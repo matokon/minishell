@@ -25,7 +25,7 @@ static int	wait_for_all(t_execctx *x)
 	if (WIFEXITED(last))
 		return (WEXITSTATUS(last));
 	else if(WIFSIGNALED(last))
-		return 128 + WTERMSIG(last);
+		return (128 + WTERMSIG(last));
 	return (1);
 }
 
