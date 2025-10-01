@@ -46,6 +46,7 @@ static void	if_question_mark(char **input, int i, t_shell shell)
 	find_env(shell.env, shell.env->key);
 }
 
+
 char *deal_with_quotes(char *input, t_shell shell)
 {
     char type_of_quote;
@@ -61,7 +62,7 @@ char *deal_with_quotes(char *input, t_shell shell)
         type_of_quote = input[i];
         j = find_second_quote(input, i + 1, type_of_quote);
         if(j == -1)
-            break ;
+            return NULL;
         while (i <= j && input[i])
 		{
 			if (type_of_quote != '\'' && input[i] == '$')
@@ -70,7 +71,8 @@ char *deal_with_quotes(char *input, t_shell shell)
                 j = find_second_quote(input, i + 1, type_of_quote);
 
 			}
-            // swapping(input, &i, type_of_quote);  do wyjebania i guess
+			i++;
+
 		}
     }
     return input;
