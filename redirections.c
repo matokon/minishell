@@ -1,22 +1,38 @@
 #include "mini.h"
 
+static void	init_cmd_defaults(t_cmd *cmd)
+{
+	cmd->argv = NULL;
+	cmd->argc = 0;
+	cmd->infile = NULL;
+	cmd->in_fd = -1;
+	cmd->outs = NULL;
+	cmd->outs_len = 0;
+	cmd->out_fd = -1;
+	cmd->heredocs = NULL;
+	cmd->heredoc_cnt = 0;
+	cmd->next = NULL;
+}
+
+/* tworzy nową komendę i dopina ją na końcu listy *head */
 t_cmd	*command_init(t_shell **sh, t_cmd **head)
 {
 	t_cmd	*cmd;
 	t_cmd	*last;
 
-	cmd = (t_cmd *)ft_calloc(1, sizeof(*cmd));
+	cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->in_fd = -1;
-	cmd->out_fd = -1;
-	cmd->next = NULL;
-	(*sh)->count_cmds++;
+	init_cmd_defaults(cmd);
+	if (sh && *sh)
+		(*sh)->count_cmds++;
+	if (!head)
+		return (cmd);
 	if (!*head)
 		*head = cmd;
 	else
 	{
-		last = find_last(*head, offsetof(t_cmd, next));
+		last = (t_cmd *)find_last(*head, offsetof(t_cmd, next));
 		((t_cmd *)last)->next = cmd;
 	}
 	return (cmd);

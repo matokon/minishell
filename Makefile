@@ -33,7 +33,8 @@ SRC := \
 	builtins1.c builtins2.c builtins3.c builtins4.c \
 	env_things.c env_update.c \
 	error.c \
-	exec_single_utils.c exec_single.c \
+	exec_single_utils.c exec_single.c\
+	exec_single_cmd.c executor.c pipes.c\
 	free_func.c \
 	mini_init.c \
 	tokenization.c \

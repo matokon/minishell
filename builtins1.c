@@ -2,10 +2,12 @@
 
 static char	*env_val(t_env *env, const char *k)
 {
-	t_env *n;
+	t_env	*n;
 
 	n = find_env(env, k);
-	return (n ? n->value : NULL);
+	if (n)
+		return (n->value);
+	return (NULL);
 }
 
 static int	select_target(t_shell *sh, char **argv, char **target, int *print)
@@ -38,20 +40,31 @@ int	ft_cd(t_shell *sh, char **argv)
 	int		print;
 
 	if (argv[1] && argv[2])
-		return (write(2, "minishell: cd: too many arguments\n", 34), 1);
+	{
+		write(2, "minishell: cd: too many arguments\n", 34);
+		return (1);
+	}
 	if (!getcwd(old, sizeof(old)))
 		old[0] = '\0';
 	if (select_target(sh, argv, &target, &print))
 		return (1);
 	if (chdir(target) != 0)
-		return (write(2, "minishell: cd: ", 15), perror(target), 1);
+	{
+		write(2, "minishell: cd: ", 15);
+		perror(target);
+		return (1);
+	}
 	if (print && getcwd(now, sizeof(now)))
-		write(1, now, ft_strlen(now)), write(1, "\n", 1);
+	{
+		write(1, now, ft_strlen(now));
+		write(1, "\n", 1);
+	}
 	update_env_val(&sh->env, "OLDPWD", old);
 	if (getcwd(now, sizeof(now)))
 		update_env_val(&sh->env, "PWD", now);
 	return (0);
 }
+
 int	ft_pwd(t_shell *sh, char **argv)
 {
 	char	buf[MINI_PATH_MAX];

@@ -109,6 +109,15 @@ typedef struct s_shell // stan calego shella
 	int exit_status;
 }				t_shell;
 
+typedef struct s_execctx
+{
+	int		n;       //liczba poleceń w linii
+	int		*pipes;  //tablica deskryptorów potoków (najczęściej n-1 potoków)
+	pid_t	*pidv;   //tablica PIDs procesów-dzieci (rozmiar n)
+	pid_t	last_pid;//PID ostatniego zforkowanego dziecka
+}	t_execctx;
+
+
 //****MAIN****
 int				main(int argc, char **argv, char **env);
 
@@ -157,12 +166,10 @@ void			sig_handler(int signal);
 void			*safe_malloc(size_t bytes);
 void			swapping(char *input, int *i, char type_of_quote);
 
-//****Errors****
-void			error_exit(const char *error);
-
 //****Cleaning functions****
 void			cmds_free(t_shell *shell);
 void			free_hrdc(t_cmd *command);
+void	free_split(char **tab);
 
 //****Tests****
 void			print_all_env(const t_env *stack);
@@ -179,6 +186,13 @@ int run_single_builtin(t_shell *shell);
 int	call_builtin(t_shell *sh, char **argv);
 int apply_in_redir(t_cmd *cmd);
 int apply_out_redir(t_cmd *cmd);
+int	run_pipeline_or_external(t_shell *shell);
+void child(t_shell *sh, t_execctx *x, int i);
+int	create_pipes(t_execctx *x);
+void	close_all_pipes(t_execctx *x);
+int	pipe_read_fd(t_execctx *x, int idx);
+int	pipe_write_fd(t_execctx *x, int idx);
+void	wire_child_pipes(t_execctx *x, int i);
 
 //***Quotes***
 char *deal_with_quotes(char *input, t_shell shell);

@@ -24,7 +24,7 @@ static int parse_and_execute(char *input, t_shell *shell)
 		}
 		else
 		{
-			// return run_pipeline_or_external(shell);
+			return run_pipeline_or_external(shell);
 		}
 	return (0);
 }
@@ -36,7 +36,7 @@ int read_input(t_shell *shell)
 	set_path(shell);
 	while(true)
 	{
-		input = readline("\033[1;32mminishell$ \033[0m");
+		input = readline("\033[38;5;198mminishell$ \033[0m");
 		if (!input)
 		{
 			fprintf(stderr, "Error: readline error!\n");

@@ -44,19 +44,22 @@ static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 		free_hrdc(cmd);
 }
 
-void	cmds_free(t_shell *shell)
+void cmds_free(t_shell *shell)
 {
-	int	i;
+    if (!shell || !shell->cmds)
+        return;
 
-	if (!shell || !shell->cmds)
-		return;
-	i = -1;
-	while (++i < shell->count_cmds)
-		one_cmd_free(&shell->cmds[i]);
-	free(shell->cmds);          /* zwalniamy samą tablicę */
-	shell->cmds = NULL;
-	shell->count_cmds = 0;
+    t_cmd *cur = shell->cmds;
+    while (cur) {
+        t_cmd *next = cur->next;
+        one_cmd_free(cur);
+        free(cur);
+        cur = next;
+    }
+    shell->cmds = NULL;
+    shell->count_cmds = 0;
 }
+
 
 
 void	free_hrdc(t_cmd *command)
@@ -72,4 +75,19 @@ void	free_hrdc(t_cmd *command)
 	free(command->heredocs);
 	command->heredocs = NULL;
 	command->heredoc_cnt = 0;
+}
+
+void	free_split(char **tab)
+{
+	int i;
+
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }

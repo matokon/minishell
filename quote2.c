@@ -13,9 +13,7 @@ char	*handle_replacement(char *s, char *val, int pos, int var_len)
 	len_new = len_src - var_len + len_val;
 	if (len_new < 0)
 		return (ft_strdup(s));
-	out = malloc(len_new + 1);
-	if (!out)
-		return (NULL);
+	out = safe_malloc(len_new + 1);
 	if (pos > 0)
 		ft_memcpy(out, s, pos);
 	ft_memcpy(out + pos, val, len_val);

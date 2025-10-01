@@ -13,7 +13,7 @@ static char	*ft_replace(char *s, char *var, char *val, int pos)
 		return (ft_strdup(s));
 	if (ft_strncmp(s + pos, var, var_len) != 0)
 		return (ft_strdup(s));
-	return (handle_replacement(s, val, pos, var_len));// dodaj
+	return (handle_replacement(s, val, pos, var_len));
 }
 static int find_first_quote(char *input, int i)
 {
@@ -70,7 +70,7 @@ char *deal_with_quotes(char *input, t_shell shell)
                 j = find_second_quote(input, i + 1, type_of_quote);
 
 			}
-            swapping(input, &i, type_of_quote);
+            // swapping(input, &i, type_of_quote);  do wyjebania i guess
 		}
     }
     return input;

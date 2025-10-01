@@ -61,7 +61,10 @@ static int	set_var(t_env **env, const char *key, const char *val, int app)
 		return (add_new_env(env, key, val), 0);
 	if (!node->value)
 		return (update_env_val(env, key, val), 0);
-	joined = ft_strjoin(node->value, val ? val : "");
+	if (val)
+		joined = ft_strjoin(node->value, val);
+	else
+		joined = ft_strjoin(node->value, "");
 	if (!joined)
 		return (1);
 	update_env_val(env, key, joined);
@@ -110,7 +113,10 @@ static int	env_len(t_env *e)
 
 	n = 0;
 	while (e)
-		n++, e = e->next;
+	{
+		n++;
+		e = e->next;
+	}
 	return (n);
 }
 
@@ -120,16 +126,21 @@ static void	sort_env(t_env **a, int n)
 	int		j;
 	t_env	*tmp;
 
-	i = -1;
-	while (++i < n)
+	i = 0;
+	while (i < n)
 	{
 		j = i + 1;
 		while (j < n)
 		{
 			if (ft_strcmp(a[i]->key, a[j]->key) > 0)
-				tmp = a[i], a[i] = a[j], a[j] = tmp;
+			{
+				tmp = a[i];
+				a[i] = a[j];
+				a[j] = tmp;
+			}
 			j++;
 		}
+		i++;
 	}
 }
 
@@ -157,17 +168,23 @@ int	print_sorted_export(t_env *env)
 	arr = (t_env **)ft_calloc(n, sizeof(*arr));
 	if (!arr)
 		return (1);
-	i = -1;
-	while (++i < n)
-		arr[i] = env, env = env->next;
+	i = 0;
+	while (i < n)
+	{
+		arr[i] = env;
+		env = env->next;
+		i++;
+	}
 	sort_env(arr, n);
-	i = -1;
-	while (++i < n)
+	i = 0;
+	while (i < n)
+	{
 		print_one_export(arr[i]);
+		i++;
+	}
 	free(arr);
 	return (0);
 }
-
 
 int	ft_export(t_shell *sh, char **argv)
 {
