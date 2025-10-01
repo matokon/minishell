@@ -22,10 +22,7 @@ t_token *append_operator(char *input, int *i)
 			(*i)++;
 	}
 	else
-	{
-		free(new_token);
-		return (NULL);
-	}
+		return (free(new_token), NULL);
 	new_token->next = NULL;
 	return (new_token);
 }
@@ -54,22 +51,6 @@ void	helper_redir(char *input, int i, t_token *new_token)
 	}
 }
 
-//t_token *expand_quotes(char *input, int *i)
-//{
-//	t_token *new_token;
-
-//	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
-//	if (!new_token)
-//		return (NULL);
-//	if (input[*i] == '\'')
-//	{
-
-//	}
-//	else if (input[*i] == '\"')
-
-//	new_token->next = NULL;
-//	return (new_token);
-//}
 
 char *expand_var(char *input, int *i, t_shell *shell)
 {
@@ -85,8 +66,10 @@ char *expand_var(char *input, int *i, t_shell *shell)
 		return (get_var_value("?", shell));
 	}
 	while (input[*i] && (ft_isalnum(input[*i]) || input[*i] == '_'))
-		i++;
+		(*i)++;
 	key = ft_substr(input, start, *i - start + 1);
+	if (!key)
+		return (NULL);
 	word = get_var_value(key, shell);
 	free(key);
 	return (word);
@@ -105,7 +88,7 @@ t_token	*append_word(char *input, int *i, t_shell *shell)
 	while (input[*i] && !(input[*i] == ' ' || input[*i] == '\t' || input[*i] == '|' 
 		|| input[*i] == '<' || input[*i] == '>' || input[*i] == '\'' || input[*i] == '\"'))
 	{
-		if (input[*i] == '$')		//Zrobione w deal_with_quotes
+		if (input[*i] == '$')
 		{
 			tmp = expand_var(input, i, shell);
 			word = join_free(&word, tmp);

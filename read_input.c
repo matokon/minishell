@@ -2,19 +2,18 @@
 
 static int parse_and_execute(char *input, t_shell *shell)
 {
-	//char  **arr;
 	t_token *list;
 
 	if (!input || !*input)
 		return (0);
 	cmds_free(shell);
-	input = deal_with_quotes(input, *shell);
+	input = deal_with_quotes(input, shell);
+	if (!input)
+		return (shell->last_status = 130);
 	list = lexer(input, shell);
-	//list = token_list(arr);
 	shell->cmds = adding_command(list, shell);
-	
 	if (!shell->cmds || shell->count_cmds == 0 || !(&shell->cmds[0]))
-		return (cmds_free(shell), 0); //zwalnianie pamieci w przypadku bledu
+		return (cmds_free(shell), 0);
 	if (shell->count_cmds == 1 && shell->cmds->argv && is_builtin(shell->cmds->argv[0]))
 		{
 			int st = run_single_builtin(shell);//uruchamiane bez forka na rodzicu
@@ -49,7 +48,6 @@ int read_input(t_shell *shell)
 			add_history(input);
 			parse_and_execute(input, shell);
 		}
-		//print_cmd_struct(shell->cmds);
 	}
 	return (0);
 }

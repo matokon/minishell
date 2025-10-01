@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/30 14:55:28 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/01 17:14:25 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ typedef struct s_shell // stan calego shella
 	int count_cmds;  // ilosc komend bedzie potrzebna do zwalniania pamieci
 	t_cmd *cmds;     // lista komend (po parserze)
 	char *line;      // linia wejsciowa
-	int exit_status;
 }				t_shell;
 
 //****MAIN****
@@ -133,9 +132,6 @@ void			error_exit(const char *error);
 
 
 //****Input tokenization****
-//char			**split_input_to_tokens(char *input);
-//t_token			*token_list(char **tab_of_tokens);
-//t_token_type	type_def(char *token);
 t_token			*lexer(char *input, t_shell *shell);
 t_token *append_operator(char *input, int *i);
 void	helper_redir(char *input, int i, t_token *new_token);
@@ -167,7 +163,6 @@ void			sig_handler(int signal);
 
 //****Utils****
 void			*safe_malloc(size_t bytes);
-void			swapping(char *input, int *i, char type_of_quote);
 
 //****Errors****
 void			error_exit(const char *error);
@@ -201,7 +196,7 @@ int apply_in_redir(t_cmd *cmd);
 int apply_out_redir(t_cmd *cmd);
 
 //***Quotes***
-char *deal_with_quotes(char *input, t_shell shell);
+char *deal_with_quotes(char *input, t_shell *shell);
 char	*handle_replacement(char *s, char *val, int pos, int var_len);
 
 /* Builtins */

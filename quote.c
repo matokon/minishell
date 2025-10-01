@@ -43,9 +43,9 @@ static void	if_question_mark(char **input, int i, t_shell shell)
 	if ((*input)[i + 1] == '?')
 		*input = ft_replace(*input, "$?", itoa, i);
 	free(itoa);
-	find_env(shell.env, shell.env->key);//ZNAJDUJE env
-	//zrobic tutaj zamiane $ na env
+	find_env(shell.env, shell.env->key);
 }
+
 
 char *deal_with_quotes(char *input, t_shell shell)
 {
@@ -62,20 +62,17 @@ char *deal_with_quotes(char *input, t_shell shell)
         type_of_quote = input[i];
         j = find_second_quote(input, i + 1, type_of_quote);
         if(j == -1)
-        {
-			printf("Error: unmatched quote\n");//TO DO- aby dobrze sie zachowywalo przy wyjsciu
-			break ;
-		}
+            return NULL;
         while (i <= j && input[i])
 		{
 			if (type_of_quote != '\'' && input[i] == '$')
 			{
 				if_question_mark(&input, i, shell);
                 j = find_second_quote(input, i + 1, type_of_quote);
-
+				//comment
 			}
-            swapping(input, &i, type_of_quote);
+			i++;
 		}
     }
-    return (input);
+    return input;
 }

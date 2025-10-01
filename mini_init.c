@@ -10,7 +10,7 @@ void set_path(t_shell *shell)
     if (!current_path)
     {
         perror("minishell: getcwd");
-        shell->exit_status = 1;
+        shell->last_status = 1;
         return;
     }
     if (shell->path)
@@ -18,7 +18,7 @@ void set_path(t_shell *shell)
     shell->path = current_path;
     update_env_val(&shell->env, "PWD", shell->path);
 
-    shell->exit_status = 0;
+    shell->last_status = 0;
 }
 
 
@@ -32,6 +32,5 @@ void value_init(t_shell *shell)
     shell->count_cmds = 0;
     shell->cmds = NULL;
     shell->line = NULL;
-    shell->exit_status = 0;
     signals_things();
 }
