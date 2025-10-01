@@ -1,22 +1,38 @@
 #include "mini.h"
 
+static void	init_cmd_defaults(t_cmd *cmd)
+{
+	cmd->argv = NULL;
+	cmd->argc = 0;
+	cmd->infile = NULL;
+	cmd->in_fd = -1;
+	cmd->outs = NULL;
+	cmd->outs_len = 0;
+	cmd->out_fd = -1;
+	cmd->heredocs = NULL;
+	cmd->heredoc_cnt = 0;
+	cmd->next = NULL;
+}
+
+/* tworzy nową komendę i dopina ją na końcu listy *head */
 t_cmd	*command_init(t_shell **sh, t_cmd **head)
 {
 	t_cmd	*cmd;
 	t_cmd	*last;
 
-	cmd = (t_cmd *)ft_calloc(1, sizeof(*cmd));
+	cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->in_fd = -1;
-	cmd->out_fd = -1;
-	cmd->next = NULL;
-	(*sh)->count_cmds++;
+	init_cmd_defaults(cmd);
+	if (sh && *sh)
+		(*sh)->count_cmds++;
+	if (!head)
+		return (cmd);
 	if (!*head)
 		*head = cmd;
 	else
 	{
-		last = find_last(*head, offsetof(t_cmd, next));
+		last = (t_cmd *)find_last(*head, offsetof(t_cmd, next));
 		((t_cmd *)last)->next = cmd;
 	}
 	return (cmd);
@@ -47,10 +63,7 @@ static void	add_redir(t_cmd *command, const char *path, int append)
 void	handle_redirects(t_cmd *command, t_token *tokens)
 {
 	if (!command->argv || !tokens->next || tokens->next->type != TOKEN_WORD)
-	{
 		printf("Error: Wrong use of redirections :(\n");
-		return ;
-	}
 	if (tokens->type == TOKEN_REDIRECT_IN)
 		command->infile = ft_strdup(tokens->next->value);
 	if (tokens->type == TOKEN_REDIRECT_OUT)
@@ -62,7 +75,7 @@ static t_cmd	*handle_pipe(t_cmd *node, t_token *tokens)
 {
 	if (node->argv == NULL || tokens->next == NULL
 		|| tokens->next->type != TOKEN_WORD)
-		printf("Error: Wrong use of pipes :(\n");
+		error_exit("Error: Wrong use of pipes :(\n");
 	return (NULL);
 }
 
@@ -77,7 +90,7 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	if (command->argv)
 	{
 		while (command->argv[i])
-			i++;
+		i++;
 	}
 	upd_arg = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!upd_arg)
@@ -90,12 +103,14 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	if (command->argv)
 	{
 		i = 0;
+		//printf("Added arg in if: %s\n", upd_arg[i]);
 		while (command->argv[i])
 			free(command->argv[i++]);
 		free(command->argv);
 	}
+	//else
+	//	printf("Added arg in else: %s\n", upd_arg[0]);
 	command->argv = upd_arg;
-	command->argc++;
 }
 
 t_cmd *adding_command(t_token *tokens, t_shell *shell)
@@ -111,7 +126,9 @@ t_cmd *adding_command(t_token *tokens, t_shell *shell)
 			node = command_init(&shell, &shell->cmds);
 		if (!node)
 			return NULL;
-		if (tokens->type == TOKEN_WORD)
+		shell->cmds->argc++;
+		//printf("node->argv: %d\n", shell->cmds->argv ? 1 : 0);
+		if (tokens->type == TOKEN_WORD)//DOESNT WORK
 			add_cmd_argv(node, tokens->value);
 		else if (tokens->type == TOKEN_REDIRECT_IN
 				|| tokens->type == TOKEN_REDIRECT_OUT
@@ -121,6 +138,10 @@ t_cmd *adding_command(t_token *tokens, t_shell *shell)
 			add_heredoc(shell->cmds, tokens);
 		else if (tokens->type == TOKEN_PIPE)
 			node = handle_pipe(node, tokens);
+		//printf("Token type: %d,\nvalue: %s,\nnext: %p\n",
+		//	tokens->type,
+		//	tokens->value ? tokens->value : "(null)",
+		//	(void*)tokens->next);
 		tokens = tokens->next;
 	}
 	return (shell->cmds);

@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/25 18:02:03 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:10:37 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_outredir
 typedef struct s_heredoc
 {
 	char *delim; // delimiter (np. "EOF")
+	int expand;  // 1: wykonywać ekspansje zmiennych, 0: bez ekspansji
 	char		*tmp_path;
 	// ścieżka tymczasowego pliku z treścią heredoca (jeśli tak realizujesz)
 }				t_heredoc;
@@ -77,10 +78,12 @@ typedef struct s_cmd
 	char *infile; // ścieżka pliku po '<' (ostatnie < wygrywa)
 	int in_fd;    // FD do odczytu (dup2(in_fd, STDIN_FILENO)); -1 gdy brak
 
-	t_outredir	*outs;// dynamiczna tablica wyjść (> i >>) w kolejności parsowania
+	t_outredir	*outs;
+	// dynamiczna tablica wyjść (> i >>) w kolejności parsowania
 	int outs_len; // ile elementów w 'outs'
 	int out_fd;   // FD do zapisu (dup2(out_fd, STDOUT_FILENO)); -1 gdy brak
 					// UWAGA: przy wykonaniu zwykle liczy się OSTATNI element outs
+
 	t_heredoc *heredocs; // dynamiczna tablica heredoców
 	int heredoc_cnt;     // liczba heredoców
 	struct s_cmd *next; 
@@ -106,6 +109,15 @@ typedef struct s_shell // stan calego shella
 	int exit_status;
 }				t_shell;
 
+typedef struct s_execctx
+{
+	int		n;       //liczba poleceń w linii
+	int		*pipes;  //tablica deskryptorów potoków (najczęściej n-1 potoków)
+	pid_t	*pidv;   //tablica PIDs procesów-dzieci (rozmiar n)
+	pid_t	last_pid;//PID ostatniego zforkowanego dziecka
+}	t_execctx;
+
+
 //****MAIN****
 int				main(int argc, char **argv, char **env);
 
@@ -121,11 +133,13 @@ void			create_list_env(t_env **stack, char **env);
 void			split_env(t_env **stack, char **str);
 void			*find_last(void *stack, size_t offset);
 t_env			*find_env(t_env *env, const char *key);
-int				env_len(t_env *list);
-void			sort_env(t_env **list, int n);
-t_env			*add_new_env(t_env **env, const char *key, const char *val);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
+t_env			*add_new_env(t_env **env, const char *key, const char *val);
+
+//****Errors****
+void			error_exit(const char *error);
+
 
 //****Input tokenization****
 char			**split_input_to_tokens(char *input);
@@ -152,27 +166,38 @@ void			sig_handler(int signal);
 void			*safe_malloc(size_t bytes);
 void			swapping(char *input, int *i, char type_of_quote);
 
-//****Errors****
-void			error_exit(const char *error);
-
 //****Cleaning functions****
 void			cmds_free(t_shell *shell);
 void			free_hrdc(t_cmd *command);
-void	free_arr(char **arr);
-void	free_token_list(t_token *head);
-void	free_env_list(t_env *env);
+void	free_split(char **tab);
 
+//****Tests****
+void			print_all_env(const t_env *stack);
+void			print_env(t_env *stack, const char *key);
+void			print_all_tokens(const t_token *stack);
+void			print_one_env(t_env *stack);
+int is_builtin(const char *name);
+
+//****Tests****
+void			print_stack_all(const t_env *stack);
 
 //***Execution***
-int is_builtin(const char *name);
 int run_single_builtin(t_shell *shell);
 int	call_builtin(t_shell *sh, char **argv);
 int apply_in_redir(t_cmd *cmd);
 int apply_out_redir(t_cmd *cmd);
+int	run_pipeline_or_external(t_shell *shell);
+void child(t_shell *sh, t_execctx *x, int i);
+int	create_pipes(t_execctx *x);
+void	close_all_pipes(t_execctx *x);
+int	pipe_read_fd(t_execctx *x, int idx);
+int	pipe_write_fd(t_execctx *x, int idx);
+void	wire_child_pipes(t_execctx *x, int i);
 
 //***Quotes***
 char *deal_with_quotes(char *input, t_shell shell);
 char	*handle_replacement(char *s, char *val, int pos, int var_len);
+
 
 /* Builtins */
 int	ft_cd(t_shell *sh, char **argv);
@@ -184,11 +209,5 @@ int	ft_export(t_shell *sh, char **argv);
 int	ft_exit(t_shell *sh, char **argv);
 int	handle_arg(t_shell *sh, const char *arg);
 int	print_sorted_export(t_env *env);
-
-//****Tests****
-void			print_all_env(const t_env *stack);
-void			print_env(t_env *stack, const char *key);
-void			print_all_tokens(const t_token *stack);
-void 			print_cmd_struct(const t_cmd *cmd);
 
 #endif

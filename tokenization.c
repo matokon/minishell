@@ -26,8 +26,6 @@ static int len_of_input(char *input)
 }
 static void add_spaces(char *input, char *parsed_input, int *i, int *j)
 {
-	printf("Input: %s\n", input);
-	printf("Parsed Input: %s\n", parsed_input);
     if (input[*i] == '<' || input[*i] == '>')
 	{
 		parsed_input[*i + *j] = ' ';
@@ -48,8 +46,6 @@ static void add_spaces(char *input, char *parsed_input, int *i, int *j)
 		*j += 2;
 		parsed_input[*i + *j] = ' ';
 	}
-	printf("Input: %s\n", input);
-	printf("Parsed Input: %s\n", parsed_input);
 }
 
 char **split_input_to_tokens(char *input)
@@ -80,6 +76,7 @@ char **split_input_to_tokens(char *input)
 
 t_token	*token_list(char **tab_of_tokens)
 {
+	//Tworzy liste tokenow za pomoca splita z funkcji powyzej^^
 	t_token *head = NULL;
 	t_token *cur = NULL;
 	t_token *last_node;
@@ -120,48 +117,9 @@ t_token_type	type_def(char *token)
 		return (TOKEN_REDIRECT_IN);
 	else if (token[i] == '>' && token[i + 1] == '>')
 		return (TOKEN_REDIRECT_APPEND);
-	else if (token[i] == '<' && token[i + 1] == '<')
+	else if (token[i] == '<')
 		return (TOKEN_HEREDOC);
 	else
 		return (TOKEN_WORD);
 	
-}
-
-t_token	lexer(char *input, t_env *env)
-{
-	t_token *list;
-	t_token *curr;
-	int	i;
-
-	list = NULL;
-	i = -1;
-	while (input[++i])
-	{
-		if (input[i] == ' ' || input[i] == '\t')
-			i++;
-		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
-			curr = append_operator(input, i);
-		else if (input[i] == '\'' || input[i] == '\"')
-		//	curr = expand_quotes();
-		else
-		//	curr = append_word(input, i, expand);
-		if (!list)
-		//	free token
-		append_to_list(&list, curr);
-		else
-	}
-	return (list);
-}
-
-void	append_to_list(t_token **head, t_token *new_token)
-{
-	t_token *last;
-
-	if (!*head)
-		*head = new_token;
-	else
-	{
-		last = find_last(*head, offsetof(t_token, next));
-		last->next = new_token;
-	}
 }

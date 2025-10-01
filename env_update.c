@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/16 18:38:53 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:16:53 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,41 +56,4 @@ t_env	*add_new_env(t_env **env, const char *key, const char *val)
 	last->next = new;
 	new->next = NULL;
 	return (new);
-}
-
-void	sort_env(t_env **list, int n)
-{
-	int		i;
-	int		j;
-	t_env	*tmp;
-
-	i = -1;
-	while (++i < n)
-	{
-		j = i + 1;
-		while (j < n)
-		{
-			if (ft_strcmp(list[i]->key, list[j]->key) > 0)
-			{
-				tmp = list[i];
-				list[i] = list[j];
-				list[j] = tmp;
-			}
-			j++;
-		}
-	}
-}
-int	env_len(t_env *stack)
-{
-	int	i;
-
-	i = 0;
-	if (!stack)
-		return (0);
-	while (stack)
-	{
-		i++;
-		stack = stack->next;
-	}
-	return (i);
 }

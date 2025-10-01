@@ -1,5 +1,16 @@
 
 #include "mini.h"
+//TO DO
+
+//static void	expand_hrdc()
+//{
+//	t_heredoc *new_hrdc;
+
+//	if (/*jesli jest w pojedynczysz cudzyslowach*/)
+//		new_hrdc[command->heredoc_cnt].expand = 0;
+//	else if (/*jesli jest w "" cudzyslowach*/)
+//		new_hrdc[command->heredoc_cnt].expand = 1;
+//}
 
 static int	handle_status(int status, char *path)
 {
@@ -21,20 +32,22 @@ static int	hrdc_path(char **new_path)
 	int		fd;
 
 	num = ft_itoa(i++);
-	if (!num)
-		return (-1);
 	path =ft_strjoin("/tmp/.hrdc_", num);
 	if (!path)
 		return (-1);
 	free(num);
 	fd = open(path, O_CREAT | O_EXCL | O_WRONLY, 0600);
-	if (fd < 0)
+	if (fd >= 0)
 	{
+		*new_path = path;
+		free(path);
+		return (fd); 
+	}
+	else
+	{	
 		free(path);
 		return (-1);
 	}
-	*new_path = path;
-	return (fd); 
 }
 
 int	read_stdin(const t_heredoc *hd)
@@ -69,6 +82,7 @@ int	read_to_file(t_heredoc *new_hrdc)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
+//		expand_hrdc();
 		add_to_file(new_hrdc, fd);
 	}
 	close(fd);
@@ -81,11 +95,10 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 {
 	char	*line;
 	size_t	len;
-	
 	while (1)
 	{
 		line = readline(">");
-		if (!line || ft_strcmp(line, new_hrdc->delim) == 0)
+		if (!line || ft_strncmp(line, new_hrdc->delim, ft_strlen(line)) == 0)
 		{
 			free(line);
 			break ;
@@ -99,7 +112,6 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 		}
 		free(line);
 	}
-	close(fd);
 	exit(0);
 }
 
@@ -111,17 +123,9 @@ void	add_heredoc(t_cmd *command, t_token *delim)
 	if (!new_hrdc)
 		return ;
 	if (command->heredoc_cnt > 0)
-	{
 		ft_memcpy(new_hrdc, command->heredocs, sizeof(t_heredoc) * command->heredoc_cnt);
-		free(command->heredocs);
-	}
 	new_hrdc[command->heredoc_cnt].delim = ft_strdup(delim->next->value);
-	if (read_to_file(&new_hrdc[command->heredoc_cnt]) < 0)
-	{
-		free(new_hrdc[command->heredoc_cnt].delim);
-		free(new_hrdc);
-		return ;
-	}
+	read_to_file(new_hrdc);
 	command->heredocs = new_hrdc;
 	command->heredoc_cnt++;
 }

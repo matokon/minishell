@@ -42,16 +42,19 @@ static char	*extract_key(const char *s, int *is_append, int *has_eq)
 	ft_memcpy(key, s, klen);
 	return (key);
 }
+
 static int	set_var(t_env **env, const char *key, const char *val, int app)
 {
 	t_env	*node;
 	char	*joined;
 
-	joined = NULL;
 	node = find_env(*env, key);
 	if (!app)
 	{
-		update_env_val(env, key, val);
+		if (node)
+			update_env_val(env, key, val);
+		else
+			add_new_env(env, key, val);
 		return (0);
 	}
 	if (!node)
@@ -60,11 +63,11 @@ static int	set_var(t_env **env, const char *key, const char *val, int app)
 		return (update_env_val(env, key, val), 0);
 	if (val)
 		joined = ft_strjoin(node->value, val);
-	else if (!val)
+	else
 		joined = ft_strjoin(node->value, "");
 	if (!joined)
 		return (1);
-	update_env_val(env, key, joined);// po co na koncu jest wywolanie tej funkcji
+	update_env_val(env, key, joined);
 	free(joined);
 	return (0);
 }
@@ -104,6 +107,43 @@ static void	print_escaped(const char *s)
 	}
 }
 
+static int	env_len(t_env *e)
+{
+	int	n;
+
+	n = 0;
+	while (e)
+	{
+		n++;
+		e = e->next;
+	}
+	return (n);
+}
+
+static void	sort_env(t_env **a, int n)
+{
+	int		i;
+	int		j;
+	t_env	*tmp;
+
+	i = 0;
+	while (i < n)
+	{
+		j = i + 1;
+		while (j < n)
+		{
+			if (ft_strcmp(a[i]->key, a[j]->key) > 0)
+			{
+				tmp = a[i];
+				a[i] = a[j];
+				a[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 static void	print_one_export(t_env *e)
 {
 	ft_putstr_fd("declare -x ", 1);
@@ -128,20 +168,23 @@ int	print_sorted_export(t_env *env)
 	arr = (t_env **)ft_calloc(n, sizeof(*arr));
 	if (!arr)
 		return (1);
-	i = -1;
-	while (++i < n)
+	i = 0;
+	while (i < n)
 	{
 		arr[i] = env;
 		env = env->next;
+		i++;
 	}
 	sort_env(arr, n);
-	i = -1;
-	while (++i < n)
+	i = 0;
+	while (i < n)
+	{
 		print_one_export(arr[i]);
+		i++;
+	}
 	free(arr);
 	return (0);
 }
-
 
 int	ft_export(t_shell *sh, char **argv)
 {
