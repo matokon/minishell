@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 14:16:38 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:03:48 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char **special_env_split(const char *str, char c)
 	if (len > 0)
 		arr[0] = ft_substr(str, 0, len);
 	if (k)
-		arr[1] = ft_substr(str, len, (i - len));
+		arr[1] = ft_substr(str, len + 1, (i - len -1));
 	else
 		arr[1] = 0;
 	arr[2] = 0;
@@ -92,4 +92,18 @@ void	create_list_env(t_env **stack, char **env)
 		split_env(stack, str);
 		free(str);
 	}
+}
+
+char	*get_var_value(char *name, t_shell *shell)
+{
+	t_env 	*node;
+	char	*value;
+
+	if (ft_strcmp(name, "?") == 0)
+		return (ft_itoa(shell->last_status));
+	node = find_env(shell->env, name);
+	if (!node)
+		return (ft_strdup(""));
+	value = node->value;
+	return (ft_strdup(value));
 }

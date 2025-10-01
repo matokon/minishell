@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredock.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/09 21:30:40 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/10/01 19:06:09 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "mini.h"
 //TO DO
@@ -119,6 +130,8 @@ void	add_heredoc(t_cmd *command, t_token *delim)
 {
 	t_heredoc *new_hrdc;
 
+	if (!delim || !delim->next || !delim->next->value)
+	return ;
 	new_hrdc = (t_heredoc *)malloc(sizeof(t_heredoc) * (command->heredoc_cnt + 1));
 	if (!new_hrdc)
 		return ;

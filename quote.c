@@ -14,6 +14,7 @@ static char	*ft_replace(char *s, char *var, char *val, int pos)
 	if (ft_strncmp(s + pos, var, var_len) != 0)
 		return (ft_strdup(s));
 	return (handle_replacement(s, val, pos, var_len));
+	return (handle_replacement(s, val, pos, var_len));
 }
 static int find_first_quote(char *input, int i)
 {
@@ -45,6 +46,7 @@ static void	if_question_mark(char **input, int i, t_shell shell)
 	free(itoa);
 	find_env(shell.env, shell.env->key);
 }
+
 
 
 char *deal_with_quotes(char *input, t_shell shell)

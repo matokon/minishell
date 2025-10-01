@@ -2,20 +2,18 @@
 
 static int parse_and_execute(char *input, t_shell *shell)
 {
-	char  **arr;
 	t_token *list;
 
 	if (!input || !*input)
 		return (0);
 	cmds_free(shell);
-    shell->cmds = NULL;
-    shell->count_cmds = 0;
-	input = deal_with_quotes(input, *shell);
-	arr = split_input_to_tokens(input);
-	list = token_list(arr);
+	input = deal_with_quotes(input, shell);
+	if (!input)
+		return (shell->last_status = 130);
+	list = lexer(input, shell);
 	shell->cmds = adding_command(list, shell);
 	if (!shell->cmds || shell->count_cmds == 0 || !(&shell->cmds[0]))
-		return (cmds_free(shell), 0); //zwalnianie pamieci w przypadku bledu
+		return (cmds_free(shell), 0);
 	if (shell->count_cmds == 1 && shell->cmds->argv && is_builtin(shell->cmds->argv[0]))
 		{
 			int st = run_single_builtin(shell);//uruchamiane bez forka na rodzicu
@@ -39,9 +37,11 @@ int read_input(t_shell *shell)
 		input = readline("\033[38;5;198mminishell$ \033[0m");
 		if (!input)
 		{
-			fprintf(stderr, "Error: readline error!\n");
+			fprintf(stderr, "Goodbye! ;*\n");
 			cmds_free(shell);
-		exit(1);
+			free_env_list(shell->env);
+			free(shell);
+			exit(1);
 		}
 		if (*input)
 		{

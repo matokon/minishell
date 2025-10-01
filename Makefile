@@ -37,10 +37,10 @@ SRC := \
 	exec_single_cmd.c executor.c pipes.c\
 	free_func.c \
 	mini_init.c \
-	tokenization.c \
+	tokenization.c tokens_utils.c \
 	redirections.c \
 	heredock.c \
-	quote.c quote2.c \
+	quote_v2.c quote2.c \
 	read_input.c \
 	signals.c \
 	utils.c \
