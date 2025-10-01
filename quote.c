@@ -69,10 +69,9 @@ char *deal_with_quotes(char *input, t_shell shell)
 			{
 				if_question_mark(&input, i, shell);
                 j = find_second_quote(input, i + 1, type_of_quote);
-
+				//comment
 			}
 			i++;
-
 		}
     }
     return input;
