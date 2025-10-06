@@ -68,7 +68,7 @@ void	free_hrdc(t_cmd *command)
 	command->heredoc_cnt = 0;
 }
 
-void	free_arr(char **arr)
+void	free_split(char **arr)
 {
 	int	i;
 

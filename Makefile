@@ -40,7 +40,7 @@ SRC := \
 	tokenization.c tokens_utils.c \
 	redirections.c \
 	heredock.c \
-	quote_v2.c quote2.c \
+	quote.c quote2.c \
 	read_input.c \
 	signals.c \
 	utils.c \

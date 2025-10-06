@@ -97,19 +97,15 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 		error_exit("Error: malloc error");
 	while (++j < i)
 		upd_arg[j] = ft_strdup(command->argv[j]);
-
 	upd_arg[i] = ft_strdup(arg);
 	upd_arg[i + 1] = NULL;
 	if (command->argv)
 	{
 		i = 0;
-		//printf("Added arg in if: %s\n", upd_arg[i]);
 		while (command->argv[i])
 			free(command->argv[i++]);
 		free(command->argv);
 	}
-	//else
-	//	printf("Added arg in else: %s\n", upd_arg[0]);
 	command->argv = upd_arg;
 }
 
@@ -127,8 +123,7 @@ t_cmd *adding_command(t_token *tokens, t_shell *shell)
 		if (!node)
 			return NULL;
 		shell->cmds->argc++;
-		//printf("node->argv: %d\n", shell->cmds->argv ? 1 : 0);
-		if (tokens->type == TOKEN_WORD)//DOESNT WORK
+		if (tokens->type == TOKEN_WORD)
 			add_cmd_argv(node, tokens->value);
 		else if (tokens->type == TOKEN_REDIRECT_IN
 				|| tokens->type == TOKEN_REDIRECT_OUT
@@ -138,10 +133,6 @@ t_cmd *adding_command(t_token *tokens, t_shell *shell)
 			add_heredoc(shell->cmds, tokens);
 		else if (tokens->type == TOKEN_PIPE)
 			node = handle_pipe(node, tokens);
-		//printf("Token type: %d,\nvalue: %s,\nnext: %p\n",
-		//	tokens->type,
-		//	tokens->value ? tokens->value : "(null)",
-		//	(void*)tokens->next);
 		tokens = tokens->next;
 	}
 	return (shell->cmds);

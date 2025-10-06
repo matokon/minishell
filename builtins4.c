@@ -43,36 +43,6 @@ static char	*extract_key(const char *s, int *is_append, int *has_eq)
 	return (key);
 }
 
-//static int	set_var(t_env **env, const char *key, const char *val, int app)
-//{
-//	t_env	*node;
-//	char	*joined;
-
-//	node = find_env(*env, key);
-//	if (!app)
-//	{
-//		if (node)
-//			update_env_val(env, key, val);
-//		else
-//			add_new_env(env, key, val);
-//		return (0);
-//	}
-//	if (!node)
-//		return (add_new_env(env, key, val), 0);
-//	if (!node->value)
-//		return (update_env_val(env, key, val), 0);
-//	joined = ft_strjoin(node->value, val ? val : "");
-//	if (val)
-//		joined = ft_strjoin(node->value, val);
-//	else
-//		joined = ft_strjoin(node->value, "");
-//	if (!joined)
-//		return (1);
-//	update_env_val(env, key, joined);
-//	free(joined);
-//	return (0);
-//}
-
 static int	set_var(t_env **env, const char *key, const char *val, int app)
 {
 	t_env	*node;
@@ -97,8 +67,7 @@ static int	set_var(t_env **env, const char *key, const char *val, int app)
 		joined = ft_strjoin(node->value, "");
 	if (!joined)
 		return (1);
-	update_env_val(env, key, joined);// po co na koncu jest wywolanie tej funkcji
-	update_env_val(env, key, joined);// po co na koncu jest wywolanie tej funkcji
+	update_env_val(env, key, joined);
 	free(joined);
 	return (0);
 }
@@ -199,12 +168,8 @@ int	print_sorted_export(t_env *env)
 	arr = (t_env **)ft_calloc(n, sizeof(*arr));
 	if (!arr)
 		return (1);
-	i = -1;
-	while (++i < n)
-	{
-		arr[i] = env;
-		env = env->next;
-	}
+	i = 0;
+	while (i < n)
 	{
 		arr[i] = env;
 		env = env->next;

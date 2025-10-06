@@ -91,7 +91,7 @@ int	ft_exit(t_shell *sh, char **argv)
 	{
 		write(2, "minishell: exit: ", 17);
 		write(2, argv[1], ft_strlen(argv[1]));
-		write(2, ": numeric argument required\n", 28);
+		//write(2, ": numeric argument required\n", 28);
 		code = 2;
 		exit((int)code);
 	}

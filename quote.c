@@ -14,7 +14,6 @@ static char	*ft_replace(char *s, char *var, char *val, int pos)
 	if (ft_strncmp(s + pos, var, var_len) != 0)
 		return (ft_strdup(s));
 	return (handle_replacement(s, val, pos, var_len));
-	return (handle_replacement(s, val, pos, var_len));
 }
 static int find_first_quote(char *input, int i)
 {
@@ -64,14 +63,16 @@ char *deal_with_quotes(char *input, t_shell shell)
         type_of_quote = input[i];
         j = find_second_quote(input, i + 1, type_of_quote);
         if(j == -1)
-            return NULL;
+		{
+			printf("Error: Unmatched quote\n");
+			return (NULL);
+		}
         while (i <= j && input[i])
 		{
 			if (type_of_quote != '\'' && input[i] == '$')
 			{
 				if_question_mark(&input, i, shell);
                 j = find_second_quote(input, i + 1, type_of_quote);
-				//comment
 			}
 			i++;
 		}

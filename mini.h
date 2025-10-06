@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/01 19:07:20 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/06 12:54:09 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void			create_list_env(t_env **stack, char **env);
 void			split_env(t_env **stack, char **str);
 void			*find_last(void *stack, size_t offset);
 t_env			*find_env(t_env *env, const char *key);
-int	env_len(t_env *list);
+//int	env_len(t_env *list);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
 t_env			*add_new_env(t_env **env, const char *key, const char *val);
@@ -141,7 +141,7 @@ t_env			*add_new_env(t_env **env, const char *key, const char *val);
 void			error_exit(const char *error);
 
 t_env			*add_new_env(t_env **env, const char *key, const char *val);
-void	sort_env(t_env **list, int n);
+//void	sort_env(t_env **list, int n);
 
 
 //****Errors****
@@ -212,7 +212,7 @@ void print_cmd_struct(const t_cmd *cmd);
 void			print_stack_all(const t_env *stack);
 
 int is_builtin(const char *name);
-void	free_arr(char **arr);
+void	free_split(char **arr);
 void	free_token_list(t_token *head);
 void	free_env_list(t_env *env);
 
@@ -232,7 +232,7 @@ int	pipe_write_fd(t_execctx *x, int idx);
 void	wire_child_pipes(t_execctx *x, int i);
 
 //***Quotes***
-char *deal_with_quotes(char *input, t_shell *shell);
+char *deal_with_quotes(char *input, t_shell shell);
 char	*handle_replacement(char *s, char *val, int pos, int var_len);
 
 
@@ -246,5 +246,9 @@ int	ft_export(t_shell *sh, char **argv);
 int	ft_exit(t_shell *sh, char **argv);
 int	handle_arg(t_shell *sh, const char *arg);
 int	print_sorted_export(t_env *env);
+
+t_token_type	type_def(char *token);
+t_token	*token_list(char **tab_of_tokens);
+char **split_input_to_tokens(char *input);
 
 #endif

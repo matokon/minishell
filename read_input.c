@@ -3,11 +3,11 @@
 static int parse_and_execute(char *input, t_shell *shell)
 {
 	t_token *list;
-
+	
 	if (!input || !*input)
 		return (0);
 	cmds_free(shell);
-	input = deal_with_quotes(input, shell);
+	input = deal_with_quotes(input, *shell);
 	if (!input)
 		return (shell->last_status = 130);
 	list = lexer(input, shell);
@@ -16,7 +16,7 @@ static int parse_and_execute(char *input, t_shell *shell)
 		return (cmds_free(shell), 0);
 	if (shell->count_cmds == 1 && shell->cmds->argv && is_builtin(shell->cmds->argv[0]))
 		{
-			int st = run_single_builtin(shell);//uruchamiane bez forka na rodzicu
+			int st = run_single_builtin(shell);
 			shell->last_status = st;
 			return st;
 		}

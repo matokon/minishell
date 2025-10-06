@@ -120,6 +120,7 @@ void	child(t_shell *sh, t_execctx *x, int i)
 	t_cmd	*cmd;
 
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	cmd = child_cmd(sh->cmds, i);
 	if (!cmd)
 		exit(0);
