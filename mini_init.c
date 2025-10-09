@@ -10,6 +10,7 @@ void set_path(t_shell *shell)
     if (!current_path)
     {
         perror("minishell: getcwd");
+        free(current_path);
         shell->last_status = 1;
         return;
     }
@@ -17,7 +18,7 @@ void set_path(t_shell *shell)
         free(shell->path);
     shell->path = current_path;
     update_env_val(&shell->env, "PWD", shell->path);
-
+    free(current_path);
     shell->last_status = 0;
 }
 

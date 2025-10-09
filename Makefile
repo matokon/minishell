@@ -38,7 +38,7 @@ SRC := \
 	free_func.c \
 	mini_init.c \
 	tokenization.c tokens_utils.c \
-	redirections.c \
+	command_init.c \
 	heredock.c \
 	quote.c quote2.c \
 	read_input.c \

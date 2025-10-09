@@ -58,13 +58,13 @@ void	free_hrdc(t_cmd *command)
 	int	i;
 
 	i = command->heredoc_cnt;
-	while (i--)
+	while (i-- > 0)
 	{
 		free(command->heredocs[i].delim);
 		free(command->heredocs[i].tmp_path);
 	}
 	free(command->heredocs);
-	command->heredocs = NULL;
+	command->heredocs= NULL;
 	command->heredoc_cnt = 0;
 }
 

@@ -42,7 +42,7 @@ int	ft_cd(t_shell *sh, char **argv)
 	if (argv[1] && argv[2])
 	{
 		write(2, "minishell: cd: too many arguments\n", 34);
-		return (1);
+		return (7);
 	}
 	if (!getcwd(old, sizeof(old)))
 		old[0] = '\0';

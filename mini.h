@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/06 12:54:09 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/09 19:54:58 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ typedef struct s_outredir
 typedef struct s_heredoc
 {
 	char *delim; // delimiter (np. "EOF")
-	int expand;  // 1: wykonywać ekspansje zmiennych, 0: bez ekspansji
-	char		*tmp_path;
-	// ścieżka tymczasowego pliku z treścią heredoca (jeśli tak realizujesz)
+	char		*tmp_path; // ścieżka tymczasowego pliku z treścią heredoca (jeśli tak realizujesz)
 }				t_heredoc;
 
 typedef struct s_cmd
@@ -78,16 +76,17 @@ typedef struct s_cmd
 	char *infile; // ścieżka pliku po '<' (ostatnie < wygrywa)
 	int in_fd;    // FD do odczytu (dup2(in_fd, STDIN_FILENO)); -1 gdy brak
 
-	t_outredir	*outs;
-	// dynamiczna tablica wyjść (> i >>) w kolejności parsowania
+	int		last_in_type;      /* 0 = none, 1 = infile, 2 = heredoc */
+	int		last_heredoc_idx;
+	
+	t_outredir	*outs; // dynamiczna tablica wyjść (> i >>) w kolejności parsowania
 	int outs_len; // ile elementów w 'outs'
 	int out_fd;   // FD do zapisu (dup2(out_fd, STDOUT_FILENO)); -1 gdy brak
 					// UWAGA: przy wykonaniu zwykle liczy się OSTATNI element outs
 
 	t_heredoc *heredocs; // dynamiczna tablica heredoców
 	int heredoc_cnt;     // liczba heredoców
-	struct s_cmd *next; 
-		// kolejna komenda w pipeline (A | B | C-> lista jednokierunkowa
+	struct s_cmd *next;  // kolejna komenda w pipeline (A | B | C-> lista jednokierunkowa
 
 }				t_cmd;
 

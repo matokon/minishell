@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/06 12:54:26 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:24:21 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*get_var_value(char *name, t_shell *shell)
 	if (ft_strcmp(name, "?") == 0)
 		return (ft_itoa(shell->last_status));
 	node = find_env(shell->env, name);
-	if (!node)
+	if (!node || !node->value)
 		return (ft_strdup(""));
 	value = node->value;
 	return (ft_strdup(value));

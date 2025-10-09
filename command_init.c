@@ -14,7 +14,6 @@ static void	init_cmd_defaults(t_cmd *cmd)
 	cmd->next = NULL;
 }
 
-/* tworzy nową komendę i dopina ją na końcu listy *head */
 t_cmd	*command_init(t_shell **sh, t_cmd **head)
 {
 	t_cmd	*cmd;

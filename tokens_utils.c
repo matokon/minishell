@@ -92,6 +92,7 @@ t_token	*append_word(char *input, int *i, t_shell *shell)
 		{
 			tmp = expand_var(input, i, shell);
 			word = join_free(&word, tmp);
+			free(tmp);
 		}
 		else
 		{
