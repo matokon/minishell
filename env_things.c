@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/08 12:24:21 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:29:16 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,13 @@ void	split_env(t_env **stack, char **str)
 	else
 		new_node->key = NULL;
 	if (str[1])
+	{	
 		new_node->value = ft_strdup(str[1]);
+		if (!new_node->value)
+			new_node->value = ft_strdup("");
+		if (!new_node->value)
+			return ;
+	}
 	else
 		new_node->value = NULL;
 	new_node->next = NULL;
@@ -97,13 +103,14 @@ void	create_list_env(t_env **stack, char **env)
 char	*get_var_value(char *name, t_shell *shell)
 {
 	t_env 	*node;
-	char	*value;
 
+
+	if (!name || !shell)
+		return (ft_strdup(""));
 	if (ft_strcmp(name, "?") == 0)
 		return (ft_itoa(shell->last_status));
 	node = find_env(shell->env, name);
 	if (!node || !node->value)
 		return (ft_strdup(""));
-	value = node->value;
-	return (ft_strdup(value));
+	return (ft_strdup(node->value));
 }

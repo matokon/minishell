@@ -29,7 +29,7 @@ void	close_all_pipes(t_execctx *x)
 	i = 0;
 	while (i < x->n - 1)
 	{
-		close(x->pipes[i * 2]);//closes a file descriptor
+		close(x->pipes[i * 2]);
 		close(x->pipes[i * 2 + 1]);
 		i++;
 	}

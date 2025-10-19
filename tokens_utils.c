@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 20:39:03 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/10/19 20:54:51 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
-t_token *append_operator(char *input, int *i)
+t_token	*append_operator(char *input, int *i)
 {
-	t_token *new_token;
+	t_token	*new_token;
 
 	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
 	if (!new_token)
@@ -49,10 +61,14 @@ void	helper_redir(char *input, int i, t_token *new_token)
 		new_token->type = TOKEN_REDIRECT_IN;
 		new_token->value = ft_strdup("<");
 	}
+	if (!new_token->value)
+	{
+		free(new_token);
+		new_token = NULL;
+	}
 }
 
-
-char *expand_var(char *input, int *i, t_shell *shell)
+char	*expand_var(char *input, int *i, t_shell *shell)
 {
 	char	*key;
 	char	*word;
@@ -67,7 +83,7 @@ char *expand_var(char *input, int *i, t_shell *shell)
 	}
 	while (input[*i] && (ft_isalnum(input[*i]) || input[*i] == '_'))
 		(*i)++;
-	key = ft_substr(input, start, *i - start + 1);
+	key = ft_substr(input, start, *i - start);
 	if (!key)
 		return (NULL);
 	word = get_var_value(key, shell);
@@ -77,7 +93,7 @@ char *expand_var(char *input, int *i, t_shell *shell)
 
 t_token	*append_word(char *input, int *i, t_shell *shell)
 {
-	t_token *new_token;
+	t_token	*new_token;
 	char	*word;
 	char	*tmp;
 
@@ -85,8 +101,7 @@ t_token	*append_word(char *input, int *i, t_shell *shell)
 	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
 	if (!new_token)
 		return (NULL);
-	while (input[*i] && !(input[*i] == ' ' || input[*i] == '\t' || input[*i] == '|' 
-		|| input[*i] == '<' || input[*i] == '>' || input[*i] == '\'' || input[*i] == '\"'))
+	while (input[*i] && !(is_operator(input[*i])))
 	{
 		if (input[*i] == '$')
 		{
@@ -103,4 +118,38 @@ t_token	*append_word(char *input, int *i, t_shell *shell)
 	new_token->type = TOKEN_WORD;
 	new_token->value = word;
 	return (new_token);
+}
+
+t_token	*handle_quote(char *input, int *i, t_shell *shell)
+{
+	t_token	*new_token;
+	char	*word;
+	char	*tmp;
+	char	type_of_quote;
+	int		j;
+
+	word = ft_strdup("");
+	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
+	if (!new_token)
+		return (NULL);
+	type_of_quote = input[*i];
+	j = find_second_quote(input, *i + 1, type_of_quote);
+	(*i)++;
+	while (input[*i] && *i < j)
+	{
+		if (input[*i] == '$' && type_of_quote == '"')
+		{
+			tmp = expand_var(input, i, shell);
+			word = join_free(&word, tmp);
+			free(tmp);
+		}
+		else
+		{
+			word = join_char(&word, input[*i]);
+			(*i)++;
+		}
+	}
+	if (input[*i] == type_of_quote)
+		(*i)++;
+	return (new_token->type = TOKEN_WORD, new_token->value = word, new_token);
 }

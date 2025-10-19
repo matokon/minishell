@@ -6,6 +6,8 @@ static void	init_cmd_defaults(t_cmd *cmd)
 	cmd->argc = 0;
 	cmd->infile = NULL;
 	cmd->in_fd = -1;
+	cmd->last_in_type = 0;
+	cmd->last_heredoc_idx = -1;
 	cmd->outs = NULL;
 	cmd->outs_len = 0;
 	cmd->out_fd = -1;
@@ -64,17 +66,22 @@ void	handle_redirects(t_cmd *command, t_token *tokens)
 	if (!command->argv || !tokens->next || tokens->next->type != TOKEN_WORD)
 		printf("Error: Wrong use of redirections :(\n");
 	if (tokens->type == TOKEN_REDIRECT_IN)
+	{
+		if (command->infile)
+			free(command->infile);
 		command->infile = ft_strdup(tokens->next->value);
-	if (tokens->type == TOKEN_REDIRECT_OUT)
+		command->last_in_type = 1;
+	}
+	else if (tokens->type == TOKEN_REDIRECT_OUT)
 		add_redir(command, tokens->next->value, 0);
-	if (tokens->type == TOKEN_REDIRECT_APPEND)
+	else if (tokens->type == TOKEN_REDIRECT_APPEND)
 		add_redir(command, tokens->next->value, 1);
 }
 static t_cmd	*handle_pipe(t_cmd *node, t_token *tokens)
 {
 	if (node->argv == NULL || tokens->next == NULL
 		|| tokens->next->type != TOKEN_WORD)
-		error_exit("Error: Wrong use of pipes :(\n");
+		printf("Error: Wrong use of pipes :(\n");
 	return (NULL);
 }
 

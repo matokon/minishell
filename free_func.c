@@ -1,6 +1,7 @@
 #include "mini.h"
 
-static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
+
+static void	one_cmd_free(t_cmd *cmd)
 {
 	int i;
 
@@ -32,13 +33,13 @@ static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 		free_hrdc(cmd);
 }
 
-void cmds_free(t_shell *shell)
+void	cmds_free(t_shell *shell)
 {
-	t_cmd	*curr;
-	t_cmd	*next;
+	t_cmd *curr;
+	t_cmd *next;
 
 	if (!shell || !shell->cmds)
-		return;
+		return ;
 	curr = shell->cmds;
 	while (curr)
 	{
@@ -51,11 +52,9 @@ void cmds_free(t_shell *shell)
 	shell->count_cmds = 0;
 }
 
-
-
 void	free_hrdc(t_cmd *command)
 {
-	int	i;
+	int i;
 
 	i = command->heredoc_cnt;
 	while (i-- > 0)
@@ -64,13 +63,13 @@ void	free_hrdc(t_cmd *command)
 		free(command->heredocs[i].tmp_path);
 	}
 	free(command->heredocs);
-	command->heredocs= NULL;
+	command->heredocs = NULL;
 	command->heredoc_cnt = 0;
 }
 
 void	free_split(char **arr)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!arr)
@@ -84,7 +83,7 @@ void	free_split(char **arr)
 }
 void	free_token_list(t_token *head)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	while (head)
 	{

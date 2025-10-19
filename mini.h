@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/09 19:54:58 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/19 17:21:32 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_cmd
 
 	t_heredoc *heredocs; // dynamiczna tablica heredoców
 	int heredoc_cnt;     // liczba heredoców
-	struct s_cmd *next;  // kolejna komenda w pipeline (A | B | C-> lista jednokierunkowa
+	struct s_cmd *next;  // kolejna komenda w pipeline A | B | C-> lista jednokierunkowa
 
 }				t_cmd;
 
@@ -179,7 +179,7 @@ void			sig_handler(int signal);
 
 //****Utils****
 void			*safe_malloc(size_t bytes);
-void			swapping(char *input, int *i, char type_of_quote);
+int				is_operator(char c);
 
 //****Errors****
 void			error_exit(const char *error);
@@ -233,7 +233,7 @@ void	wire_child_pipes(t_execctx *x, int i);
 //***Quotes***
 char *deal_with_quotes(char *input, t_shell shell);
 char	*handle_replacement(char *s, char *val, int pos, int var_len);
-
+char	*expand_and_strip_quotes(char *input, t_shell *shell);
 
 /* Builtins */
 int	ft_cd(t_shell *sh, char **argv);
@@ -246,8 +246,6 @@ int	ft_exit(t_shell *sh, char **argv);
 int	handle_arg(t_shell *sh, const char *arg);
 int	print_sorted_export(t_env *env);
 
-t_token_type	type_def(char *token);
-t_token	*token_list(char **tab_of_tokens);
-char **split_input_to_tokens(char *input);
+t_token	*handle_quote(char *input, int *i, t_shell *shell);
 
 #endif

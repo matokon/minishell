@@ -91,7 +91,6 @@ int	ft_exit(t_shell *sh, char **argv)
 	{
 		write(2, "minishell: exit: ", 17);
 		write(2, argv[1], ft_strlen(argv[1]));
-		//write(2, ": numeric argument required\n", 28);
 		code = 2;
 		exit((int)code);
 	}
@@ -100,6 +99,8 @@ int	ft_exit(t_shell *sh, char **argv)
 			"minishell: exit: too many arguments\n", 36), 1);
 	else
 		code = (long)ft_atol(argv[1]);
+	free_env_list(sh->env);
 	cmds_free(sh);
+	free(sh);
 	exit((int)((unsigned char)code));
 }

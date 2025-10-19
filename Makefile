@@ -40,12 +40,13 @@ SRC := \
 	tokenization.c tokens_utils.c \
 	command_init.c \
 	heredock.c \
-	quote.c quote2.c \
+	quote2.c \
 	read_input.c \
 	signals.c \
 	utils.c \
 	get_next_line/get_next_line.c \
-	get_next_line/get_next_line_utils.c
+	get_next_line/get_next_line_utils.c \
+	handle_quote.c
 
 OBJ := $(SRC:.c=.o)
 

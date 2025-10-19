@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/06 12:29:43 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/13 20:32:41 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	update_env_val(t_env **env, const char *key, const char *new_val)
 		free(node->value);
 		node->value = ft_strdup(new_val);
 	}
-	else//check
+	else
 		add_new_env(env, key, new_val);
 }
 
