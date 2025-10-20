@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/19 17:21:32 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:13:18 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,5 +247,7 @@ int	handle_arg(t_shell *sh, const char *arg);
 int	print_sorted_export(t_env *env);
 
 t_token	*handle_quote(char *input, int *i, t_shell *shell);
-
+int	env_len(t_env *e);
+t_cmd	*handle_pipe(t_cmd *node, t_token *tokens);
+void	init_cmd_defaults(t_cmd *cmd);
 #endif

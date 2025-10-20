@@ -40,10 +40,7 @@ int	ft_cd(t_shell *sh, char **argv)
 	int		print;
 
 	if (argv[1] && argv[2])
-	{
-		write(2, "minishell: cd: too many arguments\n", 34);
-		return (7);
-	}
+		return (write(2, "minishell: cd: too many arguments\n", 34), 7);
 	if (!getcwd(old, sizeof(old)))
 		old[0] = '\0';
 	if (select_target(sh, argv, &target, &print))
@@ -55,10 +52,7 @@ int	ft_cd(t_shell *sh, char **argv)
 		return (1);
 	}
 	if (print && getcwd(now, sizeof(now)))
-	{
-		write(1, now, ft_strlen(now));
-		write(1, "\n", 1);
-	}
+		printf("%s\n", now);
 	update_env_val(&sh->env, "OLDPWD", old);
 	if (getcwd(now, sizeof(now)))
 		update_env_val(&sh->env, "PWD", now);

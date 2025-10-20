@@ -2,7 +2,7 @@
 
 static int	is_nflag(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s || s[0] != '-' || s[1] == '\0')
 		return (0);
@@ -14,9 +14,9 @@ static int	is_nflag(const char *s)
 
 int	ft_echo(t_shell *sh, char **argv)
 {
-	int i;
-	int nflag;
-	int first;
+	int	i;
+	int	nflag;
+	int	first;
 
 	(void)sh;
 	i = 1;
@@ -62,7 +62,7 @@ int	ft_env(t_shell *sh, char **argv)
 
 static int	is_numeric_str(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s || !*s)
 		return (0);
@@ -96,7 +96,7 @@ int	ft_exit(t_shell *sh, char **argv)
 	}
 	else if (argv[2])
 		return (write(2,
-			"minishell: exit: too many arguments\n", 36), 1);
+				"minishell: exit: too many arguments\n", 36), 1);
 	else
 		code = (long)ft_atol(argv[1]);
 	free_env_list(sh->env);

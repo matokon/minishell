@@ -2,7 +2,7 @@
 
 static int	valid_ident_unset(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s || !(ft_isalpha((unsigned char)s[0]) || s[0] == '_'))
 		return (0);
@@ -29,8 +29,8 @@ static void	delete_env_node(t_env **env, t_env *prev, t_env *cur)
 
 static void	unset_one(t_env **env, const char *key)
 {
-	t_env *prev;
-	t_env *cur;
+	t_env	*prev;
+	t_env	*cur;
 
 	if (!env || !*env || !key)
 		return ;
@@ -50,8 +50,8 @@ static void	unset_one(t_env **env, const char *key)
 
 int	ft_unset(t_shell *sh, char **argv)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = 1;
 	ret = 0;

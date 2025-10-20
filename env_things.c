@@ -6,19 +6,19 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/15 14:29:16 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:15:47 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-static char **special_env_split(const char *str, char c)
+static char	**special_env_split(const char *str, char c)
 {
 	char	**arr;
 	size_t	i;
 	size_t	len;
 	char	*k;
-	
+
 	if (!str)
 		return (0);
 	i = -1;
@@ -54,7 +54,7 @@ void	split_env(t_env **stack, char **str)
 {
 	t_env	*last_node;
 	t_env	*new_node;
-	
+
 	new_node = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!new_node)
 		return ;
@@ -63,7 +63,7 @@ void	split_env(t_env **stack, char **str)
 	else
 		new_node->key = NULL;
 	if (str[1])
-	{	
+	{
 		new_node->value = ft_strdup(str[1]);
 		if (!new_node->value)
 			new_node->value = ft_strdup("");
@@ -87,8 +87,8 @@ void	split_env(t_env **stack, char **str)
 void	create_list_env(t_env **stack, char **env)
 {
 	char	**str;
-	int	i;
-	
+	int		i;
+
 	i = -1;
 	while (env[++i])
 	{
@@ -102,8 +102,7 @@ void	create_list_env(t_env **stack, char **env)
 
 char	*get_var_value(char *name, t_shell *shell)
 {
-	t_env 	*node;
-
+	t_env	*node;
 
 	if (!name || !shell)
 		return (ft_strdup(""));
