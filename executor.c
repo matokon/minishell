@@ -24,7 +24,7 @@ static int	wait_for_all(t_execctx *x)
 	}
 	if (WIFEXITED(last))
 		return (WEXITSTATUS(last));
-	else if(WIFSIGNALED(last))
+	else if (WIFSIGNALED(last))
 		return (128 + WTERMSIG(last));
 	return (1);
 }
@@ -67,7 +67,6 @@ int	run_pipeline_or_external(t_shell *shell)
 		free_execctx(&x);
 		shell->last_status = 1;
 		return (1);
-
 	}
 	i = 0;
 	while (i < x.n)

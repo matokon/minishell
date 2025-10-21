@@ -6,23 +6,11 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:40 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/13 21:28:06 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:57:42 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
-
-static int	handle_status(int status, char *path)
-{
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		unlink(path);
-		return (130);
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-		return (WEXITSTATUS(status));
-	return (0);
-}
 
 static int	hrdc_path(char **new_path)
 {

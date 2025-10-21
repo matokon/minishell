@@ -1,11 +1,10 @@
 #include "mini.h"
 
-
 int	main(int argc, char **argv, char **env)
 {
-	t_shell *shell;
-	(void)argv;
+	t_shell	*shell;
 
+	(void)argv;
 	if (argc != 1)
 		return (1);
 	if (env == NULL)

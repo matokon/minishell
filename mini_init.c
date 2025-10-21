@@ -6,7 +6,7 @@ void	set_path(t_shell *shell)
 
 	if (!shell)
 		return ;
-	current_path = getcwd(NULL, 0);// get_env_val("PWD", env);zamiencie getcwd na wlasna funkcje I NIE UZYWAJVIE GETENV ZEB DOSTAC PATH
+	current_path = getcwd(NULL, 0);
 	if (!current_path)
 	{
 		perror("minishell: getcwd");

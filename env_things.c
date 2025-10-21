@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/20 11:15:47 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:29:17 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,21 @@ void	*find_last(void *stack, size_t offset)
 	return (stack);
 }
 
-void	split_env(t_env **stack, char **str)
+static void	add_next(t_env **stack, t_env *new_node)
 {
 	t_env	*last_node;
+
+	if (*stack == NULL)
+		*stack = new_node;
+	else
+	{
+		last_node = find_last(*stack, offsetof(t_env, next));
+		last_node->next = new_node;
+	}
+}
+
+void	split_env(t_env **stack, char **str)
+{
 	t_env	*new_node;
 
 	new_node = (t_env *)ft_calloc(1, sizeof(t_env));
@@ -73,13 +85,7 @@ void	split_env(t_env **stack, char **str)
 	else
 		new_node->value = NULL;
 	new_node->next = NULL;
-	if (*stack == NULL)
-		*stack = new_node;
-	else
-	{
-		last_node = find_last(*stack, offsetof(t_env, next));
-		last_node->next = new_node;
-	}
+	add_next(stack, new_node);
 	free(str[0]);
 	free(str[1]);
 }
@@ -98,18 +104,4 @@ void	create_list_env(t_env **stack, char **env)
 		split_env(stack, str);
 		free(str);
 	}
-}
-
-char	*get_var_value(char *name, t_shell *shell)
-{
-	t_env	*node;
-
-	if (!name || !shell)
-		return (ft_strdup(""));
-	if (ft_strcmp(name, "?") == 0)
-		return (ft_itoa(shell->last_status));
-	node = find_env(shell->env, name);
-	if (!node || !node->value)
-		return (ft_strdup(""));
-	return (ft_strdup(node->value));
 }

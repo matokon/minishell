@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:39:03 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/20 10:10:48 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/21 16:06:44 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,49 +118,4 @@ t_token	*append_word(char *input, int *i, t_shell *shell)
 	new_token->type = TOKEN_WORD;
 	new_token->value = word;
 	return (new_token);
-}
-
-static int	find_second_quote(char *input, int i, char type_of_quote)
-{
-	while (input[i])
-	{
-		if (input[i] == type_of_quote)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-t_token	*handle_quote(char *input, int *i, t_shell *shell)
-{
-	t_token	*new_token;
-	char	*word;
-	char	*tmp;
-	char	type_of_quote;
-	int		j;
-
-	word = ft_strdup("");
-	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
-	if (!new_token)
-		return (NULL);
-	type_of_quote = input[*i];
-	j = find_second_quote(input, *i + 1, type_of_quote);
-	(*i)++;
-	while (input[*i] && *i < j)
-	{
-		if (input[*i] == '$' && type_of_quote == '"')
-		{
-			tmp = expand_var(input, i, shell);
-			word = join_free(&word, tmp);
-			free(tmp);
-		}
-		else
-		{
-			word = join_char(&word, input[*i]);
-			(*i)++;
-		}
-	}
-	if (input[*i] == type_of_quote)
-		(*i)++;
-	return (new_token->type = TOKEN_WORD, new_token->value = word, new_token);
 }

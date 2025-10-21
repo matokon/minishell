@@ -172,29 +172,29 @@
 //	return (input);
 //}
 
-static char	*remove_quotes(char *s, int start, int end)
-{
-	int		len_src;
-	int		len_new;
-	char	*out;
-	int		len_mid;
+//static char	*remove_quotes(char *s, int start, int end)
+//{
+//	int		len_src;
+//	int		len_new;
+//	char	*out;
+//	int		len_mid;
 
-	len_src = ft_strlen(s);
-	len_mid = end - start - 1;
-	if (len_mid < 0)
-		return (ft_strdup(s));
-	len_new = len_src - 2;
-	out = safe_malloc(len_new + 1);
-	if (start > 0)
-		ft_memcpy(out, s, start);
-	if (len_mid > 0)
-		ft_memcpy(out + start, s + start + 1, len_mid);
-	if (s[end + 1])
-		ft_memcpy(out + start + len_mid, s + end + 1,
-			len_src - (end + 1));
-	out[len_new] = '\0';
-	return (out);
-}
+//	len_src = ft_strlen(s);
+//	len_mid = end - start - 1;
+//	if (len_mid < 0)
+//		return (ft_strdup(s));
+//	len_new = len_src - 2;
+//	out = safe_malloc(len_new + 1);
+//	if (start > 0)
+//		ft_memcpy(out, s, start);
+//	if (len_mid > 0)
+//		ft_memcpy(out + start, s + start + 1, len_mid);
+//	if (s[end + 1])
+//		ft_memcpy(out + start + len_mid, s + end + 1,
+//			len_src - (end + 1));
+//	out[len_new] = '\0';
+//	return (out);
+//}
 
 //static int	find_first_quote(char *input, int i)
 //{
@@ -218,31 +218,31 @@ static char	*remove_quotes(char *s, int start, int end)
 //	return (-1);
 //}
 
-static char	*ft_replace(char *s, char *var, char *val, int pos)
-{
-	int	s_len;
-	int	var_len;
+//static char	*ft_replace(char *s, char *var, char *val, int pos)
+//{
+//	int	s_len;
+//	int	var_len;
 
-	if (!s || !var || !val)
-		return (NULL);
-	s_len = ft_strlen(s);
-	var_len = ft_strlen(var);
-	if (pos < 0 || pos >= s_len)
-		return (ft_strdup(s));
-	if (ft_strncmp(s + pos, var, var_len) != 0)
-		return (ft_strdup(s));
-	return (handle_replacement(s, val, pos, var_len));
-}
+//	if (!s || !var || !val)
+//		return (NULL);
+//	s_len = ft_strlen(s);
+//	var_len = ft_strlen(var);
+//	if (pos < 0 || pos >= s_len)
+//		return (ft_strdup(s));
+//	if (ft_strncmp(s + pos, var, var_len) != 0)
+//		return (ft_strdup(s));
+//	return (handle_replacement(s, val, pos, var_len));
+//}
 
-static void	if_question_mark(char **input, int i, t_shell shell)
-{
-	char	*itoa;
+//static void	if_question_mark(char **input, int i, t_shell shell)
+//{
+//	char	*itoa;
 
-	itoa = ft_itoa(shell.last_status);
-	if ((*input)[i + 1] == '?')
-		*input = ft_replace(*input, "$?", itoa, i);
-	free(itoa);
-}
+//	itoa = ft_itoa(shell.last_status);
+//	if ((*input)[i + 1] == '?')
+//		*input = ft_replace(*input, "$?", itoa, i);
+//	free(itoa);
+//}
 
 //char *deal_with_quotes(char *input, t_shell shell)
 //{
@@ -275,4 +275,28 @@ static void	if_question_mark(char **input, int i, t_shell shell)
 //		i = j + 1;
 //	}
 //	return (input);
+//}
+
+//char	*handle_replacement(char *s, char *val, int pos, int var_len)
+//{
+//	int		len_src;
+//	int		len_val;
+//	int		len_new;
+//	int		len_tail;
+//	char	*out;
+
+//	len_src = ft_strlen(s);
+//	len_val = ft_strlen(val);
+//	len_new = len_src - var_len + len_val;
+//	if (len_new < 0)
+//		return (ft_strdup(s));
+//	out = safe_malloc(len_new + 1);
+//	if (pos > 0)
+//		ft_memcpy(out, s, pos);
+//	ft_memcpy(out + pos, val, len_val);
+//	len_tail = len_src - (pos + var_len);
+//	if (len_tail > 0)
+//		ft_memcpy(out + pos + len_val, s + pos + var_len, len_tail);
+//	out[len_new] = '\0';
+//	return (out);
 //}

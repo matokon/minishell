@@ -1,32 +1,10 @@
 #include "mini.h"
 
-static char	*join_path(const char *dir, const char *bin)
-{
-	char	*tmp;
-	char	*res;
-
-	tmp = ft_strjoin(dir, "/");
-	res = ft_strjoin(tmp, bin);
-	free(tmp);
-	return (res);
-}
-
 static t_cmd	*child_cmd(t_cmd *head, int i)
 {
 	while (head && i-- > 0)
 		head = head->next;
 	return (head);
-}
-
-static int	has_slash(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s && s[i])
-		if (s[i++] == '/')
-			return (1);
-	return (0);
 }
 
 static char	*resolve_in_path(t_shell *sh, const char *bin)
@@ -55,18 +33,17 @@ static char	*resolve_in_path(t_shell *sh, const char *bin)
 
 static char	**env_list_to_envp(t_env *env)
 {
-	int		len;
 	char	**envp;
 	int		i;
 	t_env	*cur;
 	char	*kv;
 	char	*eq;
 
-	len = 0;
+	i = 0;
 	cur = env;
-	while (cur && ++len)
+	while (cur && ++i)
 		cur = cur->next;
-	envp = (char **)safe_malloc(sizeof(char *) * (len + 1));
+	envp = (char **)safe_malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (env)
 	{
@@ -91,9 +68,7 @@ static void	exec_child_command(t_shell *sh, t_cmd *cmd)
 	if (!cmd->argv || !cmd->argv[0])
 		exit(0);
 	if (is_builtin(cmd->argv[0]))
-	{
 		exit(call_builtin(sh, cmd->argv));
-	}
 	envp = env_list_to_envp(sh->env);
 	if (has_slash(cmd->argv[0]))
 		path = ft_strdup(cmd->argv[0]);
@@ -124,9 +99,9 @@ void	child(t_shell *sh, t_execctx *x, int i)
 	cmd = child_cmd(sh->cmds, i);
 	if (!cmd)
 		exit(0);
-	wire_child_pipes(x, i); //podpina pipe
+	wire_child_pipes(x, i);
 	close_all_pipes(x);
-	if ((cmd->infile && *cmd->infile) //obsuga >> > < <<
+	if ((cmd->infile && *cmd->infile)
 		|| cmd->heredoc_cnt > 0
 		|| cmd->in_fd != -1)
 	{

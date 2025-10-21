@@ -82,7 +82,7 @@ void	ft_bzero(void *s, size_t n)
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void *p;
+	void	*p;
 
 	if (size != 0 && nmemb != 0)
 		if (SIZE_MAX / nmemb <= size)

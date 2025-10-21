@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:07:44 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/20 11:14:19 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:57:52 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,30 @@ t_cmd	*handle_pipe(t_cmd *node, t_token *tokens)
 		|| tokens->next->type != TOKEN_WORD)
 		printf("Error: Wrong use of pipes :(\n");
 	return (NULL);
+}
+
+char	*get_var_value(char *name, t_shell *shell)
+{
+	t_env	*node;
+
+	if (!name || !shell)
+		return (ft_strdup(""));
+	if (ft_strcmp(name, "?") == 0)
+		return (ft_itoa(shell->last_status));
+	node = find_env(shell->env, name);
+	if (!node || !node->value)
+		return (ft_strdup(""));
+	return (ft_strdup(node->value));
+}
+
+int	handle_status(int status, char *path)
+{
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		unlink(path);
+		return (130);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+		return (WEXITSTATUS(status));
+	return (0);
 }

@@ -121,12 +121,16 @@ t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 		else if (tokens->type == TOKEN_REDIRECT_IN
 			|| tokens->type == TOKEN_REDIRECT_OUT
 			|| tokens->type == TOKEN_REDIRECT_APPEND)
+		{	
 			handle_redirects(node, tokens);
+			tokens = tokens->next;
+		}
 		else if (tokens->type == TOKEN_HEREDOC)
 			add_heredoc(shell->cmds, tokens);
 		else if (tokens->type == TOKEN_PIPE)
 			node = handle_pipe(node, tokens);
 		tokens = tokens->next;
 	}
+	print_cmd_struct(shell->cmds);
 	return (shell->cmds);
 }

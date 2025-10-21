@@ -1,9 +1,20 @@
-#include "mini.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_func.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/21 19:47:49 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/10/21 19:47:49 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "mini.h"
 
 static void	one_cmd_free(t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	if (!cmd)
 		return ;
@@ -11,10 +22,7 @@ static void	one_cmd_free(t_cmd *cmd)
 	{
 		i = 0;
 		while (cmd->argv[i])
-		{
-			free(cmd->argv[i]);
-			i++;
-		}
+			free(cmd->argv[i++]);
 		free(cmd->argv);
 	}
 	if (cmd->infile)
@@ -23,10 +31,8 @@ static void	one_cmd_free(t_cmd *cmd)
 	{
 		i = -1;
 		while (++i < cmd->outs_len)
-		{
 			if (cmd->outs[i].path)
 				free(cmd->outs[i].path);
-		}
 		free(cmd->outs);
 	}
 	if (cmd->heredocs)
@@ -35,8 +41,8 @@ static void	one_cmd_free(t_cmd *cmd)
 
 void	cmds_free(t_shell *shell)
 {
-	t_cmd *curr;
-	t_cmd *next;
+	t_cmd	*curr;
+	t_cmd	*next;
 
 	if (!shell || !shell->cmds)
 		return ;
@@ -54,7 +60,7 @@ void	cmds_free(t_shell *shell)
 
 void	free_hrdc(t_cmd *command)
 {
-	int i;
+	int	i;
 
 	i = command->heredoc_cnt;
 	while (i-- > 0)
@@ -69,7 +75,7 @@ void	free_hrdc(t_cmd *command)
 
 void	free_split(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!arr)
@@ -81,9 +87,10 @@ void	free_split(char **arr)
 	}
 	free(arr);
 }
+
 void	free_token_list(t_token *head)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	while (head)
 	{
@@ -92,23 +99,5 @@ void	free_token_list(t_token *head)
 			free(head->value);
 		free(head);
 		head = tmp;
-	}
-}
-
-void	free_env_list(t_env *env)
-{
-	t_env *tmp;
-
-	if (!env)
-		return ;
-	while (env)
-	{
-		tmp = env->next;
-		if (env->key)
-			free(env->key);
-		if (env->value)
-			free(env->value);
-		free(env);
-		env = tmp;
 	}
 }

@@ -22,6 +22,7 @@ char	*ft_joinfree(char *buf, char *tmp)
 	tmp2 = NULL;
 	return (buf);
 }
+
 char	*get_rest_of_file(char *result)
 {
 	char	*rest_of_file;
