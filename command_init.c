@@ -131,6 +131,6 @@ t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 			node = handle_pipe(node, tokens);
 		tokens = tokens->next;
 	}
-	print_cmd_struct(shell->cmds);
+	//print_cmd_struct(shell->cmds);
 	return (shell->cmds);
 }

@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 21:07:44 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:14:21 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,5 +203,6 @@ void	free_env_list(t_env *env);
 //****Errors****
 void	error_exit(const char *error);
 void print_cmd_struct(const t_cmd *cmd);
+void	apply_redirs(t_cmd *cmd);
 
 #endif

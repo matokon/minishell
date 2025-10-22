@@ -101,17 +101,18 @@ void	child(t_shell *sh, t_execctx *x, int i)
 		exit(0);
 	wire_child_pipes(x, i);
 	close_all_pipes(x);
-	if ((cmd->infile && *cmd->infile)
-		|| cmd->heredoc_cnt > 0
-		|| cmd->in_fd != -1)
-	{
-		if (apply_in_redir(cmd) != 0)
-			exit(1);
-	}
-	if (cmd->outs_len > 0 || cmd->out_fd != -1)
-	{
-		if (apply_out_redir(cmd) != 0)
-			exit(1);
-	}
+	apply_redirs(cmd);
+	//if ((cmd->infile && *cmd->infile)
+	//	|| cmd->heredoc_cnt > 0
+	//	|| cmd->in_fd != -1)
+	//{
+	//	if (apply_in_redir(cmd) != 0)
+	//		exit(1);
+	//}
+	//if (cmd->outs_len > 0 || cmd->out_fd != -1)
+	//{
+	//	if (apply_out_redir(cmd) != 0)
+	//		exit(1);
+	//}
 	exec_child_command(sh, cmd);
 }
