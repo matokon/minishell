@@ -6,11 +6,24 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 19:46:39 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:01:11 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
+
+int	env_len(t_env *e)
+{
+	int	n;
+
+	n = 0;
+	while (e)
+	{
+		n++;
+		e = e->next;
+	}
+	return (n);
+}
 
 int	env_len(t_env *e)
 {
@@ -36,8 +49,10 @@ t_env	*find_env(t_env *env, const char *key)
 	return (NULL);
 }
 
+
 void	update_env_val(t_env **env, const char *key, const char *new_val)
 {
+	t_env	*node;
 	t_env	*node;
 
 	if (!env)
@@ -50,8 +65,18 @@ void	update_env_val(t_env **env, const char *key, const char *new_val)
 			node->value = ft_strdup(new_val);
 		else
 			node->value = ft_strdup("");
+		if (new_val)
+			node->value = ft_strdup(new_val);
+		else
+			node->value = ft_strdup("");
 	}
 	else
+	{
+		if (new_val)
+			add_new_env(env, key, new_val);
+		else
+			add_new_env(env, key, "");
+	}
 	{
 		if (new_val)
 			add_new_env(env, key, new_val);
@@ -64,6 +89,7 @@ t_env	*add_new_env(t_env **env, const char *key, const char *val)
 {
 	t_env	*new;
 	t_env	*last;
+
 
 	if (!env)
 		return (NULL);

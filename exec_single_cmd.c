@@ -1,4 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_single_cmd.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mokon <mokon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:35:53 by mokon             #+#    #+#             */
+/*   Updated: 2025/10/22 10:35:53 by mokon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
+
+char	*join_path(const char *dir, const char *bin)
+{
+	char	*tmp;
+	char	*res;
+
+	tmp = ft_strjoin(dir, "/");
+	res = ft_strjoin(tmp, bin);
+	free(tmp);
+	return (res);
+}
 
 static t_cmd	*child_cmd(t_cmd *head, int i)
 {
@@ -7,53 +30,25 @@ static t_cmd	*child_cmd(t_cmd *head, int i)
 	return (head);
 }
 
-static char	*resolve_in_path(t_shell *sh, const char *bin)
-{
-	t_env	*e;
-	char	**paths;
-	char	*full;
-	int		i;
-
-	e = find_env(sh->env, "PATH");
-	if (!e || !e->value || !*e->value)
-		return (NULL);
-	paths = ft_split(e->value, ':');
-	i = 0;
-	while (paths && paths[i])
-	{
-		full = join_path(paths[i], bin);
-		if (access(full, X_OK) == 0)
-			return (free_split(paths), full);
-		free(full);
-		i++;
-	}
-	free_split(paths);
-	return (NULL);
-}
-
 static char	**env_list_to_envp(t_env *env)
 {
 	char	**envp;
 	int		i;
-	t_env	*cur;
-	char	*kv;
 	char	*eq;
+	char	*val;
 
-	i = 0;
-	cur = env;
-	while (cur && ++i)
-		cur = cur->next;
-	envp = (char **)safe_malloc(sizeof(char *) * (i + 1));
+	len = env_len(env);
+	envp = (char **)safe_malloc(sizeof(char *) * (len + 1));
 	i = 0;
 	while (env)
 	{
 		eq = ft_strjoin(env->key, "=");
 		if (env->value)
-			kv = ft_strjoin(eq, env->value);
+			val = env->value;
 		else
-			kv = ft_strjoin(eq, "");
+			val = "";
+		envp[i++] = ft_strjoin(eq, val);
 		free(eq);
-		envp[i++] = kv;
 		env = env->next;
 	}
 	envp[i] = NULL;
@@ -76,10 +71,7 @@ static void	exec_child_command(t_shell *sh, t_cmd *cmd)
 		path = resolve_in_path(sh, cmd->argv[0]);
 	if (!path)
 	{
-		ft_putstr_fd(cmd->argv[0], 2);
-		ft_putendl_fd(": command not found", 2);
-		free_split(envp);
-		exit(127);
+		exit_cmd_not_found(cmd->argv[0], envp);
 	}
 	execve(path, cmd->argv, envp);
 	perror(path);
