@@ -18,12 +18,8 @@ static int	hrdc_path(char **new_path)
 	char		*path;
 	char		*num;
 	int			fd;
-	char		*path;
-	char		*num;
-	int			fd;
 
 	num = ft_itoa(i++);
-	path = ft_strjoin("/tmp/.hrdc_", num);
 	path = ft_strjoin("/tmp/.hrdc_", num);
 	if (!path)
 		return (-1);
@@ -33,10 +29,8 @@ static int	hrdc_path(char **new_path)
 	{
 		*new_path = path;
 		return (fd);
-		return (fd);
 	}
 	else
-	{
 	{
 		free(path);
 		return (-1);
@@ -45,7 +39,6 @@ static int	hrdc_path(char **new_path)
 
 int	read_stdin(const t_heredoc *hd)
 {
-	int	fd;
 	int	fd;
 
 	fd = open(hd->tmp_path, O_RDONLY);
@@ -63,10 +56,7 @@ int	read_stdin(const t_heredoc *hd)
 int	read_to_file(t_heredoc *new_hrdc)
 {
 	int		fd;
-	int		fd;
 	pid_t	pid;
-	int		status;
-
 	int		status;
 
 	fd = hrdc_path(&new_hrdc->tmp_path);
@@ -92,7 +82,6 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 	char	*line;
 	size_t	len;
 
-
 	while (1)
 	{
 		line = readline(">");
@@ -114,37 +103,13 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 }
 
 void	add_heredoc(t_cmd *cmd, t_token *delim)
-void	add_heredoc(t_cmd *cmd, t_token *delim)
 {
-	t_heredoc	*new_hrdc;
 	t_heredoc	*new_hrdc;
 
 	if (!delim || !delim->next || !delim->next->value)
 		return ;
 	new_hrdc = (t_heredoc *)malloc(sizeof(t_heredoc) * (cmd->heredoc_cnt + 1));
-	if (!delim || !delim->next || !delim->next->value)
-		return ;
-	new_hrdc = (t_heredoc *)malloc(sizeof(t_heredoc) * (cmd->heredoc_cnt + 1));
 	if (!new_hrdc)
-		return (perror("malloc fail"));
-	if (cmd->heredoc_cnt > 0)
-	{
-		ft_memcpy(new_hrdc, cmd->heredocs, sizeof(t_heredoc)
-			*cmd->heredoc_cnt);
-		free(cmd->heredocs);
-	}
-	new_hrdc[cmd->heredoc_cnt].delim = ft_strdup(delim->next->value);
-	if (!new_hrdc[cmd->heredoc_cnt].delim)
-	{
-		free(new_hrdc);
-		return (perror("malloc fail"));
-	}
-	new_hrdc[cmd->heredoc_cnt].tmp_path = NULL;
-	read_to_file(&new_hrdc[cmd->heredoc_cnt]);
-	cmd->heredocs = new_hrdc;
-	cmd->last_in_type = 2;
-	cmd->last_heredoc_idx = cmd->heredoc_cnt;
-	cmd->heredoc_cnt++;
 		return (perror("malloc fail"));
 	if (cmd->heredoc_cnt > 0)
 	{

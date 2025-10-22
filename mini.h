@@ -202,6 +202,6 @@ void	free_env_list(t_env *env);
 
 //****Errors****
 void	error_exit(const char *error);
-void print_cmd_struct(const t_cmd *cmd);
+void	print_cmd_struct(const t_cmd *cmd);
 
 #endif

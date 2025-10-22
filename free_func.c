@@ -12,6 +12,20 @@
 
 #include "mini.h"
 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_func.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/21 19:47:49 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/10/21 19:47:49 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "mini.h"
+
 static void	one_cmd_free(t_cmd *cmd)
 {
 	int	i;
@@ -40,7 +54,6 @@ static void	one_cmd_free(t_cmd *cmd)
 }
 
 void	cmds_free(t_shell *shell)
-void	cmds_free(t_shell *shell)
 {
 	t_cmd	*curr;
 	t_cmd	*next;
@@ -61,10 +74,9 @@ void	cmds_free(t_shell *shell)
 
 void	free_hrdc(t_cmd *command)
 {
-	int i;
+	int	i;
 
 	i = command->heredoc_cnt;
-	while (i-- > 0)
 	while (i-- > 0)
 	{
 		free(command->heredocs[i].delim);
@@ -76,19 +88,14 @@ void	free_hrdc(t_cmd *command)
 }
 
 void	free_split(char **arr)
-void	free_split(char **arr)
 {
 	int	i;
 
 	i = 0;
 	if (!arr)
-	i = 0;
-	if (!arr)
 		return ;
 	while (arr[i])
-	while (arr[i])
 	{
-		free(arr[i]);
 		free(arr[i]);
 		i++;
 	}
