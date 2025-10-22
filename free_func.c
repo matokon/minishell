@@ -1,18 +1,7 @@
 #include "mini.h"
 
-//static void free_strv(char **v)
-//{
-//	int i;
 
-//	if (!v)
-//		return;
-//	i = 0;
-//	while (v[i])
-//		free(v[i++]);
-//	free(v);
-//}
-
-static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
+static void	one_cmd_free(t_cmd *cmd)
 {
 	int i;
 
@@ -44,30 +33,31 @@ static void	one_cmd_free(t_cmd *cmd)// TODO NORMINETTE mokon
 		free_hrdc(cmd);
 }
 
-void cmds_free(t_shell *shell)
+void	cmds_free(t_shell *shell)
 {
-    if (!shell || !shell->cmds)
-        return;
+	t_cmd *curr;
+	t_cmd *next;
 
-    t_cmd *cur = shell->cmds;
-    while (cur) {
-        t_cmd *next = cur->next;
-        one_cmd_free(cur);
-        free(cur);
-        cur = next;
-    }
-    shell->cmds = NULL;
-    shell->count_cmds = 0;
+	if (!shell || !shell->cmds)
+		return ;
+	curr = shell->cmds;
+	while (curr)
+	{
+		next = curr->next;
+		one_cmd_free(curr);
+		free(curr);
+		curr = next;
+	}
+	shell->cmds = NULL;
+	shell->count_cmds = 0;
 }
-
-
 
 void	free_hrdc(t_cmd *command)
 {
-	int	i;
+	int i;
 
 	i = command->heredoc_cnt;
-	while (i--)
+	while (i-- > 0)
 	{
 		free(command->heredocs[i].delim);
 		free(command->heredocs[i].tmp_path);
@@ -77,17 +67,48 @@ void	free_hrdc(t_cmd *command)
 	command->heredoc_cnt = 0;
 }
 
-void	free_split(char **tab)
+void	free_split(char **arr)
 {
 	int i;
 
-	if (!tab)
-		return ;
 	i = 0;
-	while (tab[i])
+	if (!arr)
+		return ;
+	while (arr[i])
 	{
-		free(tab[i]);
+		free(arr[i]);
 		i++;
 	}
-	free(tab);
+	free(arr);
+}
+void	free_token_list(t_token *head)
+{
+	t_token *tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		if (head->value)
+			free(head->value);
+		free(head);
+		head = tmp;
+	}
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env *tmp;
+
+	if (!env)
+		return ;
+	while (env)
+	{
+		tmp = env->next;
+		if (env->key)
+			free(env->key);
+		if (env->value)
+			free(env->value);
+		free(env);
+		env = tmp;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 16:10:37 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:13:18 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ typedef struct s_outredir
 typedef struct s_heredoc
 {
 	char *delim; // delimiter (np. "EOF")
-	int expand;  // 1: wykonywać ekspansje zmiennych, 0: bez ekspansji
-	char		*tmp_path;
-	// ścieżka tymczasowego pliku z treścią heredoca (jeśli tak realizujesz)
+	char		*tmp_path; // ścieżka tymczasowego pliku z treścią heredoca (jeśli tak realizujesz)
 }				t_heredoc;
 
 typedef struct s_cmd
@@ -78,16 +76,17 @@ typedef struct s_cmd
 	char *infile; // ścieżka pliku po '<' (ostatnie < wygrywa)
 	int in_fd;    // FD do odczytu (dup2(in_fd, STDIN_FILENO)); -1 gdy brak
 
-	t_outredir	*outs;
-	// dynamiczna tablica wyjść (> i >>) w kolejności parsowania
+	int		last_in_type;      /* 0 = none, 1 = infile, 2 = heredoc */
+	int		last_heredoc_idx;
+	
+	t_outredir	*outs; // dynamiczna tablica wyjść (> i >>) w kolejności parsowania
 	int outs_len; // ile elementów w 'outs'
 	int out_fd;   // FD do zapisu (dup2(out_fd, STDOUT_FILENO)); -1 gdy brak
 					// UWAGA: przy wykonaniu zwykle liczy się OSTATNI element outs
 
 	t_heredoc *heredocs; // dynamiczna tablica heredoców
 	int heredoc_cnt;     // liczba heredoców
-	struct s_cmd *next; 
-		// kolejna komenda w pipeline (A | B | C-> lista jednokierunkowa
+	struct s_cmd *next;  // kolejna komenda w pipeline A | B | C-> lista jednokierunkowa
 
 }				t_cmd;
 
@@ -106,7 +105,6 @@ typedef struct s_shell // stan calego shella
 	int count_cmds;  // ilosc komend bedzie potrzebna do zwalniania pamieci
 	t_cmd *cmds;     // lista komend (po parserze)
 	char *line;      // linia wejsciowa
-	int exit_status;
 }				t_shell;
 
 typedef struct s_execctx
@@ -133,6 +131,7 @@ void			create_list_env(t_env **stack, char **env);
 void			split_env(t_env **stack, char **str);
 void			*find_last(void *stack, size_t offset);
 t_env			*find_env(t_env *env, const char *key);
+//int	env_len(t_env *list);
 void			update_env_val(t_env **env, const char *key,
 					const char *new_val);
 t_env			*add_new_env(t_env **env, const char *key, const char *val);
@@ -140,11 +139,27 @@ t_env			*add_new_env(t_env **env, const char *key, const char *val);
 //****Errors****
 void			error_exit(const char *error);
 
+t_env			*add_new_env(t_env **env, const char *key, const char *val);
+//void	sort_env(t_env **list, int n);
+
+
+//****Errors****
+void			error_exit(const char *error);
+
 
 //****Input tokenization****
-char			**split_input_to_tokens(char *input);
-t_token			*token_list(char **tab_of_tokens);
-t_token_type	type_def(char *token);
+t_token			*lexer(char *input, t_shell *shell);
+t_token *append_operator(char *input, int *i);
+void	helper_redir(char *input, int i, t_token *new_token);
+char *expand_var(char *input, int *i, t_shell *shell);
+t_token	*append_word(char *input, int *i, t_shell *shell);
+void	append_to_list(t_token **head, t_token *new_token);
+char	*get_var_value(char *name, t_shell *shell);
+
+//****Tokens_utils****
+char	*join_char(char **str1, char c);
+char	*join_free(char **str1, char *str2);
+
 
 //****Command_Struct****
 t_cmd			*command_init(t_shell **shell, t_cmd **head);
@@ -164,7 +179,10 @@ void			sig_handler(int signal);
 
 //****Utils****
 void			*safe_malloc(size_t bytes);
-void			swapping(char *input, int *i, char type_of_quote);
+int				is_operator(char c);
+
+//****Errors****
+void			error_exit(const char *error);
 
 //****Cleaning functions****
 void			cmds_free(t_shell *shell);
@@ -180,8 +198,26 @@ int is_builtin(const char *name);
 
 //****Tests****
 void			print_stack_all(const t_env *stack);
+void	free_arr(char **arr);
+void	free_token_list(t_token *head);
+void	free_env_list(t_env *env);
+
+//****Tests****
+void			print_all_env(const t_env *stack);
+void			print_env(t_env *stack, const char *key);
+void			print_all_tokens(const t_token *stack);
+void			print_one_env(t_env *stack);
+void print_cmd_struct(const t_cmd *cmd);
+void			print_stack_all(const t_env *stack);
+
+int is_builtin(const char *name);
+void	free_split(char **arr);
+void	free_token_list(t_token *head);
+void	free_env_list(t_env *env);
 
 //***Execution***
+int is_builtin(const char *name);
+int is_builtin(const char *name);
 int run_single_builtin(t_shell *shell);
 int	call_builtin(t_shell *sh, char **argv);
 int apply_in_redir(t_cmd *cmd);
@@ -193,11 +229,15 @@ void	close_all_pipes(t_execctx *x);
 int	pipe_read_fd(t_execctx *x, int idx);
 int	pipe_write_fd(t_execctx *x, int idx);
 void	wire_child_pipes(t_execctx *x, int i);
+int	has_slash(const char *s);
+char	*resolve_in_path(t_shell *sh, const char *bin);
+void	exit_cmd_not_found(char *name, char **envp);
+char	*join_path(const char *dir, const char *bin);
 
 //***Quotes***
 char *deal_with_quotes(char *input, t_shell shell);
 char	*handle_replacement(char *s, char *val, int pos, int var_len);
-
+char	*expand_and_strip_quotes(char *input, t_shell *shell);
 
 /* Builtins */
 int	ft_cd(t_shell *sh, char **argv);
@@ -210,4 +250,8 @@ int	ft_exit(t_shell *sh, char **argv);
 int	handle_arg(t_shell *sh, const char *arg);
 int	print_sorted_export(t_env *env);
 
+t_token	*handle_quote(char *input, int *i, t_shell *shell);
+int	env_len(t_env *e);
+t_cmd	*handle_pipe(t_cmd *node, t_token *tokens);
+void	init_cmd_defaults(t_cmd *cmd);
 #endif

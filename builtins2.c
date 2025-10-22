@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins2.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mokon <mokon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:36:15 by mokon             #+#    #+#             */
+/*   Updated: 2025/10/22 10:36:15 by mokon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 static int	is_nflag(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s || s[0] != '-' || s[1] == '\0')
 		return (0);
@@ -14,9 +26,9 @@ static int	is_nflag(const char *s)
 
 int	ft_echo(t_shell *sh, char **argv)
 {
-	int i;
-	int nflag;
-	int first;
+	int	i;
+	int	nflag;
+	int	first;
 
 	(void)sh;
 	i = 1;
@@ -62,7 +74,7 @@ int	ft_env(t_shell *sh, char **argv)
 
 static int	is_numeric_str(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s || !*s)
 		return (0);
@@ -91,15 +103,16 @@ int	ft_exit(t_shell *sh, char **argv)
 	{
 		write(2, "minishell: exit: ", 17);
 		write(2, argv[1], ft_strlen(argv[1]));
-		write(2, ": numeric argument required\n", 28);
 		code = 2;
 		exit((int)code);
 	}
 	else if (argv[2])
 		return (write(2,
-			"minishell: exit: too many arguments\n", 36), 1);
+				"minishell: exit: too many arguments\n", 36), 1);
 	else
 		code = (long)ft_atol(argv[1]);
+	free_env_list(sh->env);
 	cmds_free(sh);
+	free(sh);
 	exit((int)((unsigned char)code));
 }

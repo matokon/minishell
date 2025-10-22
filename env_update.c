@@ -6,15 +6,27 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:47:23 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 14:16:53 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:16:28 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
+int	env_len(t_env *e)
+{
+	int	n;
+
+	n = 0;
+	while (e)
+	{
+		n++;
+		e = e->next;
+	}
+	return (n);
+}
+
 t_env	*find_env(t_env *env, const char *key)
 {
-
 	while (env)
 	{
 		if (env->key && (ft_strcmp(env->key, key) == 0))
@@ -23,9 +35,10 @@ t_env	*find_env(t_env *env, const char *key)
 	}
 	return (NULL);
 }
+
 void	update_env_val(t_env **env, const char *key, const char *new_val)
 {
-	t_env *node;
+	t_env	*node;
 
 	if (!env)
 		return ;
@@ -33,17 +46,25 @@ void	update_env_val(t_env **env, const char *key, const char *new_val)
 	if (node)
 	{
 		free(node->value);
-		node->value = ft_strdup(new_val);
+		if (new_val)
+			node->value = ft_strdup(new_val);
+		else
+			node->value = ft_strdup("");
 	}
 	else
-		add_new_env(env, key, new_val);
+	{
+		if (new_val)
+			add_new_env(env, key, new_val);
+		else
+			add_new_env(env, key, "");
+	}
 }
 
 t_env	*add_new_env(t_env **env, const char *key, const char *val)
 {
 	t_env	*new;
 	t_env	*last;
-	
+
 	if (!env)
 		return (NULL);
 	new = (t_env *)ft_calloc(1, sizeof(t_env));

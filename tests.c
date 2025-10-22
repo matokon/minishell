@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:04:30 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/09/08 14:28:21 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:07:48 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,52 @@ void print_all_tokens(const t_token *stack)
 		stack = stack->next;
 	}
 	printf("---------------------\n");
+}
+
+void print_cmd_struct(const t_cmd *cmd)
+{
+    int i;
+    if (!cmd)
+    {
+        printf("No command struct!\n");
+        return;
+    }
+    
+	while (cmd)
+	{	
+		printf("---- t_cmd struct ----\n");
+		printf("argc: %d\n", cmd->argc);
+		printf("argv: ");
+		if (cmd->argv)
+		{
+			for (i = 0; cmd->argv[i]; i++)
+				printf("[%s] ", cmd->argv[i]);
+			printf("\n");
+		}
+		else
+			printf("(null)\n");
+
+		printf("infile: %s\n", cmd->infile ? cmd->infile : "(null)");
+		printf("in_fd: %d\n", cmd->in_fd);
+
+		printf("outs_len: %d\n", cmd->outs_len);
+		for (i = 0; i < cmd->outs_len; i++)
+		{
+			printf("  outs[%d]: path='%s', append=%d\n", i,
+				cmd->outs[i].path ? cmd->outs[i].path : "(null)",
+				cmd->outs[i].append);
+		}
+		printf("out_fd: %d\n", cmd->out_fd);
+
+		printf("heredoc_cnt: %d\n", cmd->heredoc_cnt);
+		for (i = 0; i < cmd->heredoc_cnt; i++)
+		{
+			printf("  heredocs[%d]: delim='%s', tmp_path='%s'\n", i,
+				cmd->heredocs[i].delim ? cmd->heredocs[i].delim : "(null)",
+				cmd->heredocs[i].tmp_path ? cmd->heredocs[i].tmp_path : "(null)");
+		}
+		printf("next: %p\n", (void*)cmd->next);
+		cmd = cmd->next;
+	}
+    printf("----------------------\n");
 }

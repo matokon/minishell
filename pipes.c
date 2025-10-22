@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mokon <mokon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 12:33:37 by mokon             #+#    #+#             */
+/*   Updated: 2025/10/22 12:33:37 by mokon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 int	create_pipes(t_execctx *x)
@@ -29,7 +41,7 @@ void	close_all_pipes(t_execctx *x)
 	i = 0;
 	while (i < x->n - 1)
 	{
-		close(x->pipes[i * 2]);//closes a file descriptor
+		close(x->pipes[i * 2]);
 		close(x->pipes[i * 2 + 1]);
 		i++;
 	}

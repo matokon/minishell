@@ -12,7 +12,6 @@
 
 #include "mini.h"
 
-
 void	sig_handler(int signal)
 {
 	(void)signal;

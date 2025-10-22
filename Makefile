@@ -30,22 +30,22 @@ LIBFT_LIB := $(LIBFT_DIR)/libft.a
 # Source and object files
 SRC := \
 	main.c \
-	builtins1.c builtins2.c builtins3.c builtins4.c \
+	builtins1.c builtins2.c builtins3.c builtins4.c builtins5.c \
 	env_things.c env_update.c \
 	error.c \
 	exec_single_utils.c exec_single.c\
 	exec_single_cmd.c executor.c pipes.c\
 	free_func.c \
 	mini_init.c \
-	tokenization.c \
-	redirections.c \
+	tokenization.c tokens_utils.c \
+	command_init.c command_init_utils.c\
 	heredock.c \
-	quote.c quote2.c \
+	quote2.c \
 	read_input.c \
 	signals.c \
 	utils.c \
 	get_next_line/get_next_line.c \
-	get_next_line/get_next_line_utils.c
+	get_next_line/get_next_line_utils.c \
 
 OBJ := $(SRC:.c=.o)
 

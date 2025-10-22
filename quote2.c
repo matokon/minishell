@@ -23,3 +23,14 @@ char	*handle_replacement(char *s, char *val, int pos, int var_len)
 	out[len_new] = '\0';
 	return (out);
 }
+
+//char	*handle_single_quote(char *s, int pos)
+//{
+//	int		len_src;
+//	int		len_new;
+
+//	len_src = ft_strlen(s);
+//	len_new = 
+//	if (len_new < 0)
+//		return (ft_strdup(s));
+//}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 20:38:47 by ochmurzy          #+#    #+#             */
+/*   Updated: 2025/10/13 20:38:47 by ochmurzy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 void	*safe_malloc(size_t bytes)
@@ -9,20 +21,7 @@ void	*safe_malloc(size_t bytes)
 		error_exit("Memory allocation problem!");
 	return (value);
 }
-void swapping(char *input, int *i, char type_of_quote)
-{
-	//if (input[*i] == ' ')
-	//	input[*i] = TEMP_SPACE_REPLACEMENT;
-	if (input[*i] == type_of_quote)
-		input[*i] = '\x1E';
-	if (input[*i] == '|')
-		input[*i] = '\x1D';
-	if (input[*i] == '>')
-		input[*i] = '\x1C';
-	if (input[*i] == '<')
-		input[*i] = '\x02';
-	(*i)++;
-}
+
 int	is_builtin(const char *name)
 {
 	if (!name)
@@ -40,6 +39,51 @@ int	is_builtin(const char *name)
 	if (ft_strcmp(name, "env") == 0)
 		return (1);
 	if (ft_strcmp(name, "exit") == 0)
+		return (1);
+	return (0);
+}
+
+char	*join_free(char **str1, char *str2)
+{
+	char	*temp;
+
+	temp = ft_strjoin(*str1, str2);
+	if (!temp)
+		return (NULL);
+	free(*str1);
+	*str1 = temp;
+	return (*str1);
+}
+
+char	*join_char(char **str1, char c)
+{
+	char	*res;
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	if (!str1 || !*str1)
+		len = 0;
+	else
+		len = ft_strlen(*str1);
+	res = (char *)malloc(len + 2);
+	if (!res)
+		return (NULL);
+	while (i < len)
+	{
+		res[i] = (*str1)[i];
+		i++;
+	}
+	res[len] = c;
+	res[len + 1] = '\0';
+	free(*str1);
+	return (res);
+}
+
+int	is_operator(char c)
+{
+	if (c == ' ' || c == '\t' || c == '|' || c == '<' || c == '>'
+		|| c == '\'' || c == '\"')
 		return (1);
 	return (0);
 }

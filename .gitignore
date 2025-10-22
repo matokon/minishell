@@ -1,4 +1,5 @@
 *.o
+minishell
 .vscode
 libft/
 get_next_line/
