@@ -125,7 +125,7 @@ void	init_cmd_defaults(t_cmd *cmd);
 
 //****Environment_things****
 void	*find_last(void *stack, size_t offset);
-void	split_env(t_env **stack, char **str);
+int	split_env(t_env **stack, char **str);
 void	create_list_env(t_env **stack, char **env);
 char	*get_var_value(char *name, t_shell *shell);
 int		env_len(t_env *e);
