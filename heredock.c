@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:40 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 19:57:42 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:26:10 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,24 @@ static int	hrdc_path(char **new_path)
 	char		*num;
 	int			fd;
 
-	num = ft_itoa(i++);
-	path = ft_strjoin("/tmp/.hrdc_", num);
-	if (!path)
-		return (-1);
-	free(num);
-	fd = open(path, O_CREAT | O_EXCL | O_WRONLY, 0600);
-	if (fd >= 0)
+	while (1)
 	{
-		*new_path = path;
-		return (fd);
-	}
-	else
-	{
+		num = ft_itoa(i++);
+		if (!num)
+			return (-1);
+		path = ft_strjoin("/tmp/.hrdc_", num);
+		free(num);
+		if (!path)
+			return (-1);
+		fd = open(path, O_CREAT | O_EXCL | O_WRONLY, 0600);
+		if (fd >= 0)
+		{
+			*new_path = path;
+			return (fd);
+		}
 		free(path);
-		return (-1);
+		if (errno != EEXIST)
+			return (-1);
 	}
 }
 
@@ -44,6 +47,7 @@ int	read_stdin(const t_heredoc *hd)
 	fd = open(hd->tmp_path, O_RDONLY);
 	if (fd < 0)
 		return (-1);
+	unlink(hd->tmp_path);
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
 		close(fd);
