@@ -91,7 +91,7 @@ static void	exec_child_command(t_shell *sh, t_cmd *cmd)
 	free(path);
 	if (errno == ENOENT)
 		exit(127);
-	exit(126);
+	exit(127);
 }
 
 void	child(t_shell *sh, t_execctx *x, int i)

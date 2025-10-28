@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 21:30:40 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/28 16:26:10 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:02:45 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	add_to_file(t_heredoc *new_hrdc, int fd)
 	while (1)
 	{
 		line = readline(">");
-		if (!line || ft_strncmp(line, new_hrdc->delim, ft_strlen(line)) == 0)
+		if (!line || ft_strcmp(line, new_hrdc->delim) == 0)
 		{
 			free(line);
 			break ;

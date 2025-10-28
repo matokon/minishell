@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:07:44 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 19:57:52 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:15:17 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ t_cmd	*handle_pipe(t_cmd *node, t_token *tokens)
 		printf("Error: Wrong use of pipes :(\n");
 	return (NULL);
 }
+
+//t_cmd	*handle_pipe(t_cmd *cmd, t_token *tokens)
+//{
+//	t_cmd	*new_cmd;
+
+//	(void)tokens;
+//	new_cmd = command_init(NULL, NULL);
+//	if (!new_cmd)
+//		return (NULL);
+//	cmd->next = new_cmd;
+//	return (new_cmd);
+//}
 
 char	*get_var_value(char *name, t_shell *shell)
 {
