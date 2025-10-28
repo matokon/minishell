@@ -1,89 +1,18 @@
-5) in the example under cat will wait for delimeter ss to show, what was written
- Command: 
-cat << ss
- Result:
-oostapen@c2r9s4:~$ cat << ss
+4) Command: 
+<<delimeter|<<delimeter2
+
+Result with text writen before delimeter:
+
+oostapen@c2r9s4:~$ <<delimeter|<<delimeter2
 > ha ha
-> ss
-ha ha
+> ha
+> delimeter
+> hi hi hi
+> hi
+> delimeter
+> delimeter2
 oostapen@c2r9s4:~$ 
 
-11) you should see 55 as the argument(do not confuse with option, like echo -n etc.)
-  Command:
-exit|exit 55
-$?
-  Result:
-oostapen@c2r9s4:~$ exit|exit 55
-oostapen@c2r9s4:~$ $?
-55: command not found
-
-15) if you write fff it will not work, waits for del1 first, then pipes and second heredoc waits for del2 see under:
-  Command:
-  cat << del1 | cat  << del2
-  Result:
-oostapen@c2r9s4:~/test$ cat << del1 | cat  << del2
-> hi
-> hi
-> del2
-> hi
-> del1
-> ha
-> del2
-ha
-
-16)
-  Command:
-cat << eof > file_1 | cat << eof2 > file2
-
-  Result:
-oostapen@c2r9s4:~/test$ cat << eof > file_1 | cat << eof2 > file2
-> write
-> continue
-> soon
-> wiil 
-> stop
-> eof
-> WRITE AGAIN
-> ONLY TILL eof2
-> eof2
-oostapen@c2r9s4:~/test$ cat file_1
-write
-continue
-soon
-wiil 
-stop
-oostapen@c2r9s4:~/test$ cat file2
-WRITE AGAIN
-ONLY TILL eof2
-
-17) echo " dollar should be after$"
-  Command:
-oostapen@c2r9s4:~/test$ echo " dollar should be after$"
-  Result:
- dollar should be after$
-
- 18)   Command:
-echo smth|cat|cat
-  Result:
- smth
-
- 22)pipes
-Create file with several lines first:
- cat << EOF > newfile
-> All
-> movement
-> is
-> accomplished
-> EOF
-Here we search in this file line with word "accomplished"
-    Command:
-oostapen@c2r9s4:~/test$ cat newfile | grep accomplished| more 
-  Result:
-accomplished
-
-23)each cat waits for Enter to exit:
-    Command:
-cat|cat|cat|ls
-
-29) long command
-echo $(seq 1 1000)
+CHUJ
+#29) long command
+#echo $(seq 1 1000)

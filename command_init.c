@@ -126,10 +126,13 @@ t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_HEREDOC)
-			add_heredoc(shell->cmds, tokens);
+		{
+			add_heredoc(node, tokens);
+			tokens = tokens->next;
+		}
 		else if (tokens->type == TOKEN_PIPE)
-		{	
-			node = handle_pipe(node, tokens);
+		{   
+			node = handle_pipe(node, tokens, shell);
 			if (!node)
 				return (NULL);
 		}

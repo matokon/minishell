@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/22 18:14:21 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:44:41 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_token	*handle_quote(char *input, int *i, t_shell *shell);
 //****Command_Struct****
 t_cmd	*command_init(t_shell **shell, t_cmd **head);
 void	handle_redirects(t_cmd *command, t_token *tokens);
-t_cmd	*handle_pipe(t_cmd *node, t_token *tokens);
+t_cmd	*handle_pipe(t_cmd *node, t_token *tokens, t_shell *shell);
 void	add_cmd_argv(t_cmd *command, const char *arg);
 t_cmd	*adding_command(t_token *tokens, t_shell *shell);
 
