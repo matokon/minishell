@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:07:44 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/29 20:05:33 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:49:38 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_cmd_defaults(t_cmd *cmd)
 
 t_cmd	*handle_pipe(t_cmd *node, t_token *tokens, t_shell *shell)
 {
-	t_cmd *new_cmd;
+	t_cmd	*new_cmd;
 
 	if (!node || tokens->next == NULL)
 	{

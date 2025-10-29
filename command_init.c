@@ -72,6 +72,7 @@ void	handle_redirects(t_cmd *command, t_token *tokens)
 		add_redir(command, tokens->next->value, 0);
 	else if (tokens->type == TOKEN_REDIRECT_APPEND)
 		add_redir(command, tokens->next->value, 1);
+	tokens = tokens->next;
 }
 
 void	add_cmd_argv(t_cmd *command, const char *arg)
@@ -101,6 +102,73 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	}
 	command->argv = upd_arg;
 }
+//WORKING VERSION
+//t_cmd	*adding_command(t_token *tokens, t_shell *shell)
+//{
+//	t_cmd	*node;
+
+//	if (!tokens)
+//		return (NULL);
+//	node = NULL;
+//	while (tokens)
+//	{
+//		if (node == NULL)
+//			node = command_init(&shell, &shell->cmds);
+//		if (!node)
+//			return (NULL);
+//		shell->cmds->argc++;
+//		if (tokens->type == TOKEN_WORD)
+//			add_cmd_argv(node, tokens->value);
+//		else if (tokens->type == TOKEN_REDIRECT_IN
+//			|| tokens->type == TOKEN_REDIRECT_OUT
+//			|| tokens->type == TOKEN_REDIRECT_APPEND)
+//		{
+//			handle_redirects(node, tokens);
+//			tokens = tokens->next;
+//		}
+//		else if (tokens->type == TOKEN_HEREDOC)
+//		{
+//			add_heredoc(node, tokens);
+//			tokens = tokens->next;
+//		}
+//		else if (tokens->type == TOKEN_PIPE)
+//		{
+//			node = handle_pipe(node, tokens, shell);
+//			if (!node)
+//				return (NULL);
+//		}
+//		tokens = tokens->next;
+//	}
+//	return (shell->cmds);
+//}
+
+static void	handle_token_type(t_cmd *node, t_token **tokens)
+{
+	if ((*tokens)->type == TOKEN_WORD)
+		add_cmd_argv(node, (*tokens)->value);
+	else if ((*tokens)->type == TOKEN_REDIRECT_IN
+		|| (*tokens)->type == TOKEN_REDIRECT_OUT
+		|| (*tokens)->type == TOKEN_REDIRECT_APPEND)
+		handle_redirects(node, *tokens);
+	else if ((*tokens)->type == TOKEN_HEREDOC)
+	{
+		add_heredoc(node, *tokens);
+		*tokens = (*tokens)->next;
+	}
+}
+
+static t_cmd	*process_token(t_cmd *node, t_token **tokens, t_shell *shell)
+{
+	if ((*tokens)->type == TOKEN_PIPE)
+	{
+		node = handle_pipe(node, *tokens, shell);
+		if (!node)
+			return (NULL);
+	}
+	else
+		handle_token_type(node, tokens);
+	return (node);
+}
 
 t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 {
@@ -116,26 +184,7 @@ t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 		if (!node)
 			return (NULL);
 		shell->cmds->argc++;
-		if (tokens->type == TOKEN_WORD)
-			add_cmd_argv(node, tokens->value);
-		else if (tokens->type == TOKEN_REDIRECT_IN
-			|| tokens->type == TOKEN_REDIRECT_OUT
-			|| tokens->type == TOKEN_REDIRECT_APPEND)
-		{	
-			handle_redirects(node, tokens);
-			tokens = tokens->next;
-		}
-		else if (tokens->type == TOKEN_HEREDOC)
-		{
-			add_heredoc(node, tokens);
-			tokens = tokens->next;
-		}
-		else if (tokens->type == TOKEN_PIPE)
-		{   
-			node = handle_pipe(node, tokens, shell);
-			if (!node)
-				return (NULL) ;
-		}
+		node = process_token(node, &tokens, shell);
 		tokens = tokens->next;
 	}
 	return (shell->cmds);
