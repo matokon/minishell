@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 15:41:51 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 20:42:21 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:08:18 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_token	*handle_quote(char *input, int *i, t_shell *shell)
 	type = input[*i];
 	j = find_second_quote(input, *i + 1, type);
 	if (j == -1)
-		return (printf("Error: Unmatched quote\n"), NULL);
+		return (write(2, "Error: Unmatched quote\n", 23), NULL);
 	new_token->type = TOKEN_WORD;
 	new_token->value = extract_quoted_word(input, i, j, shell);
 	return (new_token);

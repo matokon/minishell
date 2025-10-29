@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:07:44 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/28 17:44:41 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:05:33 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ t_cmd	*handle_pipe(t_cmd *node, t_token *tokens, t_shell *shell)
 {
 	t_cmd *new_cmd;
 
-	if (!node || node->argv == NULL || tokens->next == NULL
-		|| tokens->next->type != TOKEN_WORD)
+	if (!node || tokens->next == NULL)
 	{
-		printf("Error: Wrong use of pipes :(\n");
+		write(2, "Error: Wrong use of pipes :(\n", 29);
 		return (NULL);
 	}
-	/* Create and append a new command to the shell's command list */
 	new_cmd = command_init(&shell, &shell->cmds);
 	if (!new_cmd)
 		return (NULL);

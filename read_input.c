@@ -37,7 +37,7 @@ int	read_input(t_shell *shell)
 		input = readline("\033[38;5;198mminishell$ \033[0m");
 		if (!input)
 		{
-			fprintf(stderr, "Goodbye! ;*\n");
+			write(2, "Goodbye! ;*\n", 12);
 			free_env_list(shell->env);
 			cmds_free(shell);
 			free(shell);
@@ -47,6 +47,8 @@ int	read_input(t_shell *shell)
 		{
 			add_history(input);
 			parse_and_execute(input, shell);
+			free(input);
+			cmds_free(shell);
 		}
 	}
 	return (0);

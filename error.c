@@ -2,6 +2,6 @@
 
 void	error_exit(const char *error)
 {
-	printf("%s", error);
+	write(2, &error, ft_strlen(error));
 	exit(EXIT_FAILURE);
 }
