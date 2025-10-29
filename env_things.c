@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:37:43 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 19:29:17 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:44:46 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,36 @@ static void	add_next(t_env **stack, t_env *new_node)
 	}
 }
 
-void	split_env(t_env **stack, char **str)
-{
-	t_env	*new_node;
+static void free_pair_and_array(char **str) {
+    if (!str) return;
+    free(str[0]);
+    free(str[1]);
+    free(str);
+}
 
-	new_node = (t_env *)ft_calloc(1, sizeof(t_env));
-	if (!new_node)
-		return ;
-	if (str[0])
-		new_node->key = ft_strdup(str[0]);
-	else
-		new_node->key = NULL;
-	if (str[1])
-	{
-		new_node->value = ft_strdup(str[1]);
-		if (!new_node->value)
-			new_node->value = ft_strdup("");
-		if (!new_node->value)
-			return ;
-	}
-	else
-		new_node->value = NULL;
-	new_node->next = NULL;
-	add_next(stack, new_node);
-	free(str[0]);
-	free(str[1]);
+int split_env(t_env **stack, char **str)
+{
+    t_env *new_node = ft_calloc(1, sizeof(*new_node));
+    if (!new_node) { free_pair_and_array(str); return 0; }
+
+    if (str[0]) {
+        new_node->key = ft_strdup(str[0]);
+        if (!new_node->key) { free(new_node); free_pair_and_array(str); return 0; }
+    }
+
+    if (str[1]) {
+        new_node->value = ft_strdup(str[1]);
+        if (!new_node->value) {
+            new_node->value = ft_strdup("");
+            if (!new_node->value) { free(new_node->key); free(new_node); free_pair_and_array(str); return 0; }
+        }
+    }
+
+    new_node->next = NULL;
+    add_next(stack, new_node);
+
+    free_pair_and_array(str);   // <— ZAWSZE sprzątamy tutaj
+    return 1;
 }
 
 void	create_list_env(t_env **stack, char **env)
@@ -101,7 +106,7 @@ void	create_list_env(t_env **stack, char **env)
 		str = special_env_split(env[i], '=');
 		if (!str)
 			return ;
-		split_env(stack, str);
-		free(str);
+		if(!split_env(stack, str))
+			return ;
 	}
 }

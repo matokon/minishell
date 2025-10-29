@@ -47,12 +47,12 @@ static int	restore_fds(int saved_stdin, int saved_stdout)
 	return (flag);
 }
 
-static int	fail_restore(t_shell *sh, int in, int out)
-{
-	restore_fds(in, out);
-	sh->last_status = 1;
-	return (1);
-}
+//static int	fail_restore(t_shell *sh, int in, int out)
+//{
+//	restore_fds(in, out);
+//	sh->last_status = 1;
+//	return (1);
+//}
 
 static int	save_fds(int *in, int *out)
 {
@@ -81,8 +81,9 @@ int	run_single_builtin(t_shell *shell)
 		return (0);
 	if (save_fds(&saved_stdin, &saved_stdout))
 		return (1);
-	if (apply_in_redir(cmd) || apply_out_redir(cmd))
-		return (fail_restore(shell, saved_stdin, saved_stdout));
+	apply_redirs(cmd);
+	//if (apply_in_redir(cmd) || apply_out_redir(cmd))
+	//	return (fail_restore(shell, saved_stdin, saved_stdout));
 	status = call_builtin(shell, cmd->argv);
 	if (restore_fds(saved_stdin, saved_stdout) != 0 && status == 0)
 		status = 1;

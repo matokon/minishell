@@ -6,13 +6,13 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 20:12:50 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/22 16:15:45 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:45:28 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-int	open_file(t_outredir *redir)
+static int	open_file(t_outredir *redir)
 {
 	int	fd;
 
@@ -33,7 +33,7 @@ static void	set_output(t_cmd *cmd)
 	i = 0;
 	while (i < cmd->outs_len)
 	{
-		fd = open_outfile(&cmd->outs[i]);
+		fd = open_file(&cmd->outs[i]);
 		if (fd != -1)
 		{
 			if (i == cmd->outs_len - 1)

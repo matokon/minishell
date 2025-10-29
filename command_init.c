@@ -59,7 +59,7 @@ static void	add_redir(t_cmd *cmd, const char *path, int append)
 
 void	handle_redirects(t_cmd *command, t_token *tokens)
 {
-	if (!command->argv || !tokens->next || tokens->next->type != TOKEN_WORD)
+	if (!tokens->next || tokens->next->type != TOKEN_WORD)
 		printf("Error: Wrong use of redirections :(\n");
 	if (tokens->type == TOKEN_REDIRECT_IN)
 	{
@@ -122,11 +122,21 @@ t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 			|| tokens->type == TOKEN_REDIRECT_OUT
 			|| tokens->type == TOKEN_REDIRECT_APPEND)
 			handle_redirects(node, tokens);
+			tokens = tokens->next;
+		}
 		else if (tokens->type == TOKEN_HEREDOC)
-			add_heredoc(shell->cmds, tokens);
+		{
+			add_heredoc(node, tokens);
+			tokens = tokens->next;
+		}
 		else if (tokens->type == TOKEN_PIPE)
-			node = handle_pipe(node, tokens);
+		{   
+			node = handle_pipe(node, tokens, shell);
+			if (!node)
+				return (NULL);
+		}
 		tokens = tokens->next;
 	}
+	//print_cmd_struct(shell->cmds);
 	return (shell->cmds);
 }

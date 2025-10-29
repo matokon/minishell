@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/21 21:07:44 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:45:34 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	init_cmd_defaults(t_cmd *cmd);
 
 //****Environment_things****
 void	*find_last(void *stack, size_t offset);
-void	split_env(t_env **stack, char **str);
+int	split_env(t_env **stack, char **str);
 void	create_list_env(t_env **stack, char **env);
 char	*get_var_value(char *name, t_shell *shell);
 int		env_len(t_env *e);
@@ -145,7 +145,7 @@ t_token	*handle_quote(char *input, int *i, t_shell *shell);
 //****Command_Struct****
 t_cmd	*command_init(t_shell **shell, t_cmd **head);
 void	handle_redirects(t_cmd *command, t_token *tokens);
-t_cmd	*handle_pipe(t_cmd *node, t_token *tokens);
+t_cmd	*handle_pipe(t_cmd *node, t_token *tokens, t_shell *shell);
 void	add_cmd_argv(t_cmd *command, const char *arg);
 t_cmd	*adding_command(t_token *tokens, t_shell *shell);
 
@@ -202,6 +202,7 @@ void	free_env_list(t_env *env);
 
 //****Errors****
 void	error_exit(const char *error);
-void	print_cmd_struct(const t_cmd *cmd);
+void print_cmd_struct(const t_cmd *cmd);
+void	apply_redirs(t_cmd *cmd);
 
 #endif
