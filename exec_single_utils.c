@@ -59,3 +59,10 @@ char	*join_path(const char *dir, const char *bin)
 	free(tmp);
 	return (res);
 }
+
+t_cmd	*child_cmd(t_cmd *head, int i)
+{
+	while (head && i-- > 0)
+		head = head->next;
+	return (head);
+}

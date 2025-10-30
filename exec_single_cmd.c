@@ -1,12 +1,5 @@
 #include "mini.h"
 
-static t_cmd	*child_cmd(t_cmd *head, int i)
-{
-	while (head && i-- > 0)
-		head = head->next;
-	return (head);
-}
-
 static char	*resolve_in_path(t_shell *sh, const char *bin)
 {
 	t_env	*e;
@@ -59,14 +52,15 @@ static char	**env_list_to_envp(t_env *env)
 	envp[i] = NULL;
 	return (envp);
 }
-static void exit_for_child(t_shell *sh, t_cmd *cmd, char **envp)
+
+static void	exit_for_child(t_shell *sh, t_cmd *cmd, char **envp)
 {
-    ft_putstr_fd(cmd->argv[0], 2);
-    cmds_free(sh);
-    free_env_list(sh->env);
-    ft_putendl_fd(": command not found", 2);
-    free_split(envp);
-    exit(127);
+	ft_putstr_fd(cmd->argv[0], 2);
+	cmds_free(sh);
+	free_env_list(sh->env);
+	ft_putendl_fd(": command not found", 2);
+	free_split(envp);
+	exit(127);
 }
 
 static void	exec_child_command(t_shell *sh, t_cmd *cmd)
