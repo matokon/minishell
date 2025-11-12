@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:39:03 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/29 20:45:24 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:56:12 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ char	*expand_var(char *input, int *i, t_shell *shell)
 	}
 	while (input[*i] && (ft_isalnum(input[*i]) || input[*i] == '_'))
 		(*i)++;
-	/* If there was no valid variable name after '$', treat '$' as a literal */
 	if (*i == start)
 		return (ft_strdup("$"));
 	key = ft_substr(input, start, *i - start);

@@ -1,0 +1,144 @@
+PART II:
+
+14) exit status:
+  Command:
+oostapen@c2r9s4:~$ $/
+bash: $/: No such file or directory
+  Result:
+oostapen@c2r9s4:~$ $?
+127: command not found
+
+15) if you write fff it will not work, waits for del1 first, then pipes and second heredoc waits for del2 see under:
+  Command:
+  cat << del1 | cat  << del2
+  Result:
+oostapen@c2r9s4:~/test$ cat << del1 | cat  << del2
+> hi
+> hi
+> del2
+> hi
+> del1
+> ha
+> del2
+ha
+
+16)
+  Command:
+cat << eof > file_1 | cat << eof2 > file2
+
+  Result:
+oostapen@c2r9s4:~/test$ cat << eof > file_1 | cat << eof2 > file2
+> write
+> continue
+> soon
+> wiil 
+> stop
+> eof
+> WRITE AGAIN
+> ONLY TILL eof2
+> eof2
+oostapen@c2r9s4:~/test$ cat file_1
+write
+continue
+soon
+wiil 
+stop
+oostapen@c2r9s4:~/test$ cat file2
+WRITE AGAIN
+ONLY TILL eof2
+
+17) echo " dollar should be after$"
+  Command:
+oostapen@c2r9s4:~/test$ echo " dollar should be after$"
+  Result:
+ dollar should be after$
+ 
+18)   Command:
+echo smth|cat|cat
+  Result:
+ smth
+ 
+19)   Command:
+echo '$USER'
+  Result:
+ $USER
+ 
+20)    Command:
+export +++=should_not_export_anything_except_letters
+  Result:
+bash: export: `+++=should_not_export_anything_except_letters': not a valid identifier
+
+21)< 
+if beggins with < should work
+    Command:
+oostapen@c2r9s4:~/test$ <beginn
+  Result:
+bash: beginn: No such file or directory
+oostapen@c2r9s4:~/test$ 
+
+22)pipes
+Create file with several lines first:
+ cat << EOF > newfile
+> All
+> movement
+> is
+> accomplished
+> EOF
+Here we search in this file line with word "accomplished"
+    Command:
+oostapen@c2r9s4:~/test$ cat newfile | grep accomplished| more 
+  Result:
+accomplished
+
+23)each cat waits for Enter to exit:
+    Command:
+cat|cat|cat|ls
+ 	
+24)    Command:
+echo "   smth$"
+  Result:
+     smth$
+
+25)    Command:
+echo  $USER
+  Result:
+oostapen
+  Command:
+echo -n $USER
+  Result:
+oostapenoostapen@c2r9s4:~/test$ (should be in one line)
+
+26)$? - number of error:
+    Command:
+oostapen@c1r1s4:~$ ls lskdfj
+ls: cannot access 'lskdfj': No such file or directory
+
+oostapen@c1r1s4:~$ echo $?
+  Result:
+2
+
+27)we see 1 and 2 files
+  Command:
+>1 >2
+  Result:
+oostapen@c1r1s4:~$ ls
+1	 Desktop    file    file3		     hI.txt	output.txt
+2	 dmalloc    file1   file_to_test_back_redir  jeden	piscine
+42-EXAM  Downloads  file14  goinfre		     local_ssh	Public
+cat	 dwa	    file2   hI2.txt		     main_core
+
+28)
+Repeat multiple times with different commands and arguments. Try some wrong commands like '/bin/ls filethatdoesntexist'
+Try anything like expr $? + $?
+
+29) long command
+echo $(seq 1 1000)
+
+30) 
+./minishell &
+./minishell &
+will process in backround= 2processes, each of them you can kill <it's shown number>
+
+
+
+

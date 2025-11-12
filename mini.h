@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 15:38:42 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/29 20:45:34 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:07:40 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	init_cmd_defaults(t_cmd *cmd);
 
 //****Environment_things****
 void	*find_last(void *stack, size_t offset);
-int	split_env(t_env **stack, char **str);
+int		split_env(t_env **stack, char **str);
 void	create_list_env(t_env **stack, char **env);
 char	*get_var_value(char *name, t_shell *shell);
 int		env_len(t_env *e);
@@ -175,6 +175,7 @@ int		pipe_write_fd(t_execctx *x, int idx);
 void	wire_child_pipes(t_execctx *x, int i);
 int		has_slash(const char *s);
 char	*join_path(const char *dir, const char *bin);
+t_cmd	*child_cmd(t_cmd *head, int i);
 
 /* Builtins */
 int		ft_cd(t_shell *sh, char **argv);
@@ -202,7 +203,7 @@ void	free_env_list(t_env *env);
 
 //****Errors****
 void	error_exit(const char *error);
-void print_cmd_struct(const t_cmd *cmd);
+void	print_cmd_struct(const t_cmd *cmd);
 void	apply_redirs(t_cmd *cmd);
 
 #endif

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mokon <mokon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 10:36:56 by mokon             #+#    #+#             */
-/*   Updated: 2025/10/22 10:36:56 by mokon            ###   ########.fr       */
+/*   Created: 2025/11/11 17:14:26 by mokon             #+#    #+#             */
+/*   Updated: 2025/11/11 17:14:26 by mokon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,20 @@ int	has_slash(const char *s)
 	return (0);
 }
 
-char	*resolve_in_path(t_shell *sh, const char *bin)
+char	*join_path(const char *dir, const char *bin)
 {
-	t_env	*e;
-	char	**paths;
-	char	*full;
-	int		i;
+	char	*tmp;
+	char	*res;
 
-	e = find_env(sh->env, "PATH");
-	if (!e || !e->value || !*e->value)
-		return (NULL);
-	paths = ft_split(e->value, ':');
-	i = 0;
-	while (paths && paths[i])
-	{
-		full = join_path(paths[i], bin);
-		if (access(full, X_OK) == 0)
-			return (free_split(paths), full);
-		free(full);
-		i++;
-	}
-	free_split(paths);
-	return (NULL);
+	tmp = ft_strjoin(dir, "/");
+	res = ft_strjoin(tmp, bin);
+	free(tmp);
+	return (res);
 }
 
-void	exit_cmd_not_found(char *name, char **envp)
+t_cmd	*child_cmd(t_cmd *head, int i)
 {
-	ft_putstr_fd(name, 2);
-	ft_putendl_fd(": command not found", 2);
-	free_split(envp);
-	exit(127);
+	while (head && i-- > 0)
+		head = head->next;
+	return (head);
 }

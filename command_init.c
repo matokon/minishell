@@ -35,45 +35,6 @@ t_cmd	*command_init(t_shell **sh, t_cmd **head)
 	return (cmd);
 }
 
-static void	add_redir(t_cmd *cmd, const char *path, int append)
-{
-	t_outredir	*new_out;
-
-	new_out = (t_outredir *)malloc(sizeof(t_outredir) * (cmd->outs_len + 1));
-	if (!new_out)
-		return ;
-	if (cmd->outs_len > 0)
-		ft_memcpy(new_out, cmd->outs, sizeof(t_outredir)
-			* cmd->outs_len);
-	new_out[cmd->outs_len].path = ft_strdup(path);
-	if (!new_out[cmd->outs_len].path)
-	{
-		free(new_out);
-		return ;
-	}
-	new_out[cmd->outs_len].append = append;
-	free(cmd->outs);
-	cmd->outs = new_out;
-	cmd->outs_len++;
-}
-
-void	handle_redirects(t_cmd *command, t_token *tokens)
-{
-	if (!tokens->next || tokens->next->type != TOKEN_WORD)
-		printf("Error: Wrong use of redirections :(\n");
-	if (tokens->type == TOKEN_REDIRECT_IN)
-	{
-		if (command->infile)
-			free(command->infile);
-		command->infile = ft_strdup(tokens->next->value);
-		command->last_in_type = 1;
-	}
-	else if (tokens->type == TOKEN_REDIRECT_OUT)
-		add_redir(command, tokens->next->value, 0);
-	else if (tokens->type == TOKEN_REDIRECT_APPEND)
-		add_redir(command, tokens->next->value, 1);
-}
-
 void	add_cmd_argv(t_cmd *command, const char *arg)
 {
 	char	**upd_arg;
@@ -102,6 +63,38 @@ void	add_cmd_argv(t_cmd *command, const char *arg)
 	command->argv = upd_arg;
 }
 
+static void	handle_token_type(t_cmd *node, t_token **tokens)
+{
+	if ((*tokens)->type == TOKEN_WORD)
+		add_cmd_argv(node, (*tokens)->value);
+	else if ((*tokens)->type == TOKEN_REDIRECT_IN
+		|| (*tokens)->type == TOKEN_REDIRECT_OUT
+		|| (*tokens)->type == TOKEN_REDIRECT_APPEND)
+	{
+		handle_redirects(node, *tokens);
+		if (*tokens && (*tokens)->next)
+			*tokens = (*tokens)->next;
+	}
+	else if ((*tokens)->type == TOKEN_HEREDOC)
+	{
+		add_heredoc(node, *tokens);
+		*tokens = (*tokens)->next;
+	}
+}
+
+static t_cmd	*process_token(t_cmd *node, t_token **tokens, t_shell *shell)
+{
+	if ((*tokens)->type == TOKEN_PIPE)
+	{
+		node = handle_pipe(node, *tokens, shell);
+		if (!node)
+			return (NULL);
+	}
+	else
+		handle_token_type(node, tokens);
+	return (node);
+}
+
 t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 {
 	t_cmd	*node;
@@ -115,28 +108,51 @@ t_cmd	*adding_command(t_token *tokens, t_shell *shell)
 			node = command_init(&shell, &shell->cmds);
 		if (!node)
 			return (NULL);
-		shell->cmds->argc++;
-		if (tokens->type == TOKEN_WORD)
-			add_cmd_argv(node, tokens->value);
-		else if (tokens->type == TOKEN_REDIRECT_IN
-			|| tokens->type == TOKEN_REDIRECT_OUT
-			|| tokens->type == TOKEN_REDIRECT_APPEND)
-			handle_redirects(node, tokens);
+		if (shell->cmds)
+			shell->cmds->argc++;
+		node = process_token(node, &tokens, shell);
+		if (tokens)
 			tokens = tokens->next;
-		}
-		else if (tokens->type == TOKEN_HEREDOC)
-		{
-			add_heredoc(node, tokens);
-			tokens = tokens->next;
-		}
-		else if (tokens->type == TOKEN_PIPE)
-		{   
-			node = handle_pipe(node, tokens, shell);
-			if (!node)
-				return (NULL);
-		}
-		tokens = tokens->next;
 	}
-	//print_cmd_struct(shell->cmds);
 	return (shell->cmds);
 }
+
+//WORKING VERSION
+//t_cmd	*adding_command(t_token *tokens, t_shell *shell)
+//{
+//	t_cmd	*node;
+
+//	if (!tokens)
+//		return (NULL);
+//	node = NULL;
+//	while (tokens)
+//	{
+//		if (node == NULL)
+//			node = command_init(&shell, &shell->cmds);
+//		if (!node)
+//			return (NULL);
+//		shell->cmds->argc++;
+//		if (tokens->type == TOKEN_WORD)
+//			add_cmd_argv(node, tokens->value);
+//		else if (tokens->type == TOKEN_REDIRECT_IN
+//			|| tokens->type == TOKEN_REDIRECT_OUT
+//			|| tokens->type == TOKEN_REDIRECT_APPEND)
+//		{
+//			handle_redirects(node, tokens);
+//			tokens = tokens->next;
+//		}
+//		else if (tokens->type == TOKEN_HEREDOC)
+//		{
+//			add_heredoc(node, tokens);
+//			tokens = tokens->next;
+//		}
+//		else if (tokens->type == TOKEN_PIPE)
+//		{
+//			node = handle_pipe(node, tokens, shell);
+//			if (!node)
+//				return (NULL);
+//		}
+//		tokens = tokens->next;
+//	}
+//	return (shell->cmds);
+//}

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mokon <mokon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 12:30:45 by mokon             #+#    #+#             */
-/*   Updated: 2025/10/22 12:30:45 by mokon            ###   ########.fr       */
+/*   Created: 2025/11/11 17:14:38 by mokon             #+#    #+#             */
+/*   Updated: 2025/11/11 17:14:38 by mokon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc != 1)
 		return (1);
-	if (!env)
+	if (env == NULL)
+	{
 		error_exit("Error: wrong env value!\n");
+	}
 	shell = safe_malloc(sizeof(t_shell));
 	value_init(shell);
 	create_list_env(&shell->env, env);

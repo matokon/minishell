@@ -6,7 +6,7 @@
 /*   By: ochmurzy <ochmurzy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:07:44 by ochmurzy          #+#    #+#             */
-/*   Updated: 2025/10/29 20:44:09 by ochmurzy         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:42:11 by ochmurzy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,18 @@ void	init_cmd_defaults(t_cmd *cmd)
 
 t_cmd	*handle_pipe(t_cmd *node, t_token *tokens, t_shell *shell)
 {
-	t_cmd *new_cmd;
+	t_cmd	*new_cmd;
 
-	if (!node || node->argv == NULL || tokens->next == NULL
-		|| tokens->next->type != TOKEN_WORD)
+	if (!node || tokens->next == NULL)
 	{
-		printf("Error: Wrong use of pipes :(\n");
+		write(2, "Error: Wrong use of pipes :(\n", 29);
 		return (NULL);
 	}
-	/* Create and append a new command to the shell's command list */
 	new_cmd = command_init(&shell, &shell->cmds);
 	if (!new_cmd)
 		return (NULL);
 	return (new_cmd);
 }
-
-//t_cmd	*handle_pipe(t_cmd *cmd, t_token *tokens)
-//{
-//	t_cmd	*new_cmd;
-
-//	(void)tokens;
-//	new_cmd = command_init(NULL, NULL);
-//	if (!new_cmd)
-//		return (NULL);
-//	cmd->next = new_cmd;
-//	return (new_cmd);
-//}
 
 char	*get_var_value(char *name, t_shell *shell)
 {

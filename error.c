@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mokon <mokon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 12:23:55 by mokon             #+#    #+#             */
-/*   Updated: 2025/10/22 12:23:55 by mokon            ###   ########.fr       */
+/*   Created: 2025/11/11 17:14:18 by mokon             #+#    #+#             */
+/*   Updated: 2025/11/11 17:14:18 by mokon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	error_exit(const char *error)
 {
-	printf("%s", error);
+	write(2, &error, ft_strlen(error));
 	exit(EXIT_FAILURE);
 }

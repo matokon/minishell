@@ -90,5 +90,6 @@ int	run_pipeline_or_external(t_shell *shell)
 	close_all_pipes(&x);
 	shell->last_status = wait_for_all(&x);
 	free_execctx(&x);
+	cmds_free(shell);
 	return (shell->last_status);
 }

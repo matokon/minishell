@@ -1,0 +1,129 @@
+1) Command:
+env | grep PATH
+
+Result:
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+LD_LIBRARY_PATH=/nfs/homes/oostapen/dmalloc/lib:
+PATH=/nfs/homes/oostapen/dmalloc/bin:/nfs/homes/oostapen/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+2) Command:
+export example_cmd=ls
+export | grep example_cmd
+Result:
+declare -x example_cmd="ls"
+
+Command:
+echo $example_cmd
+Result:
+ls
+
+Command:
+$example_cmd
+Result:
+42-EXAM  dmalloc    goinfre    main_core  pthread_mutex_init  strtol.txt
+Desktop  Downloads  local_ssh  piscine	  Public
+
+3) :$PWD should overwrite in the end, what PWD contains :/nfs/homes/oostapen , see under:
+Command:
+export PATH=$PATH:$PWD
+export | grep PATH
+Result:
+declare -x LD_LIBRARY_PATH="/nfs/homes/oostapen/dmalloc/lib:"
+declare -x PATH="/nfs/homes/oostapen/dmalloc/bin:/nfs/homes/oostapen/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/nfs/homes/oostapen 
+(This line added at the end ":/nfs/homes/oostapen")
+
+4) Command: 
+<<delimeter|<<delimeter2
+
+Result with text writen before delimeter:
+
+oostapen@c2r9s4:~$ <<delimeter|<<delimeter2
+> ha ha
+> ha
+> delimeter
+> hi hi hi
+> hi
+> delimeter
+> delimeter2
+oostapen@c2r9s4:~$ 
+
+5) in the example under cat will wait for delimeter ss to show, what was written
+ Command: 
+cat << ss
+ Result:
+oostapen@c2r9s4:~$ cat << ss
+> ha ha
+> ss
+ha ha
+oostapen@c2r9s4:~$ 
+
+6) Command:
+ >cat << delimeter > newly_created_empty_file << EOF
+ Result:
+oostapen@c2r9s4:~$ >cat << delimeter > newly_created_empty_file << EOF
+> EOF
+> EOF
+> ha 
+> delimeter
+> EOF
+oostapen@c2r9s4:~$ 
+(ls can check if newly_created_empty_file is there)
+
+7) Ctrl+C or Ctrl+D should close any command like cat or grep or any other
+8) should be 2 files one and two:
+ Command:
+ >one >two
+ ls
+ 
+  Result:
+  
+oostapen@c2r9s4:~/test$  >one >two
+oostapen@c2r9s4:~/test$ ls
+one  two
+
+9)  Command:
+>one >two|>three
+  Result:
+oostapen@c2r9s4:~/test$ >one >two|>three
+oostapen@c2r9s4:~/test$ ls
+one  three  two
+
+10) nothing should happen because of double fork:
+  Command:
+./minishell
+
+exit|exit
+
+(If you tape exit one time, you see message exit:
+oostapen@c2r9s4:~$ exit
+exit
+)
+
+11) you should see 55 as the argument(do not confuse with option, like echo -n etc.)
+  Command:
+exit|exit 55
+$?
+  Result:
+oostapen@c2r9s4:~$ exit|exit 55
+oostapen@c2r9s4:~$ $?
+55: command not found
+
+12) check error code from above:
+echo $?
+  Result:
+oostapen@c2r9s4:~$ exit|exit 55
+oostapen@c2r9s4:~$ echo $?
+55
+
+13) echo -n
+
+
+
+
+
+
+
+
+
+
